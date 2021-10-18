@@ -33,9 +33,12 @@ set(CMAKE_CXX_STANDARD 20)
 # -----------------------------------------------------------------------------
 # Source files
 set(SOURCES
-		include/map/map.h src/map/map.cpp
-		include/core/main_window.h src/core/main_window.cpp
-		src/core/main.cpp)
+		include/core/MainWindow.h src/core/MainWindow.cpp
+		include/map/Map.h src/map/Map.cpp
+		include/map/Point.h src/map/Point.cpp
+		include/map/QGameMap.h src/map/QGameMap.cpp
+		src/core/main.cpp
+)
 
 # -----------------------------------------------------------------------------
 # Dependencies

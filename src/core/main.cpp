@@ -8,21 +8,22 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 =========================================================================*/
 
-#include <QApplication>
-#include "core/main_window.h"
-#include "map/map.h"
+#include "core/MainWindow.h"
+#include "map/Map.h"
 
-int main(int argc, char *argv[]) {
+#include <QApplication>
+
+int main(int argc, char* argv[]) {
 
     QApplication app(argc, argv);
 
     MainWindow window;
-
-    Map map(10, 10);
-    window.setCentralWidget(&map);
-
     window.show();
 
-    return app.exec();
+    // Map
+    Map map(10, 10);
+    QGameMap gmap = map.toQGameMap();
+    window.setCentralWidget(&gmap);
 
+    return app.exec();
 }
