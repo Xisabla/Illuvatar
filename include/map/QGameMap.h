@@ -32,7 +32,7 @@ class QGameMap : public QWidget {
      * @param points Special points (tiles) to show with specific colors
      * @param parent Parent Qt Widget (facultative)
      */
-    QGameMap(int width, int height, ColoredPoints points = {}, QWidget* parent = 0);
+    QGameMap(int width, int height, ColoredPoints points = {}, QWidget* parent = nullptr);
 
     // - Setters -----------------------------------------------------------------------------
     /**
@@ -50,7 +50,7 @@ class QGameMap : public QWidget {
 
   private:
     // - Methods -----------------------------------------------------------------------------
-    void paintEvent(QPaintEvent*);
+    void paintEvent(QPaintEvent*) override;
     // - Attributes --------------------------------------------------------------------------
     /**
      * @brief Width of the map (number of tiles)

@@ -36,7 +36,7 @@ class SafeZone {
      * @param faction Faction that owns the safezone
      * @param points All points that belong to the safezone
      */
-    SafeZone(Faction faction, std::vector<Point> points = {});
+    explicit SafeZone(Faction faction, std::vector<Point> points = {});
 
     // - Getters -----------------------------------------------------------------------------
     /**

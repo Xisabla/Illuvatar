@@ -29,5 +29,5 @@ int main(int argc, char* argv[]) {
     // graphical object)
     map.GMap()->setPointColor(Point(5, 5), Qt::blue);
 
-    return app.exec();
+    return QApplication::exec();
 }

@@ -10,12 +10,13 @@
 
 #include "core/MainWindow.h"
 
+// Note: temporary object for demo
 class MyTab : public QWidget {
   public:
-    MyTab(int width, int height) : width(width), height(height) { }
+    MyTab(int width, int height): width(width), height(height) { }
 
   private:
-    void paintEvent(QPaintEvent* event) {
+    void paintEvent(QPaintEvent* event) override {
         QPainter painter(this);
         painter.setPen(QPen(Qt::black, 12, Qt::DashDotLine, Qt::RoundCap));
 
@@ -32,11 +33,10 @@ MainWindow::MainWindow(Map map) {
     this->setMinimumSize(1280, 720);
     this->setMaximumSize(1280, 720);
 
-    QTabWidget* tabWidget = new QTabWidget;
+    auto* tabWidget = new QTabWidget;
 
     tabWidget->addTab(map.GMap(), tr("Map"));
     tabWidget->addTab(new MyTab(200, 200), tr("Second tab"));
 
     this->setCentralWidget(tabWidget);
 }
-

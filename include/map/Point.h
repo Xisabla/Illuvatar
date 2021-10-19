@@ -27,12 +27,12 @@ class Point {
     /**
      * @return The X coordinate of the point
      */
-    int X();
+    int X() const;
 
     /**
      * @return The Y coordinate of the point
      */
-    int Y();
+    int Y() const;
 
     // - Operators ---------------------------------------------------------------------------
     /**

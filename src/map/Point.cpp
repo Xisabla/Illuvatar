@@ -19,6 +19,6 @@ Point::Point(int x, int y): x(x), y(y) { }
 //  Point > GETTERS
 //  --------------------------------------------------------------------------------------
 
-int Point::X() { return x; }
+int Point::X() const { return x; }
 
-int Point::Y() { return y; }
+int Point::Y() const { return y; }

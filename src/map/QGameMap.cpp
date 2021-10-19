@@ -14,20 +14,18 @@
 //  --------------------------------------------------------------------------------------
 
 QGameMap::QGameMap(int width, int height, ColoredPoints points, QWidget* parent)
-: QWidget(parent), width(width), height(height), points(points) {
-}
+: QWidget(parent), width(width), height(height), points(points) { }
 
 //  --------------------------------------------------------------------------------------
 //  QGameMap > SETTERS
 //  --------------------------------------------------------------------------------------
 void QGameMap::setPointColor(Point p, QColor color) {
-    if (std::find(this->points.begin(), this->points.end(), std::make_pair(p, color)) == this->points.end())
+    if (std::find(this->points.begin(), this->points.end(), std::make_pair(p, color)) ==
+        this->points.end())
         this->points.emplace_back(p, color);
 }
 
-void QGameMap::setPoints(ColoredPoints points) {
-    this->points = points;
-}
+void QGameMap::setPoints(ColoredPoints points) { this->points = points; }
 
 //  --------------------------------------------------------------------------------------
 //  QGameMap > PRIVATE METHODS
@@ -54,7 +52,7 @@ void QGameMap::paintEvent(QPaintEvent*) {
     }
 
     // Print colored points
-    for(auto & pt: this->points) {
+    for (auto& pt: this->points) {
         Point point = pt.first;
         int x = point.X();
         int y = point.Y();
