@@ -13,6 +13,7 @@
 #define ILLUVATAR_MAINWINDOW_H
 
 #include <QMainWindow>
+#include "map/Map.h"
 
 /**
  * @class MainWindow
@@ -20,7 +21,10 @@
  */
 class MainWindow : public QMainWindow {
   public:
-    MainWindow();
+    /**
+     * @param map Map of the game
+     */
+    MainWindow(Map map);
 };
 
 #endif // ILLUVATAR_MAINWINDOW_H

@@ -17,18 +17,41 @@
  */
 class Point {
   public:
+    /**
+     * @param x X coordinate of the point
+     * @param y Y coordinate of the point
+     */
     Point(int x, int y);
 
     // - Getters -----------------------------------------------------------------------------
-    int getX();
-    int getY();
+    /**
+     * @return The X coordinate of the point
+     */
+    int X();
+
+    /**
+     * @return The Y coordinate of the point
+     */
+    int Y();
 
     // - Operators ---------------------------------------------------------------------------
-    bool operator==(const Point& p) const { return x == p.x && y == p.y; }
+    /**
+     * @param p Point to test equality with
+     * @return True if the current point is the same as the given point
+     */
+    inline bool operator==(const Point& p) const { return x == p.x && y == p.y; }
 
   private:
     // - Attributes --------------------------------------------------------------------------
-    int x, y;
+    /**
+     * @brief X coordinate of the point
+     */
+    int x;
+
+    /**
+     * @brief Y coordinate of the point
+     */
+    int y;
 };
 
 #endif // ILLUVATAR_POINT_H

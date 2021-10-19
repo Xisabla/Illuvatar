@@ -25,23 +25,23 @@ std::vector<Point> SafeZone::getPoints() { return this->points; }
 //  SafeZone > SETTERS
 //  --------------------------------------------------------------------------------------
 
-void SafeZone::setTiles(std::vector<Point> points) { this->points = points; }
+void SafeZone::setPoints(std::vector<Point> points) { this->points = points; }
 
-void SafeZone::addTile(Point p) {
+void SafeZone::addPoint(Point p) {
     if (std::find(this->points.begin(), this->points.end(), p) == this->points.end())
         this->points.push_back(p);
 }
 
-void SafeZone::removeTile(Point p) {
+void SafeZone::removePoint(Point p) {
     std::remove_if(this->points.begin(), this->points.end(), [p](Point pt) { return p == pt; });
 }
 
-void SafeZone::addTiles(std::vector<Point> points) {
-    for (auto& p: points) addTile(p);
+void SafeZone::addPoints(std::vector<Point> points) {
+    for (auto& p: points) addPoint(p);
 }
 
-void SafeZone::removeTiles(std::vector<Point> points) {
-    for (auto& p: points) removeTile(p);
+void SafeZone::removePoints(std::vector<Point> points) {
+    for (auto& p: points) removePoint(p);
 }
 
 //  --------------------------------------------------------------------------------------
@@ -55,21 +55,20 @@ Map::Map(int width, int height)
     this->sz_werewolves = autoSafezone(Werewolves, TOP_LEFT);
     this->sz_valars = autoSafezone(Valars, BOTTOM_LEFT);
     this->sz_eldars = autoSafezone(Eldars, BOTTOM_RIGHT);
+
+    this->gmap = new QGameMap(width, height);
 }
 
 //  --------------------------------------------------------------------------------------
 //  Map > PUBLIC METHODS
 //  --------------------------------------------------------------------------------------
 
-QGameMap Map::toQGameMap() {
-    ColoredPoints coloredPoints;
+void Map::syncGMap() { this->setGMapSafezones(); }
 
-    for (auto& p: this->sz_dragons.getPoints()) coloredPoints.emplace_back(p, Qt::red);
-    for (auto& p: this->sz_eldars.getPoints()) coloredPoints.emplace_back(p, Qt::green);
-    for (auto& p: this->sz_valars.getPoints()) coloredPoints.emplace_back(p, Qt::lightGray);
-    for (auto& p: this->sz_werewolves.getPoints()) coloredPoints.emplace_back(p, Qt::darkRed);
+QGameMap* Map::GMap() {
+    this->syncGMap();
 
-    return QGameMap(this->width, this->height, coloredPoints);
+    return this->gmap;
 }
 
 //  --------------------------------------------------------------------------------------
@@ -96,4 +95,15 @@ SafeZone Map::autoSafezone(Faction faction, Corner corner) {
     }
 
     return SafeZone(faction, points);
+}
+
+void Map::setGMapSafezones() {
+    ColoredPoints points;
+
+    for (auto& p: this->sz_dragons.getPoints()) points.emplace_back(p, Qt::red);
+    for (auto& p: this->sz_eldars.getPoints()) points.emplace_back(p, Qt::green);
+    for (auto& p: this->sz_valars.getPoints()) points.emplace_back(p, Qt::lightGray);
+    for (auto& p: this->sz_werewolves.getPoints()) points.emplace_back(p, Qt::darkRed);
+
+    this->gmap->setPoints(points);
 }
