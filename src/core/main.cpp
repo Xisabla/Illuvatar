@@ -24,7 +24,8 @@ int main(int argc, char* argv[]) {
     auto e_tiles = generators::disk(2.8, Point(6, 14), Eldars);
     auto d_tiles = generators::disk(2.8, Point(14, 6), Dragons);
 
-    tiles.reserve(w_tiles.size() + v_tiles.size() + e_tiles.size() + d_tiles.size() + c_tiles.size());
+    tiles.reserve(w_tiles.size() + v_tiles.size() + e_tiles.size() + d_tiles.size() +
+                  c_tiles.size());
     for (auto& t: w_tiles) tiles.push_back(t);
     for (auto& t: v_tiles) tiles.push_back(t);
     for (auto& t: e_tiles) tiles.push_back(t);
