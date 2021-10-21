@@ -7,7 +7,7 @@
   Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 =========================================================================*/
-#include "map/Point.h"
+#include "geometry/Point.h"
 
 //  --------------------------------------------------------------------------------------
 //  Point

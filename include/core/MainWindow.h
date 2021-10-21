@@ -7,7 +7,6 @@
   Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 =========================================================================*/
-
 #pragma once
 #ifndef ILLUVATAR_MAINWINDOW_H
 #define ILLUVATAR_MAINWINDOW_H

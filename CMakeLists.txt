@@ -13,17 +13,17 @@ message(STATUS "Building project ${PROJECT_NAME} v${PROJECT_VERSION}")
 # -----------------------------------------------------------------------------
 # Compiler and build config
 # -----------------------------------------------------------------------------
-if(NOT CMAKE_BUILD_TYPE)
-	set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose Release or Debug" FORCE)
-endif()
+if (NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose Release or Debug" FORCE)
+endif ()
 
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
 # Set code DEBUG mode if build type is Debug
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-	message(STATUS "Debug mode enabled")
-	add_compile_definitions(DEBUG)
-endif()
+    message(STATUS "Debug mode enabled")
+    add_compile_definitions(DEBUG)
+endif ()
 
 
 set(CMAKE_CXX_STANDARD 20)
@@ -33,12 +33,16 @@ set(CMAKE_CXX_STANDARD 20)
 # -----------------------------------------------------------------------------
 # Source files
 set(SOURCES
-		include/core/MainWindow.h src/core/MainWindow.cpp
-		include/map/Map.h src/map/Map.cpp
-		include/map/Point.h src/map/Point.cpp
-		include/map/QGameMap.h src/map/QGameMap.cpp
-		src/core/main.cpp
-)
+        include/core/MainWindow.h src/core/MainWindow.cpp
+        include/geometry/Point.h src/geometry/Point.cpp
+        include/geometry/Rectangle.h src/geometry/Rectangle.cpp
+        include/map/Generators.h src/map/Generators.cpp
+        include/map/Map.h src/map/Map.cpp
+        include/map/Tile.h src/map/Tile.cpp
+        include/qt/QGameMap.h src/qt/QGameMap.cpp
+        include/wip.h
+        src/core/main.cpp
+        )
 
 # -----------------------------------------------------------------------------
 # Dependencies
@@ -52,7 +56,7 @@ find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
 add_executable(Illuvatar ${SOURCES})
 
 include_directories(
-		${CMAKE_CURRENT_SOURCE_DIR}/include
-		${CMAKE_CURRENT_BINARY_DIR})
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_CURRENT_BINARY_DIR})
 
 target_link_libraries(Illuvatar Qt5::Core Qt5::Gui Qt5::Widgets)

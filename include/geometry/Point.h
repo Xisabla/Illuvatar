@@ -27,21 +27,17 @@ class Point {
     /**
      * @return The X coordinate of the point
      */
-    int X() const;
+    [[nodiscard]] int X() const;
 
     /**
      * @return The Y coordinate of the point
      */
-    int Y() const;
+    [[nodiscard]] int Y() const;
 
     // - Operators ---------------------------------------------------------------------------
-    /**
-     * @param p Point to test equality with
-     * @return True if the current point is the same as the given point
-     */
     inline bool operator==(const Point& p) const { return x == p.x && y == p.y; }
 
-  private:
+  protected:
     // - Attributes --------------------------------------------------------------------------
     /**
      * @brief X coordinate of the point

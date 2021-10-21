@@ -7,10 +7,9 @@
   Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 =========================================================================*/
-
 #include "core/MainWindow.h"
 
-// Note: temporary object for demo
+// <-- Temporary object for demo
 class MyTab : public QWidget {
   public:
     MyTab(int width, int height): width(width), height(height) { }
@@ -25,14 +24,17 @@ class MyTab : public QWidget {
 
     int width, height;
 };
+// Temporary object for demo -->
 
 //  --------------------------------------------------------------------------------------
 //  MainWindow
 //  --------------------------------------------------------------------------------------
 MainWindow::MainWindow(Map map) {
+    // TODO: Resize dynamically fitting screen size
     this->setMinimumSize(1280, 720);
-    this->setMaximumSize(1280, 720);
+    this->setMaximumSize(1920, 1080);
 
+    // Tabs
     auto* tabWidget = new QTabWidget;
 
     tabWidget->addTab(map.GMap(), tr("Map"));
