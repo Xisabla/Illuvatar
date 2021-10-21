@@ -21,30 +21,30 @@ class Rectangle {
      * @param width Width of the rectangle
      * @param height Height of the rectangle
      */
-    Rectangle(int width, int height);
+    Rectangle(unsigned int width, unsigned int height);
 
     // - Getters -----------------------------------------------------------------------------
     /**
      * @return The width of the Rectangle
      */
-    [[nodiscard]] int getWidth() const;
+    [[nodiscard]] unsigned int getWidth() const;
 
     /**
      * @return The height of the Rectangle
      */
-    [[nodiscard]] int getHeight() const;
+    [[nodiscard]] unsigned int getHeight() const;
 
   private:
     // - Attributes --------------------------------------------------------------------------
     /**
      * @brief The width of the Rectangle
      */
-    int width;
+    unsigned int width;
 
     /**
      * @brief The height of the Rectangle
      */
-    int height;
+    unsigned int height;
 };
 
 #endif // ILLUVATAR_RECTANGLE_H

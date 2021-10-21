@@ -13,12 +13,12 @@
 //  Rectangle
 //  --------------------------------------------------------------------------------------
 
-Rectangle::Rectangle(int width, int height): width(width), height(height) { }
+Rectangle::Rectangle(unsigned int width, unsigned int height): width(width), height(height) { }
 
 //  --------------------------------------------------------------------------------------
 //  Rectangle > GETTERS
 //  --------------------------------------------------------------------------------------
 
-int Rectangle::getWidth() const { return this->width; }
+unsigned int Rectangle::getWidth() const { return this->width; }
 
-int Rectangle::getHeight() const { return this->height; }
+unsigned int Rectangle::getHeight() const { return this->height; }

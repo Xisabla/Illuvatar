@@ -39,7 +39,7 @@ class Map {
      * @param height Map height
      * @param tiles Available Tiles on the map
      */
-    Map(int width, int height, std::vector<Tile> tiles = {});
+    Map(unsigned int width, unsigned int height, std::vector<Tile> tiles = {});
 
     // - Getters -----------------------------------------------------------------------------
     /**

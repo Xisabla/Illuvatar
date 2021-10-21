@@ -31,13 +31,13 @@ Map::Map(const std::vector<Tile>& tiles): tiles(tiles) {
     }
 
     // TODO: Check for valid width/height
-    int width = xmax - xmin;
-    int height = ymax - ymin;
+    unsigned int width = xmax - xmin;
+    unsigned int height = ymax - ymin;
 
     this->gmap = new QGameMap(width, height);
 }
 
-Map::Map(int width, int height, std::vector<Tile> tiles)
+Map::Map(unsigned int width, unsigned int height, std::vector<Tile> tiles)
 : Map(Rectangle(width, height), std::move(tiles)) { }
 
 Map::Map(Rectangle surface, std::vector<Tile> tiles): tiles(tiles) {
@@ -45,8 +45,8 @@ Map::Map(Rectangle surface, std::vector<Tile> tiles): tiles(tiles) {
     // TODO: Move this->gmap after tiles definition and give tiles to gmap
     this->gmap = new QGameMap(surface);
 
-    for (int x = 0; x < surface.getWidth(); x++) {
-        for (int y = 0; y < surface.getHeight(); y++) {
+    for (unsigned int x = 0; x < surface.getWidth(); x++) {
+        for (unsigned int y = 0; y < surface.getHeight(); y++) {
             tiles.emplace_back(x, y);
         }
     }

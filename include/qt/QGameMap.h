@@ -40,7 +40,7 @@ class QGameMap : public QWidget {
      * @param height Map height (in tiles)
      * @param parent Qt parent widget
      */
-    QGameMap(int width, int height, QWidget* parent = nullptr);
+    QGameMap(unsigned int width, unsigned int height, QWidget* parent = nullptr);
 
     // - Setters -----------------------------------------------------------------------------
     /**

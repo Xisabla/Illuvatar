@@ -18,7 +18,7 @@
 QGameMap::QGameMap(Rectangle surface, QWidget* parent)
 : QWidget(parent), surface(surface), tiles() { }
 
-QGameMap::QGameMap(int width, int height, QWidget* parent)
+QGameMap::QGameMap(unsigned int width, unsigned int height, QWidget* parent)
 : QGameMap(Rectangle(width, height), parent) { }
 
 //  --------------------------------------------------------------------------------------
@@ -44,8 +44,8 @@ void QGameMap::paintEvent(QPaintEvent*) {
     // TODO: Store color mapping somewhere
 
     // Compute sizes
-    int width = this->surface.getWidth();
-    int height = this->surface.getHeight();
+    int width = static_cast<int> (this->surface.getWidth());
+    int height = static_cast<int> (this->surface.getHeight());
 
     int p_width = this->parentWidget()->width();
     int p_height = this->parentWidget()->height();
