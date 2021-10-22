@@ -132,3 +132,5 @@ build/
 # Log files
 logs/
 *.log
+
+.vscode/
