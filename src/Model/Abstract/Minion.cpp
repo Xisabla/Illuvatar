@@ -4,14 +4,22 @@ void Minion::Move()
 {   
     int nbTile = rand() % (this->rangeMax - this->rangeMin + 1) + this->rangeMin;
 
-    this->currentDirection = energy - nbTile > lowEnergy ? //soit avant sans la soustraction, soit ici
-                            this->Explorate() :
-                            this->FindMaster(Master());
+    this->currentDirection = this->energy - nbTile > this->lowEnergy ? //soit avant sans la soustraction, soit ici
+                                this->Explorate() :
+                                this->FindMaster(Master());
 
     for (int i; i < nbTile; ++i) {
         swith(this->CheckDirection(this->currentDirection)) {
             case ThingOnMap::Nothing:
-                //avance d'une tile et dépense de l'énergie
+                this->energy--;
+
+                // remplacer par une surchage d'opérateur + ?
+                int nextX = this->tile->X() + Minion.nextDirection[this->currentDirection]->X();
+                int nextY = this->tile->Y() + Minion.nextDirection[this->currentDirection]->Y();
+                this->tile.setOwner(Faction::NoFaction);
+                this->tile = this->map.getTile(nextX, nextY);
+                this->tile.setOwner(this->faction);
+
                 break;
 
             case ThingOnMap::Obstacle:
