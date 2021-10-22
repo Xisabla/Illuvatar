@@ -39,7 +39,7 @@ Direction Minion::Explorate() {
         if (this->CheckDirection(dir) == ThingOnMap::Nothing) possibleDirs.push_back(dir);
     }
 
-    return possibleDirs;
+    return possibleDirs[rand() % possibleDirs.size()];
 }
 
 Direction Minion::FindMaster(Master master) {

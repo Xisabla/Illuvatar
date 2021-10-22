@@ -48,10 +48,10 @@ class Minion
       { Direction::NW : { Direction::W,  Direction::NW, Direction::N  } }
     }
     static const map<Faction, set<Faction>> alliances = {
-      { Faction::Eldars, { Faction::Eldars, Faction::Valars } },
-      { Faction::Valars, { Faction::Eldars, Faction::Valars } },
-      { Faction::Dragons, { Faction::Dragons, Faction::Werewolves } },
-      { Faction::Werewolves, { Faction::Dragons, Faction::Werewolves } },
+      { Faction::Eldars,      { Faction::Eldars,  Faction::Valars     } },
+      { Faction::Valars,      { Faction::Eldars,  Faction::Valars     } },
+      { Faction::Dragons,     { Faction::Dragons, Faction::Werewolves } },
+      { Faction::Werewolves,  { Faction::Dragons, Faction::Werewolves } },
     };
 
     void RollTheDice();
