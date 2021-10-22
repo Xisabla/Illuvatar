@@ -42,12 +42,12 @@ Direction Minion::Explorate() {
     return possibleDirs[rand() % possibleDirs.size()];
 }
 
-Direction Minion::FindMaster(Master master) {
+Direction Minion::FindMaster(Master const &master) {
     // do the a* or dijkstra pathfinder, then deduce the direction of the master (first move axis?)
     return Direction::S;
 }
 
-ThingOnMap Minion::CheckDirection(Direction direction)
+ThingOnMap Minion::CheckDirection(Direction const &direction)
 {
     int nextX = this->tile->X() + Minion.nextDirection[direction]->X();
     int nextY = this->tile->Y() + Minion.nextDirection[direction]->Y();
@@ -79,7 +79,7 @@ void Minion::RollTheDice()
 
 }
 
-void Minion::Fight(Minion minion)
+void Minion::Fight(Minion &minion)
 {
 
 }

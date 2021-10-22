@@ -24,7 +24,7 @@ class Minion
     const int rangeMin = 2;
     Direction currentDirection;
 
-    void Fight(Minion minion);
+    void Fight(Minion &minion);
 
   private:
     static const map<Direction, Point> nextDirection = {
@@ -55,10 +55,10 @@ class Minion
     };
 
     void RollTheDice();
-    ThingOnMap CheckDirection();
+    ThingOnMap CheckDirection(Direction const &direction);
     vector<ThingOnMap> CheckAround();
     Direction Explorate();
-    Direction FindMaster(Master master);
+    Direction FindMaster(Master const &master);
 };
 
 
