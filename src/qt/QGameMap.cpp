@@ -9,8 +9,6 @@
 =========================================================================*/
 #include "qt/QGameMap.h"
 
-#include <utility>
-
 //  --------------------------------------------------------------------------------------
 //  QGameMap
 //  --------------------------------------------------------------------------------------
@@ -25,7 +23,7 @@ QGameMap::QGameMap(unsigned int width, unsigned int height, QWidget* parent)
 //  QGameMap > SETTERS
 //  --------------------------------------------------------------------------------------
 
-void QGameMap::setTiles(std::vector<Tile> tileSet) { this->tiles = std::move(tileSet); }
+void QGameMap::setTiles(TileSet tileSet) { this->tiles = std::move(tileSet); }
 
 //  --------------------------------------------------------------------------------------
 //  QGameMap > PRIVATE METHODS
@@ -64,12 +62,9 @@ void QGameMap::paintEvent(QPaintEvent*) {
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
 
-            auto it = std::find_if(this->tiles.begin(), this->tiles.end(), [x, y](Tile t) {
-                return t.X() == x && t.Y() == y;
-            });
+            if (this->tiles.exists(x, y)) {
+                auto t = this->tiles.get(x, y);
 
-            if (it != this->tiles.end()) {
-                Tile t = tiles[std::distance(tiles.begin(), it)];
                 p.setPen(Qt::black);
 
                 p.setBrush(Qt::white);

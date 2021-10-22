@@ -14,6 +14,7 @@
 #include "geometry/Point.h"
 #include "geometry/Rectangle.h"
 #include "map/Tile.h"
+#include "map/TileSet.h"
 
 #include <QPainter>
 #include <QWidget>
@@ -47,7 +48,7 @@ class QGameMap : public QWidget {
     /**
      * Set the tiles of the widget
      */
-    void setTiles(std::vector<Tile> tileSet);
+    void setTiles(TileSet tileSet);
 
   private:
     // - Methods -----------------------------------------------------------------------------
@@ -65,7 +66,7 @@ class QGameMap : public QWidget {
     /**
      * @brief Available Tiles on the map
      */
-    std::vector<Tile> tiles;
+    TileSet tiles;
 };
 
 #endif // ILLUVATAR_QGAMEMAP_H

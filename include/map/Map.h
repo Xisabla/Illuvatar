@@ -13,8 +13,10 @@
 
 #include "geometry/Rectangle.h"
 #include "map/Tile.h"
+#include "map/TileSet.h"
 #include "qt/QGameMap.h"
 
+#include <utility>
 #include <vector>
 
 /**
@@ -26,20 +28,20 @@ class Map {
     /**
      * @param tiles Available Tiles on the map
      */
-    explicit Map(const std::vector<Tile>& tiles);
+    explicit Map(TileSet  tiles);
 
     /**
      * @param surface Map rectangular shape
      * @param tiles Available Tiles on the map
      */
-    explicit Map(Rectangle surface, std::vector<Tile> tiles = {});
+    explicit Map(Rectangle surface, TileSet tiles = TileSet());
 
     /**
      * @param width Map width
      * @param height Map height
      * @param tiles Available Tiles on the map
      */
-    Map(unsigned int width, unsigned int height, std::vector<Tile> tiles = {});
+    Map(unsigned int width, unsigned int height, TileSet tiles = TileSet());
 
     // - Getters -----------------------------------------------------------------------------
     /**
@@ -69,7 +71,7 @@ class Map {
     /**
      * @brief Available Tiles on the map
      */
-    std::vector<Tile> tiles;
+    TileSet tiles;
 };
 
 #endif // ILLUVATAR_MAP_H
