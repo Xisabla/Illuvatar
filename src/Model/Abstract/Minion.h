@@ -27,15 +27,25 @@ class Minion
     void Fight(Minion minion);
 
   private:
-    static const map<ThingOnMap, Point> nextDirection = {
-      { ThingOnMap::N  : Point( 0, -1) },
-      { ThingOnMap::NE : Point( 1, -1) },
-      { ThingOnMap::E  : Point( 1,  0) },
-      { ThingOnMap::SE : Point( 1,  1) },
-      { ThingOnMap::S  : Point( 0,  1) },
-      { ThingOnMap::SW : Point(-1,  1) },
-      { ThingOnMap::W  : Point(-1,  0) },
-      { ThingOnMap::NW : Point(-1, -1) }
+    static const map<Direction, Point> nextDirection = {
+      { Direction::N  : Point( 0, -1) },
+      { Direction::NE : Point( 1, -1) },
+      { Direction::E  : Point( 1,  0) },
+      { Direction::SE : Point( 1,  1) },
+      { Direction::S  : Point( 0,  1) },
+      { Direction::SW : Point(-1,  1) },
+      { Direction::W  : Point(-1,  0) },
+      { Direction::NW : Point(-1, -1) }
+    }
+    static const map<Direction, vector<Direction>> fanDirections = {
+      { Direction::N  : { Direction::NW, Direction::N,  Direction::NE } },
+      { Direction::NE : { Direction::N,  Direction::NE, Direction::E  } },
+      { Direction::E  : { Direction::NE, Direction::E,  Direction::SE } },
+      { Direction::SE : { Direction::E,  Direction::SE, Direction::S  } },
+      { Direction::S  : { Direction::SE, Direction::S,  Direction::SW } },
+      { Direction::SW : { Direction::S,  Direction::SW, Direction::W  } },
+      { Direction::W  : { Direction::SW, Direction::W,  Direction::NW } },
+      { Direction::NW : { Direction::W,  Direction::NW, Direction::N  } }
     }
     static const map<Faction, set<Faction>> alliances = {
       { Faction::Eldars, { Faction::Eldars, Faction::Valars } },
@@ -47,7 +57,7 @@ class Minion
     void RollTheDice();
     ThingOnMap CheckDirection();
     vector<ThingOnMap> CheckAround();
-    Direction Explorate(Direction mainDirection);
+    Direction Explorate();
     Direction FindMaster(Master master);
 };
 

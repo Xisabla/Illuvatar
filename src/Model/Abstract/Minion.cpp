@@ -1,12 +1,11 @@
 #include "Minion.h"
+
 void Minion::Move()
-{
-    //check constantes et choisit type de déplacement en fonction
-    
+{   
     int nbTile = rand() % (this->rangeMax - this->rangeMin + 1) + this->rangeMin;
 
     this->currentDirection = energy - nbTile > lowEnergy ? //soit avant sans la soustraction, soit ici
-                            this->Explorate(currentDirection) :
+                            this->Explorate() :
                             this->FindMaster(Master());
 
     for (int i; i < nbTile; ++i) {
@@ -32,12 +31,22 @@ void Minion::Move()
         }
     }
 }
-Direction Minion::Explorate(Direction mainDirection) {
-    return Direction::N
+
+Direction Minion::Explorate() {
+    vector<Direction> possibleDirs = vector();
+
+    for (Direction dir : Minion.fanDirections[this->currentDirection]) {
+        if (this->CheckDirection(dir) == ThingOnMap::Nothing) possibleDirs.push_back(dir);
+    }
+
+    return possibleDirs;
 }
+
 Direction Minion::FindMaster(Master master) {
-    return Direction::S
+    // do the a* or dijkstra pathfinder, then deduce the direction of the master (first move axis?)
+    return Direction::S;
 }
+
 ThingOnMap Minion::CheckDirection(Direction direction)
 {
     int nextX = this->tile->X() + Minion.nextDirection[direction]->X();
@@ -52,6 +61,7 @@ ThingOnMap Minion::CheckDirection(Direction direction)
     set<Faction> minionAllies = Minion.alliances[this->faction];
     return (minionAllies.find(owner) != minionAllies.end())? ThingOnMap::Ally : ThingOnMap::Ennemy;
 }
+
 vector<ThingOnMap> Minion::CheckAround()
 {
     vector<ThingOnMap> things = vector();
@@ -63,10 +73,12 @@ vector<ThingOnMap> Minion::CheckAround()
 
     return things;
 }
+
 void Minion::RollTheDice()
 {
 
 }
+
 void Minion::Fight(Minion minion)
 {
 
