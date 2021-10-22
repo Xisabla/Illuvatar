@@ -13,7 +13,7 @@
 class Minion
 {
   public:
-    void Move();
+    void move();
 
   protected:
     Map* map;
@@ -24,7 +24,8 @@ class Minion
     const int rangeMin = 2;
     Direction currentDirection;
 
-    void Fight(Minion &minion);
+    void fight(Minion &minion);
+    void exchange(Minion &minion);
 
   private:
     static const map<Direction, Point> nextDirection = {
@@ -54,10 +55,10 @@ class Minion
       { Faction::Werewolves,  { Faction::Dragons, Faction::Werewolves } },
     };
 
-    void RollTheDice();
-    ThingOnMap CheckDirection(Direction const &direction);
-    vector<ThingOnMap> CheckAround();
-    Direction Explorate();
+    void rollDice();
+    ThingOnMap checkDirection(Direction const &direction);
+    vector<ThingOnMap> checkAround();
+    Direction explorate();
     Direction FindMaster(Master const &master);
 };
 
