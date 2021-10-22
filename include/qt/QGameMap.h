@@ -22,6 +22,7 @@
 //  - Tile size (min, max, auto: true/false/mixed)
 //  - Default constants
 //  - Store those settings (use of Toml++ ?)
+// TODO: Debug mode with coordinates
 
 /**
  * @class QGameMap
