@@ -26,22 +26,26 @@
 class PathFinder {
   public:
     PathFinder(Map const &map, Tile const &current, Tile const &target);
-    std::vector<Tile> getResult();
+    std::vector<pair<Tile*, Direction>> getResult(int const nbTile);
 
   protected:
     static const Map* map;
     static const Tile* current;
     static const Tile* target;
-    std::vector<Tile> path = vector();
+    static const Direction initialDirection;
+    std::vector<pair<Tile*, Direction>> path = vector();
 
-    std::vector<Tile> explored = vector();
-    std::vector<Tile> notExplored = vector();
+    std::vector<Tile*> explored = vector();
+    std::vector<Tile*> notExplored = vector();
 
   private:
-    std::vector<Tile> aStarGenerator(std::vector<Tile> &path=std::vector());
+    std::vector<Tile*> aStarGenerator(std::vector<Tile*> &path=std::vector());
     double distanceToCurrent(Tile &other);
-    std::vector<Tile> unlooper(std::vector<Tile> &refPath, std::vector<Tile> &path=std::vector(), int pos=1);
-    std::vector<Tile> straightener(std::vector<Tile> &refPath, std::vector<Tile> &path=std::vector(), int pos=0);
+    std::vector<Tile*> unlooper(std::vector<Tile*> &refPath, std::vector<Tile*> &path=std::vector(), int pos=1);
+    std::vector<pair<Tile*, Direction>> straightener(std::vector<Tile*> &refPath, std::vector<pair<Tile*, Direction>> &path=std::vector(), int pos=0);
+    Direction computeDirection(Tile* last, Tile* current);
+    bool checkBothBridges(std::vector<pair<Tile*, Direction>> &path, bool alignTest, Tile* current, Tile* next);
+    bool checkBridge(std::vector<pair<Tile*, Direction>> &path, Tile bridge, bool alignTest, Tile* current, Tile* next)
 };
 
 #endif // ILLUVATAR_PathFinder_H

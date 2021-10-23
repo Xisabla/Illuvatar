@@ -28,7 +28,7 @@ class Minion
     void exchange(Minion &minion);
 
   private:
-    static const map<Direction, vector<Direction>> fanDirections = {
+    static const std::map<Direction, std::vector<Direction>> fanDirections = {
       { Direction::N  : { Direction::NW, Direction::N,  Direction::NE } },
       { Direction::NE : { Direction::N,  Direction::NE, Direction::E  } },
       { Direction::E  : { Direction::NE, Direction::E,  Direction::SE } },
@@ -38,7 +38,17 @@ class Minion
       { Direction::W  : { Direction::SW, Direction::W,  Direction::NW } },
       { Direction::NW : { Direction::W,  Direction::NW, Direction::N  } }
     }
-    static const map<Faction, set<Faction>> alliances = {
+    static const std::map<Direction, Direction> oppositeDirection = {
+      { Direction::N  : Direction::S  },
+      { Direction::NE : Direction::SW },
+      { Direction::E  : Direction::W  },
+      { Direction::SE : Direction::NW },
+      { Direction::S  : Direction::N  },
+      { Direction::SW : Direction::NE },
+      { Direction::W  : Direction::E  },
+      { Direction::NW : Direction::SE }
+    }
+    static const std::map<Faction, std::set<Faction>> alliances = {
       { Faction::Eldars,      { Faction::Eldars,  Faction::Valars     } },
       { Faction::Valars,      { Faction::Eldars,  Faction::Valars     } },
       { Faction::Dragons,     { Faction::Dragons, Faction::Werewolves } },
@@ -46,10 +56,11 @@ class Minion
     };
 
     void rollDice();
-    ThingOnMap checkDirection(Direction const &direction);
-    vector<ThingOnMap> checkAround();
-    Direction explorate();
-    Direction FindMaster(Master const &master);
+    ThingOnMap checkDirection(Tile const &tile, Direction const &direction);
+    std::vector<ThingOnMap> checkAround();
+    std::vector<pair<Tile*, Direction>> explorate(int const nbTile);
+    std::vector<pair<Tile*, Direction>> FindMaster(int const nbTile);
+    void interactsWithSurroundings();
 };
 
 

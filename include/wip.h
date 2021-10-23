@@ -35,7 +35,7 @@ enum ThingOnMap { Void, Nothing, Obstacle, Ennemy, Ally }
 
 static class Utils {
   public:
-    static const map<Direction, Point> nextDirection = {
+    static const std::map<Direction, Point> nextDirection = {
       { Direction::N  : Point( 0, -1) },
       { Direction::NE : Point( 1, -1) },
       { Direction::E  : Point( 1,  0) },
@@ -44,6 +44,16 @@ static class Utils {
       { Direction::SW : Point(-1,  1) },
       { Direction::W  : Point(-1,  0) },
       { Direction::NW : Point(-1, -1) }
+    }
+    static const std::map<pair<int, int>, Direction> deltaDirection = {
+      { { 0, -1} :  Direction::N  },
+      { { 1, -1} :  Direction::NE },
+      { { 1,  0} :  Direction::E  },
+      { { 1,  1} :  Direction::SE },
+      { { 0,  1} :  Direction::S  },
+      { {-1,  1} :  Direction::SW },
+      { {-1,  0} :  Direction::W  },
+      { {-1, -1} :  Direction::NW }
     }
 }
 

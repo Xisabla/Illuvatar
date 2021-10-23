@@ -1,62 +1,83 @@
 #include "Minion.h"
 
+using namespace std;
+
 void Minion::move() {
     int nbTile = rand() % (this->rangeMax - this->rangeMin + 1) + this->rangeMin;
 
-    this->currentDirection = this->energy - nbTile > this->lowEnergy ? //soit avant sans la soustraction, soit ici
-                                this->Explorate() :
-                                this->FindMaster(Master());
+    vector<pair<Tile*, Direction>> path = (this->energy - nbTile > this->lowEnergy) ?
+                                                this->Explorate(nbTile) :
+                                                this->FindMaster(nbTile);
 
-    for (int i; i < nbTile; ++i) {
-        swith(this->CheckDirection(this->currentDirection)) {
-            case ThingOnMap::Nothing:
-                this->energy--;
+    if (path.empty()) {
+        interactsWithSurroundings();
+        return;
+    }
 
-                // remplacer par une surchage d'opérateur + ?
-                int nextX = this->tile->X() + Utils.nextDirection[this->currentDirection]->X();
-                int nextY = this->tile->Y() + Utils.nextDirection[this->currentDirection]->Y();
-                this->tile.setOwner(Faction::NoFaction);
-                this->tile = this->map.getTile(nextX, nextY);
-                this->tile.setOwner(this->faction);
+    for (pair<Tile*, Direction> step : path) {
+        if (this->CheckDirection(step.first, step.second) == ThingOnMap::Nothing) {
+            this->tile.setOwner(Faction::NoFaction);
+            this->tile = step.first;
+            this->tile.setOwner(this->faction);
 
-                break;
-
-            case ThingOnMap::Obstacle:
-                return;
+            this->currentDirection = step.second;
+            this->energy--;
         }
 
-        for (ThingOnMap thing : this->CheckAround()) {
-            swith() {
-                case ThingOnMap::Ally:
-                    //échange les infos
-                    return;
+        interactsWithSurroundings();
+    }
+}
 
-                case ThingOnMap::Ennemy:
-                    //fight
-                    return;
-            }
+void Minion::interactsWithSurroundings() {
+    for (ThingOnMap thing : this->CheckAround()) {
+        swith(thing) {
+            case ThingOnMap::Ally:
+                //échange les infos
+                return;
+
+            case ThingOnMap::Ennemy:
+                //fight
+                return;
         }
     }
 }
 
-Direction Minion::explorate() {
+vector<pair<Tile*, Direction>> Minion::explorate(int const nbTile) {
     vector<Direction> possibleDirs = vector();
 
     for (Direction dir : Minion.fanDirections[this->currentDirection]) {
-        if (this->CheckDirection(dir) == ThingOnMap::Nothing) possibleDirs.push_back(dir);
+        if (this->CheckDirection(this->tile, dir) == ThingOnMap::Nothing) possibleDirs.push_back(dir);
     }
 
-    return possibleDirs[rand() % possibleDirs.size()];
+    Direction direction;
+    if (!possibleDirs.empty()) {
+        direction = possibleDirs[rand() % possibleDirs.size()];
+    }
+    else if (this->CheckDirection(this->tile, Minion.oppositeDirection[this->currentDirection]) == ThingOnMap::Nothing) {
+        direction = Minion.oppositeDirection[this->currentDirection];
+    }
+    else return vector(); //reste sur place et interagit avec trucs autours
+
+    vector<pair<Tile*, Direction>> path = vector();
+    Tile* futureTile = this->tile;
+    int i = 0;
+    do {
+        int nextX = futureTile->X() + Utils.nextDirection[direction]->X();
+        int nextY = futureTile->Y() + Utils.nextDirection[direction]->Y();
+        futureTile = this->map.getTile(nextX, nextY);
+        path.push_back({ futureTile, direction });
+    } while (++i < nbTile && this->CheckDirection(futureTile, direction) != ThingOnMap::Obstacle);
+
+    return path;
 }
 
-Direction Minion::findMaster(Master const &master) {
-    PathFinder(this->map, this->tile, this->master->tile).getResult()
-    return Direction::S; //replace with moves array
+vector<pair<Tile*, Direction>> Minion::findMaster(int const nbTile) {
+    return PathFinder(this->map, this->tile, this->master->tile).getResult(nbTile);
 }
 
-ThingOnMap Minion::checkDirection(Direction const &direction) {
-    int nextX = this->tile->X() + Utils.nextDirection[direction]->X();
-    int nextY = this->tile->Y() + Utils.nextDirection[direction]->Y();
+ThingOnMap Minion::checkDirection(Tile const &tile, Direction const &direction) {
+    int nextX = tile.X() + Utils.nextDirection[direction]->X();
+    int nextY = tile.Y() + Utils.nextDirection[direction]->Y();
     
     if (!this->map.exist(nextX, nextY)) return ThingOnMap::Void;//determine existence de la tuile
 
@@ -72,7 +93,7 @@ vector<ThingOnMap> Minion::checkAround() {
     vector<ThingOnMap> things = vector();
 
     for (Direction direction = Direction::Begin; direction != Direction::End; ++direction) { //get all enum values
-        ThingOnMap thing = CheckDirection(direction);
+        ThingOnMap thing = CheckDirection(this->tile, direction);
         if (thing == ThingOnMap::Ally || thing == ThingOnMap::Ennemy) things.push_back(thing);
     }
 
