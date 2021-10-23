@@ -20,8 +20,6 @@
 
 namespace generators {
 
-// TODO: Take predicate as argument to define the Faction
-
 /**
  * Generates a set of Tiles shaping a filled Disk
  * @param radius Radius of the disk
@@ -30,6 +28,15 @@ namespace generators {
  * @return A set of tiles
  */
 TileSet disk(double radius, const Point& center, Faction faction = NoFaction);
+
+/**
+ * Generates a set of Tiles shaping a filled Disk
+ * @param radius Radius of the disk
+ * @param center Center of the disk
+ * @param predicate Predicate to determine the faction that owns the Tiles
+ * @return A set of tiles
+ */
+TileSet disk(double radius, const Point& center, std::function<Faction(Point p)> predicate);
 
 } // namespace generators
 
