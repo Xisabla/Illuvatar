@@ -36,7 +36,7 @@ TileSet disk(double radius, const Point& center, Faction faction = NoFaction);
  * @param predicate Predicate to determine the faction that owns the Tiles
  * @return A set of tiles
  */
-TileSet disk(double radius, const Point& center, std::function<Faction(Point p)> predicate);
+TileSet disk(double radius, const Point& center, const std::function<Faction(Point p)>& predicate);
 
 } // namespace generators
 
