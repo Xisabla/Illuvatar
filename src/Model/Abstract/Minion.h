@@ -8,6 +8,7 @@
 #include "geometry/Point.h"
 #include "map/Tile.h"
 #include "map/Map.h"
+#include "map/PathFinder.h"
 #include "wip.h"
 
 class Minion
@@ -16,8 +17,7 @@ class Minion
     void move();
 
   protected:
-    Map* map;
-    Tile* tile;
+    Master* master;
     int energy = 100;
     const int lowEnergy = 20;
     const int rangeMax = 8;
@@ -28,16 +28,6 @@ class Minion
     void exchange(Minion &minion);
 
   private:
-    static const map<Direction, Point> nextDirection = {
-      { Direction::N  : Point( 0, -1) },
-      { Direction::NE : Point( 1, -1) },
-      { Direction::E  : Point( 1,  0) },
-      { Direction::SE : Point( 1,  1) },
-      { Direction::S  : Point( 0,  1) },
-      { Direction::SW : Point(-1,  1) },
-      { Direction::W  : Point(-1,  0) },
-      { Direction::NW : Point(-1, -1) }
-    }
     static const map<Direction, vector<Direction>> fanDirections = {
       { Direction::N  : { Direction::NW, Direction::N,  Direction::NE } },
       { Direction::NE : { Direction::N,  Direction::NE, Direction::E  } },

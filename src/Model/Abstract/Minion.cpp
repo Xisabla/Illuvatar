@@ -13,8 +13,8 @@ void Minion::move() {
                 this->energy--;
 
                 // remplacer par une surchage d'opérateur + ?
-                int nextX = this->tile->X() + Minion.nextDirection[this->currentDirection]->X();
-                int nextY = this->tile->Y() + Minion.nextDirection[this->currentDirection]->Y();
+                int nextX = this->tile->X() + Utils.nextDirection[this->currentDirection]->X();
+                int nextY = this->tile->Y() + Utils.nextDirection[this->currentDirection]->Y();
                 this->tile.setOwner(Faction::NoFaction);
                 this->tile = this->map.getTile(nextX, nextY);
                 this->tile.setOwner(this->faction);
@@ -50,13 +50,13 @@ Direction Minion::explorate() {
 }
 
 Direction Minion::findMaster(Master const &master) {
-    // do the a* or dijkstra pathfinder, then deduce the direction of the master (first move axis?)
-    return Direction::S;
+    PathFinder(this->map, this->tile, this->master->tile).getResult()
+    return Direction::S; //replace with moves array
 }
 
 ThingOnMap Minion::checkDirection(Direction const &direction) {
-    int nextX = this->tile->X() + Minion.nextDirection[direction]->X();
-    int nextY = this->tile->Y() + Minion.nextDirection[direction]->Y();
+    int nextX = this->tile->X() + Utils.nextDirection[direction]->X();
+    int nextY = this->tile->Y() + Utils.nextDirection[direction]->Y();
     
     if (!this->map.exist(nextX, nextY)) return ThingOnMap::Void;//determine existence de la tuile
 

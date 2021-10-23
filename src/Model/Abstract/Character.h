@@ -10,6 +10,8 @@ class Character {
     std::list<std::string> MessageList;
 
   public:
+    Map* map;
+    Tile* tile;
     Faction faction;
 
     std::list<std::string> GetMessageList();
