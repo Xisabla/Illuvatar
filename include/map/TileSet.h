@@ -14,6 +14,7 @@
 #include "geometry/Rectangle.h"
 #include "map/Tile.h"
 
+#include <functional>
 #include <stdexcept>
 #include <vector>
 
@@ -30,11 +31,17 @@ class TileSet {
 
     /**
      * @param surface Surface of the map
-     * @param fill If set on true, will fill all the surface with Tiles
      * @param faction Faction that owns the generated Tiles
+     * @param fill If set on true, will fill all the surface with Tiles
      */
-    explicit TileSet(Rectangle surface, bool fill = true, Faction faction = NoFaction);
-    // TODO: Another constructor that takes predicate as argument to define the Faction
+    explicit TileSet(Rectangle surface, Faction faction = NoFaction, bool fill = true);
+
+    /**
+     * @param surface Surface of the map
+     * @param predicate Predicate to determinate the faction that owns the generated Tiles
+     * @param fill If set on true, will fill all the surface with Tiles
+     */
+    TileSet(Rectangle surface, const std::function<Faction(Point p)>& predicate, bool fill = true);
 
     // - Getters -----------------------------------------------------------------------------
     /**

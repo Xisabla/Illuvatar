@@ -15,13 +15,28 @@
 
 TileSet::TileSet(std::vector<Tile> set): tiles(std::move(set)) { this->removeDuplicates(); }
 
-TileSet::TileSet(Rectangle surface, bool fill, Faction faction) {
+TileSet::TileSet(Rectangle surface, Faction faction, bool fill) {
     std::vector<Tile> set;
 
     if (fill) {
         for (unsigned int x = 0; x < surface.getWidth(); x++) {
             for (unsigned int y = 0; y < surface.getHeight(); y++) {
                 set.emplace_back(x, y, faction);
+            }
+        }
+    }
+
+    this->tiles = set;
+    this->removeDuplicates();
+}
+
+TileSet::TileSet(Rectangle surface, const std::function<Faction(Point)>& predicate, bool fill) {
+    std::vector<Tile> set;
+
+    if (fill) {
+        for (unsigned int x = 0; x < surface.getWidth(); x++) {
+            for (unsigned int y = 0; y < surface.getHeight(); y++) {
+                set.emplace_back(x, y, predicate(Point(static_cast<int>(x), static_cast<int>(y))));
             }
         }
     }
