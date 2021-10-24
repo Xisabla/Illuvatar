@@ -108,18 +108,18 @@ vector<pair<Tile*, Direction>> PathFinder::straightener(vector<Tile*> &refPath, 
     Direction dir = path.empty() ? this->initialDirection : DirectionUtils::computeDirection(path.back().first, current);
     path.push_back({ current, dir });
 
-    if (checkBothBridges(path, current.X() == next.X(), current, next, false, [] (Tile* variable) { return variable.Y(); }) ||
-        checkBothBridges(path, current.Y() == next.Y(), current, next, true,  [] (Tile* variable) { return variable.X(); })) {
+    if (checkBothBridges(path, current.X() == next.X(), current, next, false, current.Y() - next.Y()) ||
+        checkBothBridges(path, current.Y() == next.Y(), current, next, true,  current.X() - next.X())) {
         return this->straightener(refPath, path, pos + 5);
     }
 
     return this->straightener(refPath, path, pos + 1);
 }
 
-bool PathFinder::checkBothBridges(vector<pair<Tile*, Direction>> &path, bool alignTest, Tile* current, Tile* next, bool first, function<int(Tile*)> &variableCoord) {
+bool PathFinder::checkBothBridges(vector<pair<Tile*, Direction>> &path, bool alignTest, Tile* current, Tile* next, bool first, int deltaBridge) {
     return alignTest && 
-            (this->checkBridge(path, Tile(next.X() - first, next.Y() - !first), variableCoord(current) == variableCoord(next) - 2, current, next) ||
-             this->checkBridge(path, Tile(next.X() + first, next.Y() + !first), variableCoord(current) == variableCoord(next) + 2, current, next))
+            (this->checkBridge(path, Tile(next.X() - first, next.Y() - !first), deltaBridge == -2, current, next) ||
+             this->checkBridge(path, Tile(next.X() + first, next.Y() + !first), deltaBridge == 2,  current, next))
 }
 
 bool PathFinder::checkBridge(vector<pair<Tile*, Direction>> &path, Tile bridge, bool alignTest, Tile* current, Tile* next) {
