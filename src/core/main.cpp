@@ -23,6 +23,8 @@ int main(int argc, char* argv[]) {
                                     generators::disk(2.8, Point(14, 6), Dragons) },
                                   true);
 
+    tiles.push(Tile(10, 10, Werewolves));
+
     // Instantiate map
     Map map(tiles);
 

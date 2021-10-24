@@ -13,11 +13,11 @@
 //  Map
 //  --------------------------------------------------------------------------------------
 
-Map::Map(TileSet  tiles): tiles(std::move(tiles)) {
+Map::Map(TileSet tiles): tiles(std::move(tiles)) {
     this->gmap = new QGameMap(this->tiles.getRectAuto());
 }
 
-Map::Map(unsigned int width, unsigned int height, TileSet tiles)
+[[maybe_unused]] Map::Map(unsigned int width, unsigned int height, TileSet tiles)
 : Map(Rectangle(width, height), std::move(tiles)) { }
 
 Map::Map(Rectangle surface, TileSet tiles): tiles(std::move(tiles)) {

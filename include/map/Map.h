@@ -28,7 +28,7 @@ class Map {
     /**
      * @param tiles Available Tiles on the map
      */
-    explicit Map(TileSet  tiles);
+    explicit Map(TileSet tiles);
 
     /**
      * @param surface Map rectangular shape
@@ -41,7 +41,7 @@ class Map {
      * @param height Map height
      * @param tiles Available Tiles on the map
      */
-    Map(unsigned int width, unsigned int height, TileSet tiles = TileSet());
+    [[maybe_unused]] Map(unsigned int width, unsigned int height, TileSet tiles = TileSet());
 
     // - Getters -----------------------------------------------------------------------------
     /**

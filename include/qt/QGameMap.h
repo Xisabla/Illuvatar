@@ -18,6 +18,7 @@
 
 #include <QPainter>
 #include <QWidget>
+#include <iostream>
 
 #ifdef DEBUG
 #define DEFAULT_QGAMEMAP_SHOW_COORDINATES true
@@ -27,9 +28,7 @@
 
 // TODO: Better size handling on a settings tab:
 //  - Tile size (min, max, auto: true/false/mixed)
-//  - Default constants
 //  - Store those settings (use of Toml++ ?)
-// TODO: Debug mode with coordinates
 
 /**
  * @class QGameMap
@@ -39,16 +38,27 @@ class QGameMap : public QWidget {
   public:
     /**
      * @param surface Map rectangular shape
+     * @param tileSize Size of Tile on the Widget
+     * @param showCoordinates If set on true, will show coordinates of Tiles
      * @param parent Qt parent widget
      */
-    explicit QGameMap(Rectangle surface, QWidget* parent = nullptr);
+    explicit QGameMap(Rectangle surface,
+                      unsigned int tileSize = 50,
+                      bool showCoordinates = DEFAULT_QGAMEMAP_SHOW_COORDINATES,
+                      QWidget* parent = nullptr);
 
     /**
      * @param width Map width (in tiles)
      * @param height Map height (in tiles)
+     * @param tileSize Size of Tile on the Widget
+     * @param showCoordinates If set on true, will show coordinates of Tiles
      * @param parent Qt parent widget
      */
-    QGameMap(unsigned int width, unsigned int height, QWidget* parent = nullptr);
+    [[maybe_unused]] QGameMap(unsigned int width,
+                              unsigned int height,
+                              unsigned int tileSize = 50,
+                              bool showCoordinates = DEFAULT_QGAMEMAP_SHOW_COORDINATES,
+                              QWidget* parent = nullptr);
 
     // - Setters -----------------------------------------------------------------------------
     /**
@@ -56,13 +66,52 @@ class QGameMap : public QWidget {
      */
     void setTiles(TileSet tileSet);
 
-  private:
-    // - Methods -----------------------------------------------------------------------------
-    std::pair<int, int> toPaintCoordinates(Point p);
-    void paintTile(QPainter& p, int x, int y, QColor fill = Qt::black, QColor border = Qt::black);
+    /**
+     * Set the size of the tiles
+     */
+    void setTileSize(unsigned int size);
 
     /**
-     * Paint the map on the widget using QPainter
+     * Show or hide coordinates of the Tiles
+     */
+    void setCoordinates(bool status);
+
+    /**
+     * Toggle Tile coordinates visibility
+     */
+    void toggleCoordinates();
+
+  private:
+    // - Methods -----------------------------------------------------------------------------
+    /**
+     * Convert a Point to a position (x,y) on the QGameMap
+     * @param p Point to figure out position
+     * @return Position of the Point on the QWidget
+     */
+    std::pair<int, int> toPaintCoordinates(Point p);
+
+    /**
+     * Paint a Tile on the Map
+     * @param p Qt Painter object
+     * @param x X component of the Tile to paint
+     * @param y Y component of the Tile to paint
+     * @param fill Fill color of the Tile
+     * @param border Border color of the Tile
+     */
+    void paintTile(QPainter& p,
+                   int x,
+                   int y,
+                   const QColor& fill = Qt::black,
+                   const QColor& border = Qt::black);
+
+    /**
+     * Paint the map of the widget
+     * @param p Qt Painter object
+     */
+    void paintMap(QPainter& p);
+
+    /**
+     * Qt painting event handler
      */
     void paintEvent(QPaintEvent*) override;
 
@@ -77,10 +126,15 @@ class QGameMap : public QWidget {
      */
     TileSet tiles;
 
+    /**
+     * @brief Size of the tiles
+     */
+    unsigned int tileSize;
 
-    // TODO: Initialize in constructor + getters/setters --> repaint
-    int tileSize = 50;
-    bool showCoordinates = DEFAULT_QGAMEMAP_SHOW_COORDINATES;
+    /**
+     * @brief If set on true, will show coordinates of the Tiles on the map
+     */
+    bool showCoordinates;
 };
 
 #endif // ILLUVATAR_QGAMEMAP_H

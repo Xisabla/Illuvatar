@@ -13,17 +13,36 @@
 //  QGameMap
 //  --------------------------------------------------------------------------------------
 
-QGameMap::QGameMap(Rectangle surface, QWidget* parent)
-: QWidget(parent), surface(surface), tiles() { }
+QGameMap::QGameMap(Rectangle surface, unsigned int tileSize, bool showCoordinates, QWidget* parent)
+: QWidget(parent), surface(surface), tiles(), tileSize(tileSize), showCoordinates(showCoordinates) {
+}
 
-QGameMap::QGameMap(unsigned int width, unsigned int height, QWidget* parent)
-: QGameMap(Rectangle(width, height), parent) { }
+[[maybe_unused]] QGameMap::QGameMap(unsigned int width,
+                                    unsigned int height,
+                                    unsigned int tileSize,
+                                    bool showCoordinates,
+                                    QWidget* parent)
+: QGameMap(Rectangle(width, height), tileSize, showCoordinates, parent) { }
 
 //  --------------------------------------------------------------------------------------
 //  QGameMap > SETTERS
 //  --------------------------------------------------------------------------------------
 
 void QGameMap::setTiles(TileSet tileSet) { this->tiles = std::move(tileSet); }
+
+void QGameMap::setTileSize(unsigned int size) {
+    this->tileSize = size;
+    this->repaint();
+}
+
+void QGameMap::setCoordinates(bool status) {
+    if (status != this->showCoordinates) this->toggleCoordinates();
+}
+
+void QGameMap::toggleCoordinates() {
+    this->showCoordinates = !this->showCoordinates;
+    this->repaint();
+}
 
 //  --------------------------------------------------------------------------------------
 //  QGameMap > PRIVATE METHODS
@@ -42,35 +61,32 @@ std::pair<int, int> QGameMap::toPaintCoordinates(Point p) {
     return std::make_pair(t_offset + p.X() * this->tileSize, l_offset + p.Y() * this->tileSize);
 }
 
-void QGameMap::paintTile(QPainter& p, int x, int y, QColor fill, QColor border) {
+void QGameMap::paintTile(QPainter& p, int x, int y, const QColor& fill, const QColor& border) {
     // Retrieve paint position
     auto [px, py] = this->toPaintCoordinates(Point(x, y));
 
     // Paint tile
     p.setPen(border);
     p.setBrush(fill);
-    p.drawRect(px, py, this->tileSize, this->tileSize);
+    p.drawRect(px, py, static_cast<int>(this->tileSize), static_cast<int>(this->tileSize));
 
     // Show coordinates if enabled
-    if (this->showCoordinates)
-        p.drawText(
-        px, py, QString::fromStdString("(" + std::to_string(x) + ", " + std::to_string(y) + ")"));
+    if (this->showCoordinates) {
+        QColor color = fill.lightness() < 100 ? Qt::white : Qt::black;
+        auto text =
+        QString::fromStdString("(" + std::to_string(x) + ", " + std::to_string(y) + ")");
+
+        p.setPen(color);
+        p.drawText(px, py + static_cast<int>(this->tileSize), text);
+    }
 }
 
-void QGameMap::paintEvent(QPaintEvent*) {
-    // TODO: Refactor: split in different private methods:
-    //  - paintBackground
-    //  - paintMap
-    //  and helper methods:
-    //  - getPaintWidth()
-    //  - getPaintHeight()
-
-    // Init painter
-    QPainter p(this);
+void QGameMap::paintMap(QPainter& p) {
+    // Defaults
     p.setPen(Qt::black);
     p.setBrush(Qt::transparent);
 
-    // Paint grid
+    // Paint tiles
     for (int y = 0; y < this->surface.getWidth(); y++) {
         for (int x = 0; x < this->surface.getHeight(); x++) {
 
@@ -81,7 +97,7 @@ void QGameMap::paintEvent(QPaintEvent*) {
                 //  this->paintTile(p, x, y, factionColor[t.getOwner()])
                 switch (t.getOwner()) {
                     case Werewolves:
-                        this->paintTile(p, x, y, Qt::gray);
+                        this->paintTile(p, x, y, Qt::darkGray);
                         break;
                     case Valars:
                         this->paintTile(p, x, y, Qt::cyan);
@@ -102,4 +118,10 @@ void QGameMap::paintEvent(QPaintEvent*) {
             }
         }
     }
+}
+
+void QGameMap::paintEvent(QPaintEvent*) {
+    QPainter p(this);
+
+    this->paintMap(p);
 }

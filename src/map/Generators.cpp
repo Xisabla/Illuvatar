@@ -26,7 +26,10 @@ TileSet generators::disk(double radius, const Point& center, Faction faction) {
     return set;
 }
 
-TileSet generators::disk(double radius, const Point& center, const std::function<Faction(Point p)>& predicate) {
+[[maybe_unused]] TileSet
+generators::disk(double radius,
+                 const Point& center,
+                 const std::function<Faction([[maybe_unused]] Point p)>& predicate) {
     TileSet set;
 
     int cx = center.X();

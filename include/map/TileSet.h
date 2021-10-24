@@ -75,7 +75,8 @@ class TileSet {
      * @param padding_bottom Padding at the bottom of the computed surface
      * @return The smallest computed surface that contains all the Tiles (+ paddings)
      */
-    Rectangle getRect(unsigned int padding_right = 0, unsigned int padding_bottom = 0);
+    [[maybe_unused]] Rectangle getRect(unsigned int padding_right = 0,
+                                       unsigned int padding_bottom = 0);
 
     /**
      * @return A computed surface that contains all the Tiles and tries to center them by adding
@@ -129,14 +130,14 @@ class TileSet {
      * @param sets TileSets to merge with
      * @param overwrite If set on True, the new Tiles will overwrite the (maybe) existing ones
      */
-    void merge(const std::vector<TileSet>& sets, bool overwrite = true);
+    [[maybe_unused]] void merge(const std::vector<TileSet>& sets, bool overwrite = true);
 
     /**
      * Merge the current TileSet with a list of Tiles
      * @param t Tiles to merge with
      * @param overwrite If set on True, the new Tiles will overwrite the (maybe) existing ones
      */
-    void merge(std::vector<Tile> t, bool overwrite = true);
+    [[maybe_unused]] void merge(std::vector<Tile> t, bool overwrite = true);
 
     // - Iterators ---------------------------------------------------------------------------
     auto begin() { return this->tiles.begin(); }

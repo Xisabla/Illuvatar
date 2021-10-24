@@ -79,7 +79,8 @@ TileSet TileSet::getNeighbours(const Point& p) {
 
 TileSet TileSet::getNeighbours(int x, int y) { return this->getNeighbours(Point(x, y)); }
 
-Rectangle TileSet::getRect(unsigned int padding_right, unsigned int padding_bottom) {
+[[maybe_unused]] Rectangle TileSet::getRect(unsigned int padding_right,
+                                            unsigned int padding_bottom) {
     std::vector<int> x(this->size()), y(this->size());
 
     // Retrieve x and y values of all tiles
@@ -163,11 +164,11 @@ void TileSet::merge(TileSet set, bool overwrite) {
     for (auto& t: set) this->push(t, overwrite);
 }
 
-void TileSet::merge(const std::vector<TileSet>& sets, bool overwrite) {
+[[maybe_unused]] void TileSet::merge(const std::vector<TileSet>& sets, bool overwrite) {
     for (auto& set: sets) this->merge(set, overwrite);
 }
 
-void TileSet::merge(std::vector<Tile> t, bool overwrite) {
+[[maybe_unused]] void TileSet::merge(std::vector<Tile> t, bool overwrite) {
     this->merge(TileSet(std::move(t)), overwrite);
 }
 
