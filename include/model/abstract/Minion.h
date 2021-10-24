@@ -9,10 +9,10 @@
 #include "map/Tile.h"
 #include "map/Map.h"
 #include "map/PathFinder.h"
+#include "map/DirectionUtils.h"
 #include "wip.h"
 
-class Minion
-{
+class Minion {
   public:
     void move();
 
@@ -28,26 +28,6 @@ class Minion
     void exchange(Minion &minion);
 
   private:
-    static const std::map<Direction, std::vector<Direction>> fanDirections = {
-      { Direction::N  : { Direction::NW, Direction::N,  Direction::NE } },
-      { Direction::NE : { Direction::N,  Direction::NE, Direction::E  } },
-      { Direction::E  : { Direction::NE, Direction::E,  Direction::SE } },
-      { Direction::SE : { Direction::E,  Direction::SE, Direction::S  } },
-      { Direction::S  : { Direction::SE, Direction::S,  Direction::SW } },
-      { Direction::SW : { Direction::S,  Direction::SW, Direction::W  } },
-      { Direction::W  : { Direction::SW, Direction::W,  Direction::NW } },
-      { Direction::NW : { Direction::W,  Direction::NW, Direction::N  } }
-    }
-    static const std::map<Direction, Direction> oppositeDirection = {
-      { Direction::N  : Direction::S  },
-      { Direction::NE : Direction::SW },
-      { Direction::E  : Direction::W  },
-      { Direction::SE : Direction::NW },
-      { Direction::S  : Direction::N  },
-      { Direction::SW : Direction::NE },
-      { Direction::W  : Direction::E  },
-      { Direction::NW : Direction::SE }
-    }
     static const std::map<Faction, std::set<Faction>> alliances = {
       { Faction::Eldars,      { Faction::Eldars,  Faction::Valars     } },
       { Faction::Valars,      { Faction::Eldars,  Faction::Valars     } },

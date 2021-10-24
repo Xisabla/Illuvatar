@@ -2,12 +2,14 @@
 // Created by ychixm on 15/10/2021.
 //
 
-#include "Alliance.h"
-void Alliance::Meet(Horde hordeMinion)
-{
+#include "model/abstract/Alliance.h"
+
+using namespace std;
+
+void Alliance::Meet(Horde hordeMinion) {
 
 }
-void Alliance::Meet(Alliance allianceMinion)
-{
+
+void Alliance::Meet(Alliance allianceMinion) {
     
 }

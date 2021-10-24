@@ -1,10 +1,13 @@
-#include "Master.h"
+#include "model/playable/Master.h"
+
+using namespace std;
 
 std::string Master::GetMessage(Minion &minion)
 {
-    std::string result;
+    string result;
     return result;
 }
+
 void Master::GiveMessage(Minion &minion)
 {
 

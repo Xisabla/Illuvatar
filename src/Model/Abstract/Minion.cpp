@@ -1,4 +1,4 @@
-#include "Minion.h"
+#include "model/abstract/Minion.h"
 
 using namespace std;
 
@@ -45,7 +45,7 @@ void Minion::interactsWithSurroundings() {
 vector<pair<Tile*, Direction>> Minion::explorate(int const nbTile) {
     vector<Direction> possibleDirs = vector();
 
-    for (Direction dir : Minion.fanDirections[this->currentDirection]) {
+    for (Direction dir : DirectionUtils::fanDirections[this->currentDirection]) {
         if (this->CheckDirection(this->tile, dir) == ThingOnMap::Nothing) possibleDirs.push_back(dir);
     }
 
@@ -53,8 +53,8 @@ vector<pair<Tile*, Direction>> Minion::explorate(int const nbTile) {
     if (!possibleDirs.empty()) {
         direction = possibleDirs[rand() % possibleDirs.size()];
     }
-    else if (this->CheckDirection(this->tile, Minion.oppositeDirection[this->currentDirection]) == ThingOnMap::Nothing) {
-        direction = Minion.oppositeDirection[this->currentDirection];
+    else if (this->CheckDirection(this->tile, DirectionUtils::oppositeDirection[this->currentDirection]) == ThingOnMap::Nothing) {
+        direction = DirectionUtils::oppositeDirection[this->currentDirection];
     }
     else return vector(); //reste sur place et interagit avec trucs autours
 
@@ -62,8 +62,8 @@ vector<pair<Tile*, Direction>> Minion::explorate(int const nbTile) {
     Tile* futureTile = this->tile;
     int i = 0;
     do {
-        int nextX = futureTile->X() + Utils.nextDirection[direction]->X();
-        int nextY = futureTile->Y() + Utils.nextDirection[direction]->Y();
+        int nextX = futureTile->X() + DirectionUtils::nextDirection.at(direction)->X();
+        int nextY = futureTile->Y() + DirectionUtils::nextDirection.at(direction)->Y();
         futureTile = this->map.getTile(nextX, nextY);
         path.push_back({ futureTile, direction });
     } while (++i < nbTile && this->CheckDirection(futureTile, direction) != ThingOnMap::Obstacle);
@@ -76,8 +76,8 @@ vector<pair<Tile*, Direction>> Minion::findMaster(int const nbTile) {
 }
 
 ThingOnMap Minion::checkDirection(Tile const &tile, Direction const &direction) {
-    int nextX = tile.X() + Utils.nextDirection[direction]->X();
-    int nextY = tile.Y() + Utils.nextDirection[direction]->Y();
+    int nextX = tile.X() + DirectionUtils::nextDirection.at(direction)->X();
+    int nextY = tile.Y() + DirectionUtils::nextDirection.at(direction)->Y();
     
     if (!this->map.exist(nextX, nextY)) return ThingOnMap::Void;//determine existence de la tuile
 
@@ -85,7 +85,7 @@ ThingOnMap Minion::checkDirection(Tile const &tile, Direction const &direction) 
 
     if (owner == Faction::NoFaction) return ThingOnMap::Nothing;
 
-    set<Faction> minionAllies = Minion.alliances[this->faction];
+    set<Faction> minionAllies = Minion::alliances[this->faction];
     return (minionAllies.find(owner) != minionAllies.end())? ThingOnMap::Ally : ThingOnMap::Ennemy;
 }
 
