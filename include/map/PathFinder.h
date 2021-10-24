@@ -44,7 +44,7 @@ class PathFinder {
     double distanceToCurrent(Tile &other);
     std::vector<Tile*> unlooper(std::vector<Tile*> &refPath, std::vector<Tile*> &path=std::vector(), int pos=1);
     std::vector<std::pair<Tile*, Direction>> straightener(std::vector<Tile*> &refPath, std::vector<std::pair<Tile*, Direction>> &path=std::vector(), int pos=0);
-    bool checkBothBridges(std::vector<std::pair<Tile*, Direction>> &path, bool alignTest, Tile* current, Tile* next);
+    bool checkBothBridges(std::vector<std::pair<Tile*, Direction>> &path, bool alignTest, Tile* current, Tile* next, bool first, std::function<int(Tile*)> &variableCoord) {
     bool checkBridge(std::vector<std::pair<Tile*, Direction>> &path, Tile bridge, bool alignTest, Tile* current, Tile* next)
 };
 
