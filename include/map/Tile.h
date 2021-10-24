@@ -14,7 +14,7 @@
 #include "geometry/Point.h"
 #include "wip.h"
 
-// TODO: Create "TileSet" object and get rid of all "std::vector<Tile>"
+#include <utility>
 
 /**
  * @class Tile

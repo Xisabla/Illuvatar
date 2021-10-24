@@ -9,8 +9,8 @@
 =========================================================================*/
 #include "map/Generators.h"
 
-std::vector<Tile> generators::disk(double radius, Point center, Faction faction) {
-    std::vector<Tile> tiles;
+TileSet generators::disk(double radius, const Point& center, Faction faction) {
+    TileSet set;
 
     int cx = center.X();
     int cy = center.Y();
@@ -18,10 +18,27 @@ std::vector<Tile> generators::disk(double radius, Point center, Faction faction)
     for (int x = static_cast<int>(-radius); x <= radius; x++) {
         for (int y = static_cast<int>(-radius); y <= radius; y++) {
             if (x * x + y * y <= (static_cast<double>(radius * radius))) {
-                tiles.emplace_back(x + cx, y + cy, faction);
+                set.emplace(x + cx, y + cy, faction);
             }
         }
     }
 
-    return tiles;
+    return set;
+}
+
+TileSet generators::disk(double radius, const Point& center, const std::function<Faction(Point p)>& predicate) {
+    TileSet set;
+
+    int cx = center.X();
+    int cy = center.Y();
+
+    for (int x = static_cast<int>(-radius); x <= radius; x++) {
+        for (int y = static_cast<int>(-radius); y <= radius; y++) {
+            if (x * x + y * y <= (static_cast<double>(radius * radius))) {
+                set.emplace(x + cx, y + cy, predicate(Point(x, y)));
+            }
+        }
+    }
+
+    return set;
 }

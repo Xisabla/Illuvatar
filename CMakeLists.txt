@@ -39,6 +39,7 @@ set(SOURCES
         include/map/Generators.h src/map/Generators.cpp
         include/map/Map.h src/map/Map.cpp
         include/map/Tile.h src/map/Tile.cpp
+        include/map/TileSet.h src/map/TileSet.cpp
         include/qt/QGameMap.h src/qt/QGameMap.cpp
         include/wip.h
         src/core/main.cpp

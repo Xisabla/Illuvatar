@@ -14,14 +14,22 @@
 #include "geometry/Point.h"
 #include "geometry/Rectangle.h"
 #include "map/Tile.h"
+#include "map/TileSet.h"
 
 #include <QPainter>
 #include <QWidget>
+
+#ifdef DEBUG
+#define DEFAULT_QGAMEMAP_SHOW_COORDINATES true
+#else
+#define DEFAULT_QGAMEMAP_SHOW_COORDINATES false
+#endif
 
 // TODO: Better size handling on a settings tab:
 //  - Tile size (min, max, auto: true/false/mixed)
 //  - Default constants
 //  - Store those settings (use of Toml++ ?)
+// TODO: Debug mode with coordinates
 
 /**
  * @class QGameMap
@@ -46,10 +54,13 @@ class QGameMap : public QWidget {
     /**
      * Set the tiles of the widget
      */
-    void setTiles(std::vector<Tile> tileSet);
+    void setTiles(TileSet tileSet);
 
   private:
     // - Methods -----------------------------------------------------------------------------
+    std::pair<int, int> toPaintCoordinates(Point p);
+    void paintTile(QPainter& p, int x, int y, QColor fill = Qt::black, QColor border = Qt::black);
+
     /**
      * Paint the map on the widget using QPainter
      */
@@ -64,7 +75,12 @@ class QGameMap : public QWidget {
     /**
      * @brief Available Tiles on the map
      */
-    std::vector<Tile> tiles;
+    TileSet tiles;
+
+
+    // TODO: Initialize in constructor + getters/setters --> repaint
+    int tileSize = 50;
+    bool showCoordinates = DEFAULT_QGAMEMAP_SHOW_COORDINATES;
 };
 
 #endif // ILLUVATAR_QGAMEMAP_H

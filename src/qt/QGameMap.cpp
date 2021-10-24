@@ -9,8 +9,6 @@
 =========================================================================*/
 #include "qt/QGameMap.h"
 
-#include <utility>
-
 //  --------------------------------------------------------------------------------------
 //  QGameMap
 //  --------------------------------------------------------------------------------------
@@ -25,35 +23,47 @@ QGameMap::QGameMap(unsigned int width, unsigned int height, QWidget* parent)
 //  QGameMap > SETTERS
 //  --------------------------------------------------------------------------------------
 
-void QGameMap::setTiles(std::vector<Tile> tileSet) { this->tiles = std::move(tileSet); }
+void QGameMap::setTiles(TileSet tileSet) { this->tiles = std::move(tileSet); }
 
 //  --------------------------------------------------------------------------------------
 //  QGameMap > PRIVATE METHODS
 //  --------------------------------------------------------------------------------------
 
-void QGameMap::paintEvent(QPaintEvent*) {
-    // TODO: Refactor: split in different private methods:
-    //  - paintBackground
-    //  - paintMap
-    //  - paintTile
-    // and helper methods:
-    //  - getPaintWidth()
-    //  - getPaintHeight()
-    //  - getTileSize()
-    //  - toPaintPosition(x, y), toPaintPosition(pos)
-    // TODO: Store color mapping somewhere
-
-    // Compute sizes
+std::pair<int, int> QGameMap::toPaintCoordinates(Point p) {
     int width = static_cast<int>(this->surface.getWidth());
     int height = static_cast<int>(this->surface.getHeight());
 
     int p_width = this->parentWidget()->width();
     int p_height = this->parentWidget()->height();
 
-    int t_size =
-    std::max(50, std::min(p_width, p_height) / static_cast<int>(1.1 * std::max(width, height)));
-    int t_offset = std::max(static_cast<int>(p_width - (t_size * width)) / 2, 0);
-    int l_offset = std::max(static_cast<int>(p_height - (t_size * height)) / 2, 0);
+    int t_offset = std::max(static_cast<int>(p_width - (this->tileSize * width)) / 2, 0);
+    int l_offset = std::max(static_cast<int>(p_height - (this->tileSize * height)) / 2, 0);
+
+    return std::make_pair(t_offset + p.X() * this->tileSize, l_offset + p.Y() * this->tileSize);
+}
+
+void QGameMap::paintTile(QPainter& p, int x, int y, QColor fill, QColor border) {
+    // Retrieve paint position
+    auto [px, py] = this->toPaintCoordinates(Point(x, y));
+
+    // Paint tile
+    p.setPen(border);
+    p.setBrush(fill);
+    p.drawRect(px, py, this->tileSize, this->tileSize);
+
+    // Show coordinates if enabled
+    if (this->showCoordinates)
+        p.drawText(
+        px, py, QString::fromStdString("(" + std::to_string(x) + ", " + std::to_string(y) + ")"));
+}
+
+void QGameMap::paintEvent(QPaintEvent*) {
+    // TODO: Refactor: split in different private methods:
+    //  - paintBackground
+    //  - paintMap
+    //  and helper methods:
+    //  - getPaintWidth()
+    //  - getPaintHeight()
 
     // Init painter
     QPainter p(this);
@@ -61,28 +71,35 @@ void QGameMap::paintEvent(QPaintEvent*) {
     p.setBrush(Qt::transparent);
 
     // Paint grid
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
+    for (int y = 0; y < this->surface.getWidth(); y++) {
+        for (int x = 0; x < this->surface.getHeight(); x++) {
 
-            auto it = std::find_if(this->tiles.begin(), this->tiles.end(), [x, y](Tile t) {
-                return t.X() == x && t.Y() == y;
-            });
+            if (this->tiles.exists(x, y)) {
+                auto t = this->tiles.get(x, y);
 
-            if (it != this->tiles.end()) {
-                Tile t = tiles[std::distance(tiles.begin(), it)];
-                p.setPen(Qt::black);
-
-                p.setBrush(Qt::white);
-                if (t.belongsTo(Werewolves)) p.setBrush(Qt::gray);
-                if (t.belongsTo(Valars)) p.setBrush(Qt::cyan);
-                if (t.belongsTo(Dragons)) p.setBrush(Qt::red);
-                if (t.belongsTo(Eldars)) p.setBrush(Qt::green);
+                // TODO: Retrieve color from a std::map<Faction, QColor> stored somewhere
+                //  this->paintTile(p, x, y, factionColor[t.getOwner()])
+                switch (t.getOwner()) {
+                    case Werewolves:
+                        this->paintTile(p, x, y, Qt::gray);
+                        break;
+                    case Valars:
+                        this->paintTile(p, x, y, Qt::cyan);
+                        break;
+                    case Dragons:
+                        this->paintTile(p, x, y, Qt::red);
+                        break;
+                    case Eldars:
+                        this->paintTile(p, x, y, Qt::green);
+                        break;
+                    case NoFaction:
+                    default:
+                        this->paintTile(p, x, y, Qt::white);
+                        break;
+                }
             } else {
-                p.setPen(Qt::black);
-                p.setBrush(Qt::black);
+                this->paintTile(p, x, y);
             }
-
-            p.drawRect(t_offset + x * t_size, l_offset + y * t_size, t_size, t_size);
         }
     }
 }
