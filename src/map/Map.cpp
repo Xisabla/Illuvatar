@@ -41,7 +41,7 @@ void Map::sync() {
     this->gmap->repaint();
 }
 
-ThingOnMap getThingOnTile(int const &x, int const &y, set<Faction> const &minionAllies=set()) {
+ThingOnMap getThingOnTile(int const &x, int const &y, set<Faction> const minionAllies) {
     if (!this->exist(x, y)) return ThingOnMap::Void;//determine existence de la tuile
 
     Faction owner = this->getTile(x, y).getOwner());//determine contenu de la tuile

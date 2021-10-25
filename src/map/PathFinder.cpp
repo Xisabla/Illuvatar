@@ -6,7 +6,7 @@ using namespace DirectionUtils;
 
 PathFinder::PathFinder(Map const &map, Tile const &current, Tile const &target, Direction const &initialDirection): 
     map(map), current(current), target(target), initialDirection(initialDirection) {
-    this->path = this->straightener(this->unlooper(this->aStarGenerator()));
+    this->path = this->straightener(this->unlooper(this->aStarGenerator({}), {}), {});
 }
 
 vector<pair<Tile*, Direction>> PathFinder::getResult(int const nbTile) {
@@ -14,7 +14,7 @@ vector<pair<Tile*, Direction>> PathFinder::getResult(int const nbTile) {
     return this->path;
 }
 
-vector<Tile*> PathFinder::aStarGenerator(vector<Tile*> &path=vector()) {
+vector<Tile*> PathFinder::aStarGenerator(vector<Tile*> &path) {
     if (this->current == this->target) {
         this->explored.clear();
         this->notExplored.clear();
@@ -62,7 +62,7 @@ double PathFinder::distanceToCurrent(Tile &other) {
     return sqrt(pow(this->current->X() - other.X(), 2) + pow(this->current->Y() - other.Y(), 2))
 }
 
-vector<Tile*> PathFinder::unlooper(vector<Tile*> &refPath, vector<Tile*> &path=vector(), int pos=1) {
+vector<Tile*> PathFinder::unlooper(vector<Tile*> &refPath, vector<Tile*> &path, int pos) {
     if (pos == this->path.size()) {
         refPath.clear();
         return path;
@@ -93,7 +93,7 @@ vector<Tile*> PathFinder::unlooper(vector<Tile*> &refPath, vector<Tile*> &path=v
     return PathFinder::unlooper(refPath, path, pos);
 }
 
-vector<pair<Tile*, Direction>> PathFinder::straightener(vector<Tile*> &refPath, vector<pair<Tile*, Direction>> &path=vector(), int pos=0) {
+vector<pair<Tile*, Direction>> PathFinder::straightener(vector<Tile*> &refPath, vector<pair<Tile*, Direction>> &path, int pos) {
     if (pos == this->path.size() + 4) {
         for (vector<Tile*>* iter = refPath.end() - 4; iter < refPath.end(); ++iter) {
             path.push_back({ this->map.getTile(&iter.X(), &iter.Y()), this->computeDirection(path.back().first, &iter) });

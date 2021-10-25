@@ -40,10 +40,10 @@ class PathFinder {
     std::vector<Tile*> notExplored = vector();
 
   private:
-    std::vector<Tile*> aStarGenerator(std::vector<Tile*> &path=std::vector());
+    std::vector<Tile*> aStarGenerator(std::vector<Tile*> &path);
     double distanceToCurrent(Tile &other);
-    std::vector<Tile*> unlooper(std::vector<Tile*> &refPath, std::vector<Tile*> &path=std::vector(), int pos=1);
-    std::vector<std::pair<Tile*, DirectionUtils::Direction>> straightener(std::vector<Tile*> &refPath, std::vector<std::pair<Tile*, DirectionUtils::Direction>> &path=std::vector(), int pos=0);
+    std::vector<Tile*> unlooper(std::vector<Tile*> &refPath, std::vector<Tile*> &path, int pos=1);
+    std::vector<std::pair<Tile*, DirectionUtils::Direction>> straightener(std::vector<Tile*> &refPath, std::vector<std::pair<Tile*, DirectionUtils::Direction>> &path, int pos=0);
     bool checkBothBridges(std::vector<std::pair<Tile*, DirectionUtils::Direction>> &path, bool alignTest, Tile* current, Tile* next, bool first, int deltaBridge) {
     bool checkBridge(std::vector<std::pair<Tile*, DirectionUtils::Direction>> &path, Tile bridge, bool alignTest, Tile* current, Tile* next)
 };

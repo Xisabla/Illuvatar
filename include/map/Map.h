@@ -51,7 +51,7 @@ class Map {
      */
     QGameMap* GMap();
 
-    ThingOnMap getThingOnTile(int const &x, int const &y, std::set<Faction> const &minionAllies=set());
+    ThingOnMap getThingOnTile(int const &x, int const &y, std::set<Faction> const minionAllies={});
 
     // - Setters -----------------------------------------------------------------------------
     // TODO: set/add/remove Tile(s)
