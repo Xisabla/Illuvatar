@@ -25,22 +25,26 @@ void Minion::move() {
             this->energy--;
         }
 
-        interactsWithSurroundings();
+        if (interactsWithSurroundings()) return;
     }
 }
 
-void Minion::interactsWithSurroundings() {
+bool Minion::interactsWithSurroundings() {
+    bool interactFlag = false;
     for (ThingOnMap thing : this->CheckAround()) {
         swith(thing) {
             case ThingOnMap::Ally:
                 //échange les infos
-                return;
+                interactFlag = true;
+                break;
 
             case ThingOnMap::Ennemy:
                 //fight
-                return;
+                interactFlag = true;
+                break;
         }
     }
+    return interactFlag;
 }
 
 vector<pair<Tile*, Direction>> Minion::explorate(int const nbTile) {

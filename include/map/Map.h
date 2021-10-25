@@ -16,7 +16,7 @@
 #include "map/TileSet.h"
 #include "qt/QGameMap.h"
 
-#include <utility>
+//#include <utility>
 #include <vector>
 
 /**
