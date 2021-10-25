@@ -1,6 +1,7 @@
 #include "model/abstract/Minion.h"
 
 using namespace std;
+using namespace DirectionUtils;
 
 void Minion::move() {
     int nbTile = rand() % (this->rangeMax - this->rangeMin + 1) + this->rangeMin;
@@ -53,8 +54,8 @@ vector<pair<Tile*, Direction>> Minion::explorate(int const nbTile) {
     if (!possibleDirs.empty()) {
         direction = possibleDirs[rand() % possibleDirs.size()];
     }
-    else if (this->CheckDirection(this->tile, DirectionUtils::oppositeDirection[this->currentDirection]) == ThingOnMap::Nothing) {
-        direction = DirectionUtils::oppositeDirection[this->currentDirection];
+    else if (this->CheckDirection(this->tile, oppositeDirection[this->currentDirection]) == ThingOnMap::Nothing) {
+        direction = oppositeDirection[this->currentDirection];
     }
     else return vector(); //reste sur place et interagit avec trucs autours
 
@@ -62,8 +63,8 @@ vector<pair<Tile*, Direction>> Minion::explorate(int const nbTile) {
     Tile* futureTile = this->tile;
     int i = 0;
     do {
-        int nextX = futureTile->X() + DirectionUtils::nextDirection.at(direction)->X();
-        int nextY = futureTile->Y() + DirectionUtils::nextDirection.at(direction)->Y();
+        int nextX = futureTile->X() + nextDirection.at(direction)->X();
+        int nextY = futureTile->Y() + nextDirection.at(direction)->Y();
         futureTile = this->map.getTile(nextX, nextY);
         path.push_back({ futureTile, direction });
     } while (++i < nbTile && this->CheckDirection(futureTile, direction) != ThingOnMap::Obstacle);
@@ -76,8 +77,8 @@ vector<pair<Tile*, Direction>> Minion::findMaster(int const nbTile) {
 }
 
 ThingOnMap Minion::checkDirection(Tile const &tile, Direction const &direction) {
-    int nextX = tile.X() + DirectionUtils::nextDirection.at(direction)->X();
-    int nextY = tile.Y() + DirectionUtils::nextDirection.at(direction)->Y();
+    int nextX = tile.X() + nextDirection.at(direction)->X();
+    int nextY = tile.Y() + nextDirection.at(direction)->Y();
     
     if (!this->map.exist(nextX, nextY)) return ThingOnMap::Void;//determine existence de la tuile
 

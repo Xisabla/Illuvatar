@@ -1,6 +1,7 @@
 #include "map/PathFinder.h"
 
 using namespace std;
+using namespace DirectionUtils;
 
 
 PathFinder::PathFinder(Map const &map, Tile const &current, Tile const &target, Direction const &initialDirection): 
@@ -105,7 +106,7 @@ vector<pair<Tile*, Direction>> PathFinder::straightener(vector<Tile*> &refPath, 
     Tile* current = refPath[pos];
     Tile* next = refPath[pos + 4];
     Tile bridge;
-    Direction dir = path.empty() ? this->initialDirection : DirectionUtils::computeDirection(path.back().first, current);
+    Direction dir = path.empty() ? this->initialDirection : computeDirection(path.back().first, current);
     path.push_back({ current, dir });
 
     if (checkBothBridges(path, current.X() == next.X(), current, next, false, current.Y() - next.Y()) ||
@@ -124,8 +125,8 @@ bool PathFinder::checkBothBridges(vector<pair<Tile*, Direction>> &path, bool ali
 
 bool PathFinder::checkBridge(vector<pair<Tile*, Direction>> &path, Tile bridge, bool alignTest, Tile* current, Tile* next) {
     if (alignTest && this->map.exist(bridge.X(), bridge.Y()) && this->map.getTile(bridge.X(), bridge.Y()).getThingOnMap() == ThingOnMap::Obstacle) {
-        path.push_back({ this->map.getTile(bridge.X(), bridge.Y()), DirectionUtils::computeDirection(current, bridge) });
-        path.push_back({ this->map.getTile(next.X(),   next.Y()),   DirectionUtils::computeDirection(bridge, next)    });
+        path.push_back({ this->map.getTile(bridge.X(), bridge.Y()), computeDirection(current, bridge) });
+        path.push_back({ this->map.getTile(next.X(),   next.Y()),   computeDirection(bridge, next)    });
         return true;
     }
 
