@@ -25,12 +25,11 @@ vector<Tile*> PathFinder::aStarGenerator(vector<Tile*> &path=vector()) {
 
     vector<Tile*> notExploredNeighbords = vector();
     for (Direction direction = Direction::Begin; direction != Direction::End; ++direction) { //get all enum values
-        int nextX = this->tile->X() + DirectionUtils::nextDirection.at(direction)->X();
-        int nextY = this->tile->Y() + DirectionUtils::nextDirection.at(direction)->Y();
-        if (!this->map.exist(nextX, nextY)) continue;
+        int nextX = this->tile->X() + nextDirection[direction]->X();
+        int nextY = this->tile->Y() + nextDirection[direction]->Y();
+        if (!this->map.exist(nextX, nextY) || this->map.getThingOnMap(nextX, nextY) == ThingOnMap::Obstacle) continue;
 
         Tile* neighbor = this->map.getTile(nextX, nextY);
-        if (neighbor.getThingOnMap() == ThingOnMap::Obstacle) continue;
         if (find(this->explored.begin(), this->explored.end(), neighbor) != this->explored.end()) continue;
 
         notExploredNeighbords.push_back(neighbor);

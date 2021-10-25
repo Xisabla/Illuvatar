@@ -50,7 +50,7 @@ bool Minion::interactsWithSurroundings() {
 vector<pair<Tile*, Direction>> Minion::explorate(int const nbTile) {
     vector<Direction> possibleDirs = vector();
 
-    for (Direction dir : DirectionUtils::fanDirections[this->currentDirection]) {
+    for (Direction dir : fanDirections[this->currentDirection]) {
         if (this->CheckDirection(this->tile, dir) == ThingOnMap::Nothing) possibleDirs.push_back(dir);
     }
 
@@ -67,8 +67,8 @@ vector<pair<Tile*, Direction>> Minion::explorate(int const nbTile) {
     Tile* futureTile = this->tile;
     int i = 0;
     do {
-        int nextX = futureTile->X() + nextDirection.at(direction)->X();
-        int nextY = futureTile->Y() + nextDirection.at(direction)->Y();
+        int nextX = futureTile->X() + nextDirection[direction]->X();
+        int nextY = futureTile->Y() + nextDirection[direction]->Y();
         futureTile = this->map.getTile(nextX, nextY);
         path.push_back({ futureTile, direction });
     } while (++i < nbTile && this->CheckDirection(futureTile, direction) != ThingOnMap::Obstacle);
@@ -83,15 +83,8 @@ vector<pair<Tile*, Direction>> Minion::findMaster(int const nbTile) {
 ThingOnMap Minion::checkDirection(Tile const &tile, Direction const &direction) {
     int nextX = tile.X() + nextDirection.at(direction)->X();
     int nextY = tile.Y() + nextDirection.at(direction)->Y();
-    
-    if (!this->map.exist(nextX, nextY)) return ThingOnMap::Void;//determine existence de la tuile
 
-    Faction owner = this->map.getTile(nextX, nextY).getOwner());//determine contenu de la tuile
-
-    if (owner == Faction::NoFaction) return ThingOnMap::Nothing;
-
-    set<Faction> minionAllies = Minion::alliances[this->faction];
-    return (minionAllies.find(owner) != minionAllies.end())? ThingOnMap::Ally : ThingOnMap::Ennemy;
+    return this->map->getThingOnTile(nextX, nextY, Minion::alliances[this->faction]);
 }
 
 vector<ThingOnMap> Minion::checkAround() {

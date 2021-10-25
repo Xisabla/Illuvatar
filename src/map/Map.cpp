@@ -40,3 +40,13 @@ void Map::sync() {
     this->gmap->setTiles(this->tiles);
     this->gmap->repaint();
 }
+
+ThingOnMap getThingOnTile(int const &x, int const &y, set<Faction> const &minionAllies=set()) {
+    if (!this->exist(x, y)) return ThingOnMap::Void;//determine existence de la tuile
+
+    Faction owner = this->getTile(x, y).getOwner());//determine contenu de la tuile
+
+    if (owner == Faction::NoFaction) return ThingOnMap::Nothing;
+
+    return (minionAllies.find(owner) != minionAllies.end())? ThingOnMap::Ally : ThingOnMap::Ennemy;
+}
