@@ -15,9 +15,11 @@
 #include "map/Tile.h"
 #include "map/TileSet.h"
 #include "qt/QGameMap.h"
+#include "wip.h"
 
-#include <utility>
+//#include <utility>
 #include <vector>
+#include <set>
 
 /**
  * @class Map
@@ -62,6 +64,8 @@ class Map {
      * @return The Qt graphical map object linked to the map
      */
     QGameMap* GMap();
+
+    ThingOnMap getThingOnTile(int const &x, int const &y, std::set<Faction> const minionAllies={});
 
     // - Setters -----------------------------------------------------------------------------
     /**

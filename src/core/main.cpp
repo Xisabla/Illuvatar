@@ -29,6 +29,10 @@ int main(int argc, char* argv[]) {
     // Instantiate map
     Map map(tiles);
 
+    // add loop to test moves
+        // pathfinding(position maitre) => rendre message ou plus d'énergie
+        // explo(directionPrincipale) => se déplacer sur la map selon une direction principale
+
     // Create and show window
     MainWindow window(map);
     window.show();
