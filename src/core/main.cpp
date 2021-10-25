@@ -12,6 +12,9 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 #include <QApplication>
 
+// TODO: Use (x, y, ...) or (Point, ...) params everywhere but not both (choose one -> Point ?)
+// TODO (late): Remove all unused methods
+
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
 
@@ -22,8 +25,6 @@ int main(int argc, char* argv[]) {
                                     generators::disk(2.8, Point(6, 14), Eldars),
                                     generators::disk(2.8, Point(14, 6), Dragons) },
                                   true);
-
-    tiles.push(Tile(10, 10, Werewolves));
 
     // Instantiate map
     Map map(tiles);

@@ -45,17 +45,45 @@ class Map {
 
     // - Getters -----------------------------------------------------------------------------
     /**
+     * Get a Tile on the map
+     * @param p Position of the Tile
+     * @return The Tile
+     */
+    Tile& getTile(const Point &p);
+
+    /**
+     * Get the neighbours of a Tile on the map
+     * @param p Position of the Tile
+     * @return A TileSet of neighbours
+     */
+    TileSet getNeighbours(const Point &p);
+
+    /**
      * @return The Qt graphical map object linked to the map
      */
     QGameMap* GMap();
 
     // - Setters -----------------------------------------------------------------------------
-    // TODO: set/add/remove Tile(s)
-    // TODO: setTileOwnership
-    // TODO: getTile (remove if unused)
-    // TODO: resize
+    /**
+     * Set the faction of a Tile (or add it if it doesn't exist)
+     * @param p Position of the Tile
+     * @param faction Faction that owns the Tile
+     */
+    void setTile(const Point &p, Faction faction = NoFaction);
 
     // - Methods -----------------------------------------------------------------------------
+    /**
+     * Change the Map surface
+     * @param surface New surface of the Map
+     */
+    void resize(Rectangle surface);
+
+    /**
+     * Remove a Tile from the Map
+     * @param p Position of the Tile
+     */
+    void removeTile(const Point &p);
+
     /**
      * Synchronize the Qt graphical map and redraw it
      */

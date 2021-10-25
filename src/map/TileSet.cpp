@@ -160,6 +160,15 @@ void TileSet::emplace(int x, int y, Faction faction, bool overwrite) {
 //  TileSet > PUBLIC METHODS
 //  --------------------------------------------------------------------------------------
 
+void TileSet::remove(const Point& p) {
+    if (this->exists(p))
+        this->tiles.erase(std::find_if(this->tiles.begin(), this->tiles.end(), [p](Tile t) {
+            return t.X() == p.X() && t.Y() == p.Y();
+        }));
+}
+
+void TileSet::remove(int x, int y) { return this->remove(Point(x, y)); }
+
 void TileSet::merge(TileSet set, bool overwrite) {
     for (auto& t: set) this->push(t, overwrite);
 }

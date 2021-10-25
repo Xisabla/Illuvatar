@@ -43,24 +43,17 @@ class QGameMap : public QWidget {
      * @param parent Qt parent widget
      */
     explicit QGameMap(Rectangle surface,
+                      TileSet& tiles,
                       unsigned int tileSize = 50,
                       bool showCoordinates = DEFAULT_QGAMEMAP_SHOW_COORDINATES,
                       QWidget* parent = nullptr);
 
-    /**
-     * @param width Map width (in tiles)
-     * @param height Map height (in tiles)
-     * @param tileSize Size of Tile on the Widget
-     * @param showCoordinates If set on true, will show coordinates of Tiles
-     * @param parent Qt parent widget
-     */
-    [[maybe_unused]] QGameMap(unsigned int width,
-                              unsigned int height,
-                              unsigned int tileSize = 50,
-                              bool showCoordinates = DEFAULT_QGAMEMAP_SHOW_COORDINATES,
-                              QWidget* parent = nullptr);
-
     // - Setters -----------------------------------------------------------------------------
+    /**
+     * Set the surface of the QGameMap
+     */
+    void setSurface(Rectangle s);
+
     /**
      * Set the tiles of the widget
      */

@@ -106,6 +106,19 @@ class TileSet {
 
     // - Methods -----------------------------------------------------------------------------
     /**
+     * Remove a Tile from the TileSet
+     * @param p Position of the Tile
+     */
+    void remove(const Point& p);
+
+    /**
+     * Remove a Tile from the TileSet
+     * @param x X component of the Tile
+     * @param y Y component of the Tile
+     */
+    void remove(int x, int y);
+
+    /**
      * @param p Point to find
      * @return True if a Tile exists at the Point coordinates
      */

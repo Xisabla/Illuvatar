@@ -13,20 +13,22 @@
 //  QGameMap
 //  --------------------------------------------------------------------------------------
 
-QGameMap::QGameMap(Rectangle surface, unsigned int tileSize, bool showCoordinates, QWidget* parent)
-: QWidget(parent), surface(surface), tiles(), tileSize(tileSize), showCoordinates(showCoordinates) {
+QGameMap::QGameMap(Rectangle surface,
+                   TileSet& tiles,
+                   unsigned int tileSize,
+                   bool showCoordinates,
+                   QWidget* parent)
+: QWidget(parent), surface(surface), tiles(tiles), tileSize(tileSize), showCoordinates(showCoordinates) {
 }
-
-[[maybe_unused]] QGameMap::QGameMap(unsigned int width,
-                                    unsigned int height,
-                                    unsigned int tileSize,
-                                    bool showCoordinates,
-                                    QWidget* parent)
-: QGameMap(Rectangle(width, height), tileSize, showCoordinates, parent) { }
 
 //  --------------------------------------------------------------------------------------
 //  QGameMap > SETTERS
 //  --------------------------------------------------------------------------------------
+
+void QGameMap::setSurface(Rectangle s) {
+    this->surface = s;
+    this->repaint();
+}
 
 void QGameMap::setTiles(TileSet tileSet) { this->tiles = std::move(tileSet); }
 
