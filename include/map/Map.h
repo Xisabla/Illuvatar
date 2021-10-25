@@ -15,7 +15,9 @@
 #include "map/Tile.h"
 #include "map/TileSet.h"
 #include "qt/QGameMap.h"
+#include "wip.h"
 
+#include <set>
 #include <utility>
 #include <vector>
 
@@ -49,7 +51,7 @@ class Map {
      * @param p Position of the Tile
      * @return True if the Tile exists
      */
-    bool exists(const Point& p);
+    bool exists(const Point& p) const;
 
     /**
      * Get a Tile on the map
@@ -69,6 +71,9 @@ class Map {
      * @return The Qt graphical map object linked to the map
      */
     QGameMap* GMap();
+
+    ThingOnMap
+    getThingOnTile(int const& x, int const& y, std::set<Faction> const minionAllies = {}) const;
 
     // - Setters -----------------------------------------------------------------------------
     /**

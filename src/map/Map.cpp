@@ -34,7 +34,7 @@ void Map::setTile(const Point& p, Faction faction) { this->tiles.push(Tile(p, fa
 //  Map > GETTERS
 //  --------------------------------------------------------------------------------------
 
-bool Map::exists(const Point& p) { return this->tiles.exists(p); }
+bool Map::exists(const Point& p) const { return this->tiles.exists(p); }
 
 Tile& Map::getTile(const Point& p) { return this->tiles.get(p); }
 
@@ -61,4 +61,15 @@ void Map::removeTile(const Point& p) {
 void Map::sync() {
     this->gmap->setTiles(this->tiles);
     this->gmap->repaint();
+}
+
+ThingOnMap Map::getThingOnTile(const int& x, const int& y, const std::set<Faction> minionAllies) const {
+    if (!this->exists(Point(x, y))) return ThingOnMap::Void;
+
+    Tile t = this->getTile(Point(x, y));
+
+    if (t.belongsTo(NoFaction)) return ThingOnMap::Nothing;
+
+    return minionAllies.find(t.getOwner()) == minionAllies.end() ? ThingOnMap::Ennemy :
+                                                                   ThingOnMap::Ally;
 }

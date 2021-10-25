@@ -101,7 +101,7 @@ void QGameMap::paintMap(QPainter& p) {
                     case Werewolves:
                         this->paintTile(p, x, y, Qt::darkGray);
                         break;
-                    case Valars:
+                    case Vala:
                         this->paintTile(p, x, y, Qt::cyan);
                         break;
                     case Dragons:

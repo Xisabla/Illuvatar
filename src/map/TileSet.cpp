@@ -181,11 +181,11 @@ void TileSet::merge(TileSet set, bool overwrite) {
     this->merge(TileSet(std::move(t)), overwrite);
 }
 
-bool TileSet::exists(const Point& p) {
+bool TileSet::exists(const Point& p) const {
     return std::find(this->tiles.begin(), this->tiles.end(), Tile(p)) != this->tiles.end();
 }
 
-bool TileSet::exists(int x, int y) { return this->exists(Point(x, y)); }
+bool TileSet::exists(int x, int y) const { return this->exists(Point(x, y)); }
 
 //  --------------------------------------------------------------------------------------
 //  TileSet > STATICS

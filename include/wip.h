@@ -25,4 +25,8 @@ enum Alliance { Evil, Good, NoAlliance };
 enum Faction { Eldars, Valars, Dragons, Werewolves, NoFaction };
 // Temporary stuff that will get included later --->
 
+
+enum ThingOnMap { Void, Nothing, Obstacle, Ennemy, Ally }
+
+
 #endif // ILLUVATAR_WIP_H
