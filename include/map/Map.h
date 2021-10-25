@@ -45,18 +45,25 @@ class Map {
 
     // - Getters -----------------------------------------------------------------------------
     /**
+     * Check if a Tile exists in the Map TileSet
+     * @param p Position of the Tile
+     * @return True if the Tile exists
+     */
+    bool exists(const Point& p);
+
+    /**
      * Get a Tile on the map
      * @param p Position of the Tile
      * @return The Tile
      */
-    Tile& getTile(const Point &p);
+    Tile& getTile(const Point& p);
 
     /**
      * Get the neighbours of a Tile on the map
      * @param p Position of the Tile
      * @return A TileSet of neighbours
      */
-    TileSet getNeighbours(const Point &p);
+    TileSet getNeighbours(const Point& p);
 
     /**
      * @return The Qt graphical map object linked to the map
@@ -69,7 +76,7 @@ class Map {
      * @param p Position of the Tile
      * @param faction Faction that owns the Tile
      */
-    void setTile(const Point &p, Faction faction = NoFaction);
+    void setTile(const Point& p, Faction faction = NoFaction);
 
     // - Methods -----------------------------------------------------------------------------
     /**
@@ -82,7 +89,7 @@ class Map {
      * Remove a Tile from the Map
      * @param p Position of the Tile
      */
-    void removeTile(const Point &p);
+    void removeTile(const Point& p);
 
     /**
      * Synchronize the Qt graphical map and redraw it

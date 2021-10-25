@@ -18,8 +18,8 @@ QGameMap::QGameMap(Rectangle surface,
                    unsigned int tileSize,
                    bool showCoordinates,
                    QWidget* parent)
-: QWidget(parent), surface(surface), tiles(tiles), tileSize(tileSize), showCoordinates(showCoordinates) {
-}
+: QWidget(parent), surface(surface), tiles(tiles), tileSize(tileSize),
+  showCoordinates(showCoordinates) { }
 
 //  --------------------------------------------------------------------------------------
 //  QGameMap > SETTERS

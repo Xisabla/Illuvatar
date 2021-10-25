@@ -34,6 +34,8 @@ void Map::setTile(const Point& p, Faction faction) { this->tiles.push(Tile(p, fa
 //  Map > GETTERS
 //  --------------------------------------------------------------------------------------
 
+bool Map::exists(const Point& p) { return this->tiles.exists(p); }
+
 Tile& Map::getTile(const Point& p) { return this->tiles.get(p); }
 
 TileSet Map::getNeighbours(const Point& p) { return this->tiles.getNeighbours(p.X(), p.Y()); }
@@ -45,7 +47,8 @@ QGameMap* Map::GMap() { return this->gmap; }
 //  --------------------------------------------------------------------------------------
 
 void Map::resize(Rectangle surface) {
-    // TODO: Use reference while manipulate tiles, surface, ... in QGameMap (+ constructor) to avoid this:
+    // TODO: Use reference while manipulate tiles, surface, ... in QGameMap (+ constructor) to avoid
+    // this:
     this->gmap->setSurface(surface);
     // this->gmap->setTiles(this->tiles);
 }

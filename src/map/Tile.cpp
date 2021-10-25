@@ -32,3 +32,11 @@ bool Tile::belongsTo(Faction f) { return this->owner == f; }
 void Tile::setOwner(Faction f) { this->owner = f; }
 
 void Tile::removeOwnership() { this->owner = NoFaction; }
+
+//  --------------------------------------------------------------------------------------
+//  Tile > PUBLIC METHODS
+//  --------------------------------------------------------------------------------------
+
+bool Tile::isNeighbours(Tile& t) {
+    return abs(this->X() - t.X()) == 1 && abs(this->Y() - t.Y()) == 1;
+}

@@ -14,6 +14,7 @@
 #include "geometry/Point.h"
 #include "wip.h"
 
+#include <cmath>
 #include <utility>
 
 /**
@@ -58,6 +59,9 @@ class Tile : public Point {
      * Remove current faction ownership (set to NoFaction)
      */
     void removeOwnership();
+
+    // - Methods -----------------------------------------------------------------------------
+    bool isNeighbours(Tile& t);
 
     // - Operators ---------------------------------------------------------------------------
     inline bool operator==(const Tile& t) const { return Point::operator==(t); }
