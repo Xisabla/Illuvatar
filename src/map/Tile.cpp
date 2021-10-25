@@ -40,3 +40,7 @@ void Tile::removeOwnership() { this->owner = NoFaction; }
 bool Tile::isNeighbours(Tile& t) {
     return abs(this->X() - t.X()) == 1 && abs(this->Y() - t.Y()) == 1;
 }
+
+double Tile::distanceTo(Tile& t) {
+    return sqrt(pow(this->X() - t.X(), 2) + pow(this->Y() - t.Y(), 2));
+}

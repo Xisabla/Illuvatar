@@ -32,7 +32,7 @@ class Minion {
     const int lowEnergy = 20;
     const int rangeMax = 8;
     const int rangeMin = 2;
-    DirectionUtils::Direction currentDirection;
+    directionutils::Direction currentDirection;
 
     void fight(Minion& minion);
     void exchange(Minion& minion);
@@ -47,13 +47,13 @@ class Minion {
 
     void rollDice();
 
-    ThingOnMap checkDirection(Tile const& tile, DirectionUtils::Direction const& direction);
+    ThingOnMap checkDirection(Tile const& tile, directionutils::Direction const& direction);
 
     std::vector<ThingOnMap> checkAround();
 
-    std::vector<pair<Tile*, DirectionUtils::Direction>> explorate(int const nbTile);
+    pathfinder::DirectionalPath explorate(int const nbTile);
 
-    std::vector<pair<Tile*, DirectionUtils::Direction>> FindMaster(int const nbTile);
+    pathfinder::DirectionalPath FindMaster(int const nbTile);
 
     void interactsWithSurroundings();
 };

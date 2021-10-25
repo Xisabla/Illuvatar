@@ -1,12 +1,13 @@
 #include "model/abstract/Minion.h"
 
 using namespace std;
-using namespace DirectionUtils;
+using namespace directionutils;
+using namespace pathfinder;
 
 void Minion::move() {
     int nbTile = rand() % (this->rangeMax - this->rangeMin + 1) + this->rangeMin;
 
-    vector<pair<Tile*, Direction>> path =
+    DirectionalPath path =
     (this->energy - nbTile > this->lowEnergy) ? this->Explorate(nbTile) : this->FindMaster(nbTile);
 
     if (path.empty()) {
@@ -46,7 +47,7 @@ bool Minion::interactsWithSurroundings() {
     return interactFlag;
 }
 
-vector<pair<Tile*, Direction>> Minion::explorate(int const nbTile) {
+DirectionalPath Minion::explorate(int const nbTile) {
     vector<Direction> possibleDirs = vector();
 
     for (Direction dir: fanDirections[this->currentDirection]) {
@@ -63,7 +64,7 @@ vector<pair<Tile*, Direction>> Minion::explorate(int const nbTile) {
     } else
         return vector(); // reste sur place et interagit avec trucs autours
 
-    vector<pair<Tile*, Direction>> path = vector();
+    DirectionalPath path = vector();
     Tile* futureTile = this->tile;
     int i = 0;
     do {
@@ -76,8 +77,8 @@ vector<pair<Tile*, Direction>> Minion::explorate(int const nbTile) {
     return path;
 }
 
-vector<pair<Tile*, Direction>> Minion::findMaster(int const nbTile) {
-    return PathFinder(this->map, this->tile, this->master->tile).getResult(nbTile);
+DirectionalPath Minion::findMaster(int const nbTile) {
+    return computeShortestPath(this->map, this->tile, this->master->tile, this->currentDirection, nbTile);
 }
 
 ThingOnMap Minion::checkDirection(Tile const& tile, Direction const& direction) {

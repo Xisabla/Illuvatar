@@ -63,6 +63,8 @@ class Tile : public Point {
     // - Methods -----------------------------------------------------------------------------
     bool isNeighbours(Tile& t);
 
+    double distanceTo(Tile& t);
+
     // - Operators ---------------------------------------------------------------------------
     inline bool operator==(const Tile& t) const { return Point::operator==(t); }
 

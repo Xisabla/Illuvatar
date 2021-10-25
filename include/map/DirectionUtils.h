@@ -20,7 +20,7 @@
 #define DIRECTION_FIRST N
 #define DIRECTION_LAST NW
 
-namespace DirectionUtils {
+namespace directionutils {
 enum class Direction { DIRECTION_FIRST, NE, E, SE, S, SW, W, DIRECTION_LAST };
 
 const std::map<Direction, std::vector<Direction>> fanDirections = {
@@ -53,6 +53,6 @@ const std::map<std::pair<int, int>, Direction> deltaDirection = {
 };
 
 Direction computeDirection(Tile* const& last, Tile* const& current);
-}; // namespace DirectionUtils
+}; // namespace directionutils
 
 #endif // ILLUVATAR_DirectionUtils_H

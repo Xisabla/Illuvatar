@@ -21,55 +21,28 @@
 #include <map>
 #include <vector>
 
-typedef std::vector<std::pair<Tile, DirectionUtils::Direction>> DirectionalPath;
-
 // TODO: Make PathFinder class a set of methods (ns: pathfinder)
 
 /**
  * @class Tile
  * @brief Representation of a tile on the map. Stores ownership and characters
  */
-class PathFinder {
-  public:
-    PathFinder(Map const& map,
-               Tile const& current,
-               Tile const& target,
-               DirectionUtils::Direction const& initialDirection);
+namespace pathfinder {
+  typedef std::vector<Tile> Path;
+  typedef std::vector<std::pair<Tile, directionutils::Direction>> DirectionalPath;
 
-    std::vector<std::pair<Tile, DirectionUtils::Direction>> getResult(unsigned int nbTile);
+  DirectionalPath computeShortestPath(unsigned int nbTile);
 
-  protected:
-    Map& map;
-    const Tile current;
-    const Tile target;
-    const DirectionUtils::Direction initialDirection;
-    std::vector<std::pair<Tile, DirectionUtils::Direction>> path = {};
+  Path aStarGenerator(Map& map, Path& path, Tile current, Tile& target, Path& explored, Path& notExplored);
 
-    std::vector<Tile> explored = {};
-    std::vector<Tile> notExplored = {};
+  Path unlooper(Map& map, Path& refPath, Path& path, int pos = 1);
 
-  private:
-    std::vector<Tile> aStarGenerator(std::vector<Tile>& path);
+  DirectionalPath straightener(Map& map, Path& refPath, DirectionalPath& path, Direction initialD, int pos = 0);
 
-    double distanceToCurrent(Tile& other);
+  bool checkBothBridges(Map &map, DirectionalPath& path, bool alignTest, Tile current, Tile next, bool first, int deltaBridge);
 
-    std::vector<Tile> unlooper(std::vector<Tile>& refPath, std::vector<Tile>& path, int pos = 1);
+  bool checkBridge(Map &map, DirectionalPath& path, Tile bridge, bool alignTest, Tile current, Tile next);
 
-    std::vector<std::pair<Tile, DirectionUtils::Direction>>
-    straightener(std::vector<Tile>& refPath, DirectionalPath& path, int pos = 0);
-
-    bool checkBothBridges(std::vector<std::pair<Tile, DirectionUtils::Direction>>& path,
-                          bool alignTest,
-                          Tile current,
-                          Tile next,
-                          bool first,
-                          int deltaBridge);
-
-    bool checkBridge(std::vector<std::pair<Tile, DirectionUtils::Direction>>& path,
-                     Tile bridge,
-                     bool alignTest,
-                     Tile current,
-                     Tile next);
 };
 
 #endif // ILLUVATAR_PathFinder_H

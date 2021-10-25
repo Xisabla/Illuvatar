@@ -1,44 +1,42 @@
 #include "map/PathFinder.h"
 
 using namespace std;
-using namespace DirectionUtils;
+using namespace directionutils;
+using namespace pathfinder;
 
-PathFinder::PathFinder(Map const& map,
-                       Tile const& current,
-                       Tile const& target,
-                       Direction const& initialDirection)
-: map(map), current(current), target(target), initialDirection(initialDirection) {
-    this->straightener(this->unlooper(this->aStarGenerator({}), {}), {});
+
+DirectionalPath computeShortestPath(Map& map, Tile current, Tile& target, Direction initialD, unsigned int nbTile) {
+    Path tmp_result = aStarGenerator(map, {}, current, target, {}, {});
+    Path tmp_result = unlooper(map, tmp_result, {});
+    DirectionalPath result = straightener(map, tmp_result, {}, Direction initialD);
+    result.resize(min(static_cast<unsigned int>(this->path.size()), nbTile));
+    return result;
 }
 
-std::vector<std::pair<Tile, DirectionUtils::Direction>> PathFinder::getResult(unsigned int nbTile) {
-    this->path.resize(min(static_cast<unsigned int>(this->path.size()), nbTile));
-    return this->path;
-}
-
-std::vector<Tile> PathFinder::aStarGenerator(vector<Tile>& path) {
-    if (this->current == this->target) {
-        this->explored.clear();
-        this->notExplored.clear();
+Path aStarGenerator(Map& map, Path& path, Tile current, Tile& target, Path& explored, Path& notExplored) {
+    if (current == target) {
+        explored.clear();
+        notExplored.clear();
         return path;
     }
 
-    this->explored.push_back(this->current);
+    explored.push_back(current);
 
     vector<Tile> notExploredNeighbours = {};
 
     for (Direction i = Direction::DIRECTION_FIRST; i < Direction::DIRECTION_LAST;
          i = Direction(static_cast<int>(i) + 1)) {
         // TODO: Point.getXY() --> int[] or std::pair<int, int>
-        int nextX = this->current.X() + nextDirection.at(i).X();
-        int nextY = this->current.Y() + nextDirection.at(i).Y();
+        int nextX = current.X() + nextDirection.at(i).X();
+        int nextY = current.Y() + nextDirection.at(i).Y();
 
-        if (!this->map.exists(Point(nextX, nextY)) ||
-            this->map.getThingOnTile(nextX, nextY) == ThingOnMap::Obstacle)
+        if (!map.exists(Point(nextX, nextY)) ||
+            map.getThingOnTile(nextX, nextY) == ThingOnMap::Obstacle)
             continue;
 
-        Tile* neighbor = this->map.getTile(nextX, nextY);
-        if (find(this->explored.begin(), this->explored.end(), neighbor) != this->explored.end())
+        // todo : verify from here
+        Tile neighbor = map.getTile(nextX, nextY);
+        if (find(explored.begin(), explored.end(), neighbor) != explored.end())
             continue;
 
         notExploredNeighbours.push_back(neighbor);
@@ -48,33 +46,29 @@ std::vector<Tile> PathFinder::aStarGenerator(vector<Tile>& path) {
         sort(
         notExploredNeighbours.begin(),
         notExploredNeighbours.end(),
-        [](Tile& a, Tile& b) { return this->distanceToCurrent(a) < this->distanceToCurrent(b); })
+        [](Tile& a, Tile& b) { return current.distanceTo(a) < current.distanceTo(b); })
 
-        this->current = notExploredNeighbours[0];
+        current = notExploredNeighbours[0];
 
         reverse(notExploredNeighbours.begin(), notExploredNeighbours.end());
         notExploredNeighbours.pop_back();
 
         move(notExploredNeighbours.begin(),
              notExploredNeighbours.end(),
-             back_inserter(this->notExplored));
+             back_inserter(notExplored));
     } else if (!notExplored.empty()) {
-        this->current = this->notExplored.back();
-        this->notExplored.pop_back();
+        current = notExplored.back();
+        notExplored.pop_back();
     } else {
-        cout << "fucked up" << endl;
+        cout << "fucked up" << endl; //kill him ?
     }
 
-    path.push_back(this->current);
-    return this->aStarGenerator(path);
+    path.push_back(current);
+    return aStarGenerator(map, path, current, target, explored, notExplored);
 }
 
-double PathFinder::distanceToCurrent(Tile& other) {
-    return sqrt(pow(this->current->X() - other.X(), 2) + pow(this->current->Y() - other.Y(), 2))
-}
-
-std::vector<Tile> PathFinder::unlooper(vector<Tile>& refPath, vector<Tile>& path, int pos) {
-    if (pos == this->path.size()) {
+Path unlooper(Map& map, Path& refPath, Path& path, int pos) {
+    if (pos == path.size()) {
         refPath.clear();
         return path;
     }
@@ -83,7 +77,7 @@ std::vector<Tile> PathFinder::unlooper(vector<Tile>& refPath, vector<Tile>& path
     map<Tile*, int> nbNeighs = map();
     for (int i = pos; i < refPath.size(); ++i) {
         Tile tile = refPath[i];
-        if (refPath[pos - 1].isNeighbor(tile)) { // todo : bool Tile::isNeighbor(const &other)
+        if (refPath[pos - 1].isNeighbor(tile)) {
             neighbors.push_back({ tile, i });
 
             nbNeighs.count(tile) ? neighbors[tile]++ : neighbors.insert({ tile, 1 });
@@ -99,60 +93,45 @@ std::vector<Tile> PathFinder::unlooper(vector<Tile>& refPath, vector<Tile>& path
         }
     }
 
-    return PathFinder::unlooper(refPath, path, pos);
+    return PathFinder::unlooper(map, refPath, path, pos);
 }
 
-std::vector<std::pair<Tile, DirectionUtils::Direction>>
-PathFinder::straightener(vector<Tile>& refPath, DirectionalPath& path, int pos) {
-    if (pos == this->path.size() + 4) {
-        for (vector<Tile*>* iter = refPath.end() - 4; iter < refPath.end(); ++iter) {
-            path.push_back({ this->map.getTile(&iter.X(), &iter.Y()),
-                             this->computeDirection(path.back().first, &iter) });
+DirectionalPath straightener(Map& map, Path& refPath, DirectionalPath& path, Direction initialD, int pos) {
+    if (pos + 4 == path.size()) {//vérifier ordre
+        for (Path* iter = refPath.end() - 4; iter < refPath.end(); ++iter) {
+            path.push_back({ map.getTile(&iter.X(), &iter.Y()),
+                             computeDirection(path.back().first, &iter) });
         }
         refPath.clear();
         return path;
     }
 
-    Tile* current = refPath[pos];
-    Tile* next = refPath[pos + 4];
+    Tile current = refPath[pos];
+    Tile next = refPath[pos + 4];
     Tile bridge;
     Direction dir =
-    path.empty() ? this->initialDirection : computeDirection(path.back().first, current);
+    path.empty() ? initialD : computeDirection(path.back().first, current);
     path.push_back({ current, dir });
 
-    if (checkBothBridges(
-        path, current.X() == next.X(), current, next, false, current.Y() - next.Y()) ||
-        checkBothBridges(
-        path, current.Y() == next.Y(), current, next, true, current.X() - next.X())) {
-        return this->straightener(refPath, path, pos + 5);
+    if (checkBothBridges(map, path, current.X() == next.X(), current, next, false, current.Y() - next.Y()) ||
+        checkBothBridges(map, path, current.Y() == next.Y(), current, next, true, current.X() - next.X())) {
+        return this->straightener(map, refPath, path, pos + 5, initialD);
     }
 
-    return this->straightener(refPath, path, pos + 1);
+    return this->straightener(map, refPath, path, pos + 1, initialD);
 }
 
-bool PathFinder::checkBothBridges(DirectionalPath& path,
-                                  bool alignTest,
-                                  Tile current,
-                                  Tile next,
-                                  bool first,
-                                  int deltaBridge) {
+bool checkBothBridges(Map &map, DirectionalPath& path, bool alignTest, Tile current, Tile next, bool first, int deltaBridge) {
     return alignTest &&
-           (this->checkBridge(
-            path, Tile(next.X() - first, next.Y() - !first), deltaBridge == -2, current, next) ||
-            this->checkBridge(
-            path, Tile(next.X() + first, next.Y() + !first), deltaBridge == 2, current, next))
+           (checkBridge(map, path, Tile(next.X() - first, next.Y() - !first), deltaBridge == -2, current, next) ||
+            checkBridge(map, path, Tile(next.X() + first, next.Y() + !first), deltaBridge == 2, current, next))
 }
 
-bool PathFinder::checkBridge(vector<pair<Tile, DirectionUtils::Direction>>& path,
-                             Tile bridge,
-                             bool alignTest,
-                             Tile current,
-                             Tile next) {
-    if (alignTest && this->map.exist(bridge.X(), bridge.Y()) &&
-        this->map.getTile(bridge.X(), bridge.Y()).getThingOnMap() == ThingOnMap::Obstacle) {
-        path.push_back(
-        { this->map.getTile(bridge.X(), bridge.Y()), computeDirection(current, bridge) });
-        path.push_back({ this->map.getTile(next.X(), next.Y()), computeDirection(bridge, next) });
+bool checkBridge(Map &map, DirectionalPath& path, Tile bridge, bool alignTest, Tile current, Tile next) {
+    if (alignTest && map.exist(bridge.X(), bridge.Y()) &&
+        map.getTile(bridge.X(), bridge.Y()).getThingOnMap() == ThingOnMap::Obstacle) {
+        path.push_back({ map.getTile(bridge.X(), bridge.Y()), computeDirection(current, bridge) });
+        path.push_back({ map.getTile(next.X(), next.Y()), computeDirection(bridge, next) });
         return true;
     }
 
