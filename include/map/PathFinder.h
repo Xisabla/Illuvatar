@@ -14,6 +14,7 @@
 #include "map/DirectionUtils.h"
 #include "map/Map.h"
 #include "map/Tile.h"
+#include "geometry/Point.h"
 #include "wip.h"
 
 #include <algorithm>
@@ -37,7 +38,7 @@ namespace pathfinder {
 
   Path unlooper(Map& map, Path& refPath, Path& path, int pos = 1);
 
-  DirectionalPath straightener(Map& map, Path& refPath, DirectionalPath& path, Direction initialD, int pos = 0);
+  DirectionalPath straightener(Map& map, Path& refPath, DirectionalPath& path, directionutils::Direction initialD, int pos = 0);
 
   bool checkBothBridges(Map &map, DirectionalPath& path, bool alignTest, Tile current, Tile next, bool first, int deltaBridge);
 

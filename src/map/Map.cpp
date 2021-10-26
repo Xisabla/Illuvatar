@@ -63,7 +63,7 @@ void Map::sync() {
     this->gmap->repaint();
 }
 
-ThingOnMap Map::getThingOnTile(const int& x, const int& y, const std::set<Faction> minionAllies) const {
+ThingOnMap Map::getThingOnTile(const int& x, const int& y, const std::set<Faction> minionAllies) {
     if (!this->exists(Point(x, y))) return ThingOnMap::Void;
 
     Tile t = this->getTile(Point(x, y));
