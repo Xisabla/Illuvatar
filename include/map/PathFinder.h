@@ -35,15 +35,15 @@ namespace pathfinder {
 
   DirectionalPath computeShortestPath(unsigned int nbTile);
 
-  Path aStarGenerator(Map& map, Path& path, Tile current, Tile& target, Path& explored, Path& notExplored);
+  Path aStarGenerator(Map& map, Path& path, Tile& current, Tile& target, Path& explored, Path& notExplored);
 
   Path unlooper(Map& map, Path& refPath, Path& path, int pos = 1);
 
-  DirectionalPath straightener(Map& map, Path& refPath, DirectionalPath& path, directionutils::Direction initialD, int nbTile, int pos = 0);
+  DirectionalPath straightenerAndCutter(Map& map, Path& refPath, DirectionalPath& path, directionutils::Direction initialD, int nbTile, int pos = 0);
 
   bool checkBothBridges(Map &map, DirectionalPath& path, bool alignTest, Tile current, Tile next, bool first, int deltaBridge);
 
-  bool checkBridge(Map &map, DirectionalPath& path, Tile bridge, bool alignTest, Tile current, Tile next);
+  bool checkBridge(Map &map, DirectionalPath& path, Point bridge, bool alignTest, Tile current, Tile next);
 };
 
 #endif // ILLUVATAR_PathFinder_H

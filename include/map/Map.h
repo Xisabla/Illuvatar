@@ -73,7 +73,9 @@ class Map {
     QGameMap* GMap();
 
     ThingOnMap
-    getThingOnTile(int const& x, int const& y, std::set<Faction> const minionAllies = {});
+    getThingOnTile(const Point& p, std::set<Faction> const minionAllies = {});
+
+    Tile& jump(const Point& from, const Point& to);
 
     // - Setters -----------------------------------------------------------------------------
     /**

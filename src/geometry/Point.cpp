@@ -22,3 +22,5 @@ Point::Point(int x, int y): x(x), y(y) { }
 int Point::X() const { return x; }
 
 int Point::Y() const { return y; }
+
+Point Point::getPoint() { return Point(x, y); }

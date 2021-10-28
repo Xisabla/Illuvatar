@@ -63,10 +63,10 @@ void Map::sync() {
     this->gmap->repaint();
 }
 
-ThingOnMap Map::getThingOnTile(const int& x, const int& y, const std::set<Faction> minionAllies) {
-    if (!this->exists(Point(x, y))) return ThingOnMap::Void;
+ThingOnMap Map::getThingOnTile(const Point& p, const std::set<Faction> minionAllies) {
+    if (!this->exists(p)) return ThingOnMap::Void;
 
-    Tile t = this->getTile(Point(x, y));
+    Tile t = this->getTile(p);
 
     if (t.isObstacle()) return ThingOnMap::Obstacle;
 
@@ -74,4 +74,8 @@ ThingOnMap Map::getThingOnTile(const int& x, const int& y, const std::set<Factio
 
     return minionAllies.find(t.getOwner()) == minionAllies.end() ? ThingOnMap::Ennemy :
                                                                    ThingOnMap::Ally;
+}
+
+Tile& Map::jump(const Point& from, const Point& jump) {
+    return this->getTile(Point(from.X() + jump.X(), from.Y() + jump.Y()));
 }

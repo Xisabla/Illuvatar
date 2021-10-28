@@ -34,6 +34,8 @@ class Point {
      */
     [[nodiscard]] int Y() const;
 
+    Point getPoint();
+
     // - Operators ---------------------------------------------------------------------------
     inline bool operator==(const Point& p) const { return x == p.x && y == p.y; }
     
