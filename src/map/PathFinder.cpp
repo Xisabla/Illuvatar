@@ -15,7 +15,8 @@ DirectionalPath computeShortestPath(Map& map, Tile current, Tile& target, Direct
     Path tmp_result = aStarGenerator(map, generated, current, target, explored, notExplored);
     tmp_result = unlooper(map, tmp_result, unlooped);
     DirectionalPath result = straightener(map, tmp_result, straightened, initialD);
-    result.resize(min(static_cast<unsigned int>(result.size()), nbTile));
+    unsigned int size = result.size();//static_cast<unsigned int>(result.size())
+    result.resize(min(size, nbTile));
     return result;
 }
 
@@ -40,7 +41,6 @@ Path aStarGenerator(Map& map, Path& path, Tile current, Tile& target, Path& expl
             map.getThingOnTile(nextX, nextY) == ThingOnMap::Obstacle)
             continue;
 
-        // todo : verify from here
         Tile neighbor = map.getTile(Point(nextX, nextY));
         if (find(explored.begin(), explored.end(), neighbor) != explored.end())
             continue;
@@ -48,29 +48,28 @@ Path aStarGenerator(Map& map, Path& path, Tile current, Tile& target, Path& expl
         notExploredNeighbours.push_back(neighbor);
     }
 
+    Tile next = current;
     if (!notExploredNeighbours.empty()) {
         sort(
         notExploredNeighbours.begin(),
         notExploredNeighbours.end(),
-        [current] (Tile& a, Tile& b) { return a.distanceTo(current) < b.distanceTo(current); });
+        [&current] (Tile& a, Tile& b) { return a.distanceTo(current) > b.distanceTo(current); });
 
-        current = notExploredNeighbours[0];
-
-        reverse(notExploredNeighbours.begin(), notExploredNeighbours.end());
+        next = notExploredNeighbours.back();
         notExploredNeighbours.pop_back();
 
         move(notExploredNeighbours.begin(),
              notExploredNeighbours.end(),
              back_inserter(notExplored));
     } else if (!notExplored.empty()) {
-        current = notExplored.back();
+        next = notExplored.back();
         notExplored.pop_back();
     } else {
-        cout << "fucked up" << endl; //kill him ?
+        cout << "no solution - suicide?" << endl;
     }
 
-    path.push_back(current);
-    return pathfinder::aStarGenerator(map, path, current, target, explored, notExplored);
+    path.push_back(next);
+    return pathfinder::aStarGenerator(map, path, next, target, explored, notExplored);
 }
 
 Path unlooper(Map& map, Path& refPath, Path& path, int pos) {
@@ -86,19 +85,20 @@ Path unlooper(Map& map, Path& refPath, Path& path, int pos) {
         if (refPath[pos - 1].isNeighbours(tile)) {
             neighbors.push_back({ tile, i });
 
-            if (nbNeighs.count(tile)) {
-                neighbors[/*position de tile*/0].second++;
+            /*if (nbNeighs.count(tile)) {
+                neighbors[/*position de tile* /0].second++;
             }
             else {
                 neighbors.push_back({ tile, 1 });
-            }
+            }*/
             //add ajout au nbNeighs
         }
     }
 
     for (int i = neighbors.size() - 1; i >= 0; --i) {
         pair<Tile, int> neigh = neighbors[i];
-        if (nbNeighs[neigh.first] == 1) {
+        int nbNeigh = 0;// nbNeighs[neigh.first];
+        if (nbNeigh == 1) {
             pos = neigh.second;
             path.push_back(neigh.first);
             break;
@@ -112,7 +112,7 @@ DirectionalPath straightener(Map& map, Path& refPath, DirectionalPath& path, Dir
     if (pos + 4 == path.size()) {//vérifier ordre
         for (Path::iterator iter = refPath.end() - 4; iter < refPath.end(); ++iter) {
             Tile future = map.getTile(Point((*iter).X(), (*iter).Y()));
-            path.push_back({ future, computeDirection(path.back().first, *iter) });
+            path.push_back({ future, computeDirection(path.back().tile, *iter) });
         }
         refPath.clear();
         return path;
@@ -121,7 +121,7 @@ DirectionalPath straightener(Map& map, Path& refPath, DirectionalPath& path, Dir
     Tile current = refPath[pos];
     Tile next = refPath[pos + 4];
     Tile bridge = Tile(Point(0, 0));
-    Direction dir = path.empty() ? initialD : computeDirection(path.back().first, current);
+    Direction dir = path.empty() ? initialD : computeDirection(path.back().tile, current);
     path.push_back({ current, dir });
 
     if (checkBothBridges(map, path, current.X() == next.X(), current, next, false, current.Y() - next.Y()) ||

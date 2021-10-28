@@ -22,6 +22,7 @@
 #include <map>
 #include <vector>
 
+
 // TODO: Make PathFinder class a set of methods (ns: pathfinder)
 
 /**
@@ -29,8 +30,13 @@
  * @brief Representation of a tile on the map. Stores ownership and characters
  */
 namespace pathfinder {
+  typedef struct {
+    Tile tile = Tile(Point(-1, -1));
+    directionutils::Direction direction = directionutils::Direction::E;
+  } OrientedTile;
+
   typedef std::vector<Tile> Path;
-  typedef std::vector<std::pair<Tile, directionutils::Direction>> DirectionalPath;
+  typedef std::vector<OrientedTile> DirectionalPath;
 
   DirectionalPath computeShortestPath(unsigned int nbTile);
 
