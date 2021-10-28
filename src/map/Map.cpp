@@ -68,6 +68,8 @@ ThingOnMap Map::getThingOnTile(const int& x, const int& y, const std::set<Factio
 
     Tile t = this->getTile(Point(x, y));
 
+    if (t.isObstacle()) return ThingOnMap::Obstacle;
+
     if (t.belongsTo(NoFaction)) return ThingOnMap::Nothing;
 
     return minionAllies.find(t.getOwner()) == minionAllies.end() ? ThingOnMap::Ennemy :

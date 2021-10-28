@@ -25,6 +25,8 @@ Faction Tile::getOwner() { return this->owner; }
 
 bool Tile::belongsTo(Faction f) { return this->owner == f; }
 
+bool Tile::isObstacle() { return this->obstacle; }
+
 //  --------------------------------------------------------------------------------------
 //  Tile > SETTERS
 //  --------------------------------------------------------------------------------------
@@ -32,6 +34,10 @@ bool Tile::belongsTo(Faction f) { return this->owner == f; }
 void Tile::setOwner(Faction f) { this->owner = f; }
 
 void Tile::removeOwnership() { this->owner = NoFaction; }
+    
+void Tile::setObstacle() { this->obstacle = true; };
+
+void Tile::unsetObstacle() { this->obstacle = false; };
 
 //  --------------------------------------------------------------------------------------
 //  Tile > PUBLIC METHODS

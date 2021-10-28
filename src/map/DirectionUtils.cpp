@@ -3,6 +3,6 @@
 using namespace std;
 using namespace directionutils;
 
-Direction computeDirection(Tile &last, Tile &current) {
+Direction computeDirection(const Tile &last, const Tile &current) {
     return deltaDirection.at({ current.X() - last.X(), current.Y() - last.Y() });
 }

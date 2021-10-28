@@ -48,12 +48,18 @@ class Tile : public Point {
      */
     bool belongsTo(Faction f);
 
+    bool isObstacle();
+
     // - Setters -----------------------------------------------------------------------------
     /**
      * Sets the faction owning the Tile
      * @param f Faction to set ownership to
      */
     void setOwner(Faction f);
+    
+    void setObstacle();
+
+    void unsetObstacle();
 
     /**
      * Remove current faction ownership (set to NoFaction)
@@ -68,12 +74,16 @@ class Tile : public Point {
     // - Operators ---------------------------------------------------------------------------
     inline bool operator==(const Tile& t) const { return Point::operator==(t); }
 
+    inline bool operator<(const Tile& t) const { return Point::operator<(t); }
+
   private:
     // - Attributes --------------------------------------------------------------------------
     /**
      * @brief Faction that owns the Tile, can be set to NoFaction for unowned Tile
      */
     Faction owner;
+
+    bool obstacle = false;
 
     // TODO: Character
 };

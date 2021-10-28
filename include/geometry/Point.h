@@ -36,6 +36,8 @@ class Point {
 
     // - Operators ---------------------------------------------------------------------------
     inline bool operator==(const Point& p) const { return x == p.x && y == p.y; }
+    
+    inline bool operator<(const Point& p) const { return x < p.x || y < p.y; }
 
   protected:
     // - Attributes --------------------------------------------------------------------------

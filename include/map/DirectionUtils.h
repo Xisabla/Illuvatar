@@ -52,7 +52,7 @@ const std::map<std::pair<int, int>, Direction> deltaDirection = {
     { { -1, 0 }, Direction::W }, { { -1, -1 }, Direction::NW }
 };
 
-Direction computeDirection(Tile &last, Tile &current);
+Direction computeDirection(const Tile &last, const Tile &current);
 }; // namespace directionutils
 
 #endif // ILLUVATAR_DirectionUtils_H
