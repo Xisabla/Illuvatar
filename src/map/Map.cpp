@@ -9,6 +9,21 @@
 =========================================================================*/
 #include "map/Map.h"
 
+std::ostream& operator<<(std::ostream& out, const ThingOnTile value) {
+    const char* s = 0;
+#define PROCESS_VAL(p) case(p): s = #p; break;
+    switch(value){
+        PROCESS_VAL(ThingOnTile::Void);
+        PROCESS_VAL(ThingOnTile::Nothing);
+        PROCESS_VAL(ThingOnTile::Obstacle);
+        PROCESS_VAL(ThingOnTile::Ennemy);
+        PROCESS_VAL(ThingOnTile::Ally);
+    }
+#undef PROCESS_VAL
+
+    return out << s;
+}
+
 //  --------------------------------------------------------------------------------------
 //  Map
 //  --------------------------------------------------------------------------------------
@@ -63,21 +78,21 @@ void Map::sync() {
     this->gmap->repaint();
 }
 
-ThingOnMap Map::getThingOnTile(const Point& p, const std::set<Faction> minionAllies) {
-    if (!this->exists(p)) return ThingOnMap::Void;
+ThingOnTile Map::getThingOnTile(const Point& p, const std::set<Faction> minionAllies) {
+    if (!this->exists(p)) return ThingOnTile::Void;
 
     Tile t = this->getTile(p);
 
-    if (t.isObstacle()) return ThingOnMap::Obstacle;
+    if (t.isObstacle()) return ThingOnTile::Obstacle;
 
-    if (t.belongsTo(NoFaction)) return ThingOnMap::Nothing;
+    if (t.belongsTo(NoFaction)) return ThingOnTile::Nothing;
 
-    return minionAllies.find(t.getOwner()) == minionAllies.end() ? ThingOnMap::Ennemy :
-                                                                   ThingOnMap::Ally;
+    return minionAllies.find(t.getOwner()) == minionAllies.end() ? ThingOnTile::Ennemy :
+                                                                   ThingOnTile::Ally;
 }
 
-Tile& Map::project(const Point& from, const Point& jump) {
-    return this->getTile(Point(from.X() + jump.X(), from.Y() + jump.Y()));
+Point Map::project(const Point& from, const Point& jump) {
+    return Point(from.X() + jump.X(), from.Y() + jump.Y());
 }
 
 void Map::jump(const Faction faction, Tile& from, Tile& to) {
@@ -85,6 +100,13 @@ void Map::jump(const Faction faction, Tile& from, Tile& to) {
     to.setOwner(faction);
 }
 
-Tile& Map::computeLastPosition(const Tile &tile, const directionutils::Direction &direction) {
-    return this->project(tile, directionutils::computeLastJump(direction));
+Tile& Map::computeLastPosition(const Point &point, const directionutils::Direction &direction) {
+    Point lastCoords = this->project(point, directionutils::computeLastJump(direction));
+
+    if (!this->exists(lastCoords)) {
+        std::cout << "error at Map::computeLastPosition(" << point << ", ...)" << std::endl;
+        exit(1);
+    }
+
+    return this->getTile(lastCoords);
 }

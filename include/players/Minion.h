@@ -57,9 +57,9 @@ class Minion : public Character {
 
     pathfinder::DirectionalPath findMaster(int const nbTile);
 
-    ThingOnMap checkDirection(Tile &tile, directionutils::Direction &direction);
+    ThingOnTile checkDirection(Tile &tile, directionutils::Direction &direction);
 
-    std::vector<ThingOnMap> checkAround();
+    std::vector<ThingOnTile> checkAround();
 };
 
 #endif // ILLUVATAR_MINION_H

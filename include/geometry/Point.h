@@ -11,6 +11,8 @@
 #ifndef ILLUVATAR_POINT_H
 #define ILLUVATAR_POINT_H
 
+#include <iostream>
+
 /**
  * @class Point
  * @brief Representation of a point on the map
@@ -40,6 +42,8 @@ class Point {
     inline bool operator==(const Point& p) const { return x == p.x && y == p.y; }
     
     inline bool operator<(const Point& p) const { return x < p.x || y < p.y; }
+
+    inline friend std::ostream& operator<<(std::ostream& out, const Point& p) { return out << p.X() << " " << p.Y(); }
 
   protected:
     // - Attributes --------------------------------------------------------------------------

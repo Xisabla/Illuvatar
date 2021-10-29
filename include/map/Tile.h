@@ -19,6 +19,13 @@
 #include <iostream>
 
 /**
+ * @enum Faction
+ * @brief Available Factions in the simulation
+ */
+enum Faction { Eldars, Valars, Dragons, Werewolves, NoFaction };
+std::ostream& operator<<(std::ostream& out, const Faction value);
+
+/**
  * @class Tile
  * @brief Representation of a tile on the map. Stores ownership and characters
  */
@@ -77,7 +84,7 @@ class Tile : public Point {
 
     inline bool operator<(const Tile& t) const { return Point::operator<(t); }
 
-    inline friend std::ostream& operator<<(std::ostream& out, const Tile& t) { return out << t.X() << " " << t.Y(); }
+    inline friend std::ostream& operator<<(std::ostream& out, Tile& t) { return out << t.getPoint() << " " << t.getOwner(); }
 
   private:
     // - Attributes --------------------------------------------------------------------------

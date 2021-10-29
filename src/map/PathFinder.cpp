@@ -6,24 +6,24 @@ using namespace pathfinder;
 
 
 DirectionalPath pathfinder::computeShortestPath(Map& map, Tile current, Tile& target, Direction initialD, unsigned int nbTile) {
-    Path generated = { current };
+    if (!map.exists(current.getPoint()) || !map.exists(target.getPoint())) {
+        cout << "error at pathfinder::computeShortestPath(...," << current << ", " << target << ", ...);" << endl;
+        exit(1);
+    }
+
+    Path generated = {};
     Path explored = {};
     Path notExplored = {};
     Path tmp_result = aStarGenerator(map, generated, current, target, explored, notExplored);
-    cout << "step1 done : " << tmp_result.size() << endl;
-    for (Tile t : tmp_result) cout << "\t" << t << endl;
 
     Path unlooped = {};
     tmp_result = unlooper(map, tmp_result, unlooped);
-    cout << "step2 done : " << tmp_result.size() << endl;
-    for (Tile t : tmp_result) cout << "\t" << t << endl;
 
     DirectionalPath straightened = {};
     return straightenerAndCutter(map, tmp_result, straightened, computeDirection(current, unlooped[0]), nbTile);
 }
 
 Path pathfinder::aStarGenerator(Map& map, Path& path, Tile& current, Tile& target, Path& explored, Path& notExplored) {
-    // cout << endl << "compute move " << path.size() << " : current is " << current << endl;
     if (current == target) {
         explored.clear();
         notExplored.clear();
@@ -34,21 +34,13 @@ Path pathfinder::aStarGenerator(Map& map, Path& path, Tile& current, Tile& targe
 
     vector<Tile> notExploredNeighbours = {};
     for (Direction d = Direction::DIRECTION_FIRST; d <= Direction::DIRECTION_LAST; d = Direction(static_cast<int>(d) + 1)) {
-        // cout << d << " : ";
-        Tile neighbor = map.project(current, nextDirection.at(d));
+        Point neighborCoords = map.project(current, nextDirection.at(d));
+        ThingOnTile content = map.getThingOnTile(neighborCoords);
+        if (content == ThingOnTile::Void || content == ThingOnTile::Obstacle) continue;
 
-        ThingOnMap content = map.getThingOnTile(neighbor.getPoint());
-        if (content == ThingOnMap::Void ||
-            content == ThingOnMap::Obstacle) {
-            // cout << "not visitable" << endl;
-            continue;
-        }
-        if (find(explored.begin(), explored.end(), neighbor) != explored.end()) {
-            // cout << "already visited" << endl;
-            continue;
-        }
+        Tile neighbor = map.getTile(neighborCoords);
+        if (find(explored.begin(), explored.end(), neighbor) != explored.end()) continue;
 
-        // cout << "visitable" << endl;
         notExploredNeighbours.push_back(neighbor);
     }
 
@@ -58,11 +50,6 @@ Path pathfinder::aStarGenerator(Map& map, Path& path, Tile& current, Tile& targe
         notExploredNeighbours.begin(),
         notExploredNeighbours.end(),
         [&target] (Tile& a, Tile& b) { return target.distanceTo(a) > target.distanceTo(b); });
-
-        // cout << "liste des voisins, du moins au plus sexy : "<< endl;
-        // for (Tile t : notExploredNeighbours) {
-        //     cout << "\t" << t << " " << t.distanceTo(target) << endl;
-        // }
 
         next = notExploredNeighbours.back();
         notExploredNeighbours.pop_back();
@@ -75,22 +62,25 @@ Path pathfinder::aStarGenerator(Map& map, Path& path, Tile& current, Tile& targe
         notExplored.pop_back();
     } else {
         cout << "no solution - suicide?" << endl;
+        explored.clear();
+        notExplored.clear();
+        return path;
     }
-
-    // cout << "\tselect " << computeDirection(current, next) << endl;
 
     path.push_back(next);
     return pathfinder::aStarGenerator(map, path, next, target, explored, notExplored);
 }
 
 Path pathfinder::unlooper(Map& map, Path& refPath, Path& path, unsigned int pos) {
+    Tile current = refPath[pos - 1];
+    path.push_back(current);
+
     if (pos == refPath.size()) {
         refPath.clear();
         return path;
     }
 
     //liste le nombre d'occurence de chaque voisins avec leur position
-    Tile current = refPath[pos - 1];
     vector<pair<Tile, int>> neighborsPos = {};
     std::map<Tile, int> neighborsOccurence = {};
     for (int i = pos; i < refPath.size(); ++i) {
@@ -112,7 +102,7 @@ Path pathfinder::unlooper(Map& map, Path& refPath, Path& path, unsigned int pos)
         pair<Tile, int> neighbor = neighborsPos[i];
         if (neighborsOccurence.at(neighbor.first) == 1) {
             pos = neighbor.second;
-            path.push_back(neighbor.first);
+            // path.push_back(neighbor.first);
             break;
         }
     }
@@ -161,8 +151,8 @@ bool pathfinder::checkBothBridges(Map &map, DirectionalPath& path, bool alignTes
 bool pathfinder::checkBridge(Map &map, DirectionalPath& path, Point bridge, bool alignTest, Tile current, Tile next) {
     if (!alignTest) return false;
 
-    ThingOnMap content = map.getThingOnTile(bridge);
-    if (content == ThingOnMap::Void || content == ThingOnMap::Obstacle) return false;
+    ThingOnTile content = map.getThingOnTile(bridge);
+    if (content == ThingOnTile::Void || content == ThingOnTile::Obstacle) return false;
 
     Tile bridgeTile = map.getTile(bridge);
     path.push_back({ bridgeTile, computeDirection(current, bridgeTile) });

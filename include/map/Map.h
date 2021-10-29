@@ -22,6 +22,9 @@
 #include <utility>
 #include <vector>
 
+enum ThingOnTile { Void, Nothing, Obstacle, Ennemy, Ally };
+std::ostream& operator<<(std::ostream& out, const ThingOnTile value);
+
 /**
  * @class Map
  * @brief Game map representation
@@ -73,14 +76,14 @@ class Map {
      */
     QGameMap* GMap();
 
-    ThingOnMap
+    ThingOnTile
     getThingOnTile(const Point& p, std::set<Faction> const minionAllies = {});
 
-    Tile& project(const Point& from, const Point& jump);
+    Point project(const Point& from, const Point& jump);
 
     void jump(const Faction faction, Tile& from, Tile& to);
 
-    Tile& computeLastPosition(const Tile &tile, const directionutils::Direction &direction);
+    Tile& computeLastPosition(const Point &point, const directionutils::Direction &direction);
 
     // - Setters -----------------------------------------------------------------------------
     /**

@@ -11,6 +11,8 @@
 #ifndef ILLUVATAR_WIP_H
 #define ILLUVATAR_WIP_H
 
+#include <iostream>
+
 // <--- Temporary stuff that will get included later
 /**
  * @enum AllianceFactions
@@ -18,15 +20,8 @@
  */
 enum AllianceFactions { Evil, Good, NoAlliance };
 
-/**
- * @enum Faction
- * @brief Available Factions in the simulation
- */
-enum Faction { Eldars, Valars, Dragons, Werewolves, NoFaction };
+
 // Temporary stuff that will get included later --->
-
-
-enum ThingOnMap { Void, Nothing, Obstacle, Ennemy, Ally };
 
 
 #endif // ILLUVATAR_WIP_H
