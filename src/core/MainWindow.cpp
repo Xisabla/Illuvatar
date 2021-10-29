@@ -9,7 +9,20 @@
 =========================================================================*/
 #include "core/MainWindow.h"
 
+#include <QPushButton>
+#include <QVBoxLayout>
+
 // <-- Temporary object for demo
+class RunnerTab : public QWidget {
+  public:
+    RunnerTab(Map map) {
+        this->setLayout(new QVBoxLayout);
+
+        this->layout()->addWidget(new QPushButton("Toggle coordinates"));
+        this->layout()->addWidget(map.GMap());
+    }
+};
+
 class MyTab : public QWidget {
   public:
     MyTab(int width, int height): width(width), height(height) { }
@@ -37,7 +50,7 @@ MainWindow::MainWindow(Map map) {
     // Tabs
     auto* tabWidget = new QTabWidget;
 
-    tabWidget->addTab(map.GMap(), tr("Map"));
+    tabWidget->addTab(new RunnerTab(map), tr("Runner"));
     tabWidget->addTab(new MyTab(200, 200), tr("Second tab"));
 
     this->setCentralWidget(tabWidget);
