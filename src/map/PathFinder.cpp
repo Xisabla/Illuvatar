@@ -10,15 +10,20 @@ DirectionalPath pathfinder::computeShortestPath(Map& map, Tile current, Tile& ta
     Path explored = {};
     Path notExplored = {};
     Path tmp_result = aStarGenerator(map, generated, current, target, explored, notExplored);
+    cout << "step1 done : " << tmp_result.size() << endl;
+    for (Tile t : tmp_result) cout << "\t" << t << endl;
 
     Path unlooped = {};
     tmp_result = unlooper(map, tmp_result, unlooped);
+    cout << "step2 done : " << tmp_result.size() << endl;
+    for (Tile t : tmp_result) cout << "\t" << t << endl;
 
     DirectionalPath straightened = {};
     return straightenerAndCutter(map, tmp_result, straightened, initialD, nbTile);
 }
 
 Path pathfinder::aStarGenerator(Map& map, Path& path, Tile& current, Tile& target, Path& explored, Path& notExplored) {
+    // cout << endl << "compute move " << path.size() << " : current is " << current << endl;
     if (current == target) {
         explored.clear();
         notExplored.clear();
@@ -28,16 +33,22 @@ Path pathfinder::aStarGenerator(Map& map, Path& path, Tile& current, Tile& targe
     explored.push_back(current);
 
     vector<Tile> notExploredNeighbours = {};
-    for (Direction d = Direction::DIRECTION_FIRST; d < Direction::DIRECTION_LAST;
-         d = Direction(static_cast<int>(d) + 1)) {
+    for (Direction d = Direction::DIRECTION_FIRST; d <= Direction::DIRECTION_LAST; d = Direction(static_cast<int>(d) + 1)) {
+        // cout << d << " : ";
         Tile neighbor = map.project(current, nextDirection.at(d));
 
         ThingOnMap content = map.getThingOnTile(neighbor.getPoint());
         if (content == ThingOnMap::Void ||
-            content == ThingOnMap::Obstacle ||
-            find(explored.begin(), explored.end(), neighbor) != explored.end())
+            content == ThingOnMap::Obstacle) {
+            // cout << "not visitable" << endl;
             continue;
+        }
+        if (find(explored.begin(), explored.end(), neighbor) != explored.end()) {
+            // cout << "already visited" << endl;
+            continue;
+        }
 
+        // cout << "visitable" << endl;
         notExploredNeighbours.push_back(neighbor);
     }
 
@@ -46,7 +57,12 @@ Path pathfinder::aStarGenerator(Map& map, Path& path, Tile& current, Tile& targe
         sort(
         notExploredNeighbours.begin(),
         notExploredNeighbours.end(),
-        [&current] (Tile& a, Tile& b) { return a.distanceTo(current) > b.distanceTo(current); });
+        [&target] (Tile& a, Tile& b) { return target.distanceTo(a) > target.distanceTo(b); });
+
+        // cout << "liste des voisins, du moins au plus sexy : "<< endl;
+        // for (Tile t : notExploredNeighbours) {
+        //     cout << "\t" << t << " " << t.distanceTo(target) << endl;
+        // }
 
         next = notExploredNeighbours.back();
         notExploredNeighbours.pop_back();
@@ -60,6 +76,8 @@ Path pathfinder::aStarGenerator(Map& map, Path& path, Tile& current, Tile& targe
     } else {
         cout << "no solution - suicide?" << endl;
     }
+
+    // cout << "\tselect " << computeDirection(current, next) << endl;
 
     path.push_back(next);
     return pathfinder::aStarGenerator(map, path, next, target, explored, notExplored);
@@ -99,7 +117,7 @@ Path pathfinder::unlooper(Map& map, Path& refPath, Path& path, int pos) {
         }
     }
 
-    return pathfinder::unlooper(map, refPath, path, pos);
+    return pathfinder::unlooper(map, refPath, path, pos + 1);
 }
 
 DirectionalPath pathfinder::straightenerAndCutter(Map& map, Path& refPath, DirectionalPath& path, Direction initialD, int nbTile, int pos) {

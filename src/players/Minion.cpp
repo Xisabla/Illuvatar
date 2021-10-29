@@ -88,7 +88,7 @@ ThingOnMap Minion::checkDirection(Tile &tile, Direction &direction) {
 vector<ThingOnMap> Minion::checkAround() {
     vector<ThingOnMap> things = {};
 
-    for (Direction d = Direction::DIRECTION_FIRST; d < Direction::DIRECTION_LAST;
+    for (Direction d = Direction::DIRECTION_FIRST; d <= Direction::DIRECTION_LAST;
          d = Direction(static_cast<int>(d) + 1)) { // get all enum values
         ThingOnMap thing = this->checkDirection(this->tile, d);
         if (thing == ThingOnMap::Ally || thing == ThingOnMap::Ennemy) things.push_back(thing);

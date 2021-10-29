@@ -16,6 +16,7 @@
 
 #include <cmath>
 #include <utility>
+#include <iostream>
 
 /**
  * @class Tile
@@ -75,6 +76,8 @@ class Tile : public Point {
     inline bool operator==(const Tile& t) const { return Point::operator==(t); }
 
     inline bool operator<(const Tile& t) const { return Point::operator<(t); }
+
+    inline friend std::ostream& operator<<(std::ostream& out, const Tile& t) { return out << t.X() << " " << t.Y(); }
 
   private:
     // - Attributes --------------------------------------------------------------------------
