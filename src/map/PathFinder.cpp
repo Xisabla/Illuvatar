@@ -127,10 +127,11 @@ DirectionalPath pathfinder::straightenerAndCutter(Map& map, Path& refPath, Direc
     }
 
     //si reste moins de 5 points, ne peut pas y avoir de pont : retourne le restant dans la limite du nombre de cases
-    if (pos + 4 == refPath.size()) {
-        int newSize = path.size() + 4;
+    int deltaSize = refPath.size() - pos;
+    if (deltaSize <= 4) {
+        int newSize = path.size() + deltaSize;
         Path::iterator endIt = refPath.end() - (newSize > nbTile ? newSize - nbTile : 0);
-        for (Path::iterator iter = refPath.end() - 4; iter < endIt; ++iter) {
+        for (Path::iterator iter = refPath.end() - deltaSize; iter < endIt; ++iter) {
             path.push_back({ *iter, path.empty() ? initialD : computeDirection(path.back().first, *iter) });
         }
         refPath.clear();
