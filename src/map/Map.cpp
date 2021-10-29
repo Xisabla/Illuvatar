@@ -84,3 +84,7 @@ void Map::jump(const Faction faction, Tile& from, Tile& to) {
     from.removeOwnership();
     to.setOwner(faction);
 }
+
+Tile& Map::computeLastPosition(const Tile &tile, const directionutils::Direction &direction) {
+    return this->project(tile, directionutils::computeLastJump(direction));
+}

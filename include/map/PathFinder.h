@@ -37,9 +37,9 @@ namespace pathfinder {
 
   Path aStarGenerator(Map& map, Path& path, Tile& current, Tile& target, Path& explored, Path& notExplored);
 
-  Path unlooper(Map& map, Path& refPath, Path& path, int pos = 1);
+  Path unlooper(Map& map, Path& refPath, Path& path, unsigned int pos = 1);
 
-  DirectionalPath straightenerAndCutter(Map& map, Path& refPath, DirectionalPath& path, directionutils::Direction initialD, int nbTile, int pos = 0);
+  DirectionalPath straightenerAndCutter(Map& map, Path& refPath, DirectionalPath& path, directionutils::Direction initialD, unsigned int nbTile, unsigned int pos = 0);
 
   bool checkBothBridges(Map &map, DirectionalPath& path, bool alignTest, Tile current, Tile next, bool first, int deltaBridge);
 

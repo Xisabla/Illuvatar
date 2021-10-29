@@ -14,6 +14,7 @@
 #include "geometry/Rectangle.h"
 #include "map/Tile.h"
 #include "map/TileSet.h"
+#include "map/DirectionUtils.h"
 #include "qt/QGameMap.h"
 #include "wip.h"
 
@@ -78,6 +79,8 @@ class Map {
     Tile& project(const Point& from, const Point& jump);
 
     void jump(const Faction faction, Tile& from, Tile& to);
+
+    Tile& computeLastPosition(const Tile &tile, const directionutils::Direction &direction);
 
     // - Setters -----------------------------------------------------------------------------
     /**

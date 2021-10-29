@@ -30,3 +30,7 @@ Direction directionutils::computeDirection(const Tile &last, const Tile &current
     }
     return deltaDirection.at({deltaX, deltaY});
 }
+
+Point directionutils::computeLastJump(const Direction &direction) {
+    return nextDirection.at(oppositeDirection.at(direction));
+}

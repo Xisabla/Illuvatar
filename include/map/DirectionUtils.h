@@ -59,6 +59,7 @@ const std::map<std::pair<int, int>, Direction> deltaDirection = {
 };
 
 Direction computeDirection(const Tile &last, const Tile &current);
+Point computeLastJump(const Direction &direction);
 }; // namespace directionutils
 
 #endif // ILLUVATAR_DirectionUtils_H

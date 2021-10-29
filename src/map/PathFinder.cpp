@@ -6,7 +6,7 @@ using namespace pathfinder;
 
 
 DirectionalPath pathfinder::computeShortestPath(Map& map, Tile current, Tile& target, Direction initialD, unsigned int nbTile) {
-    Path generated = {};
+    Path generated = { current };
     Path explored = {};
     Path notExplored = {};
     Path tmp_result = aStarGenerator(map, generated, current, target, explored, notExplored);
@@ -19,7 +19,7 @@ DirectionalPath pathfinder::computeShortestPath(Map& map, Tile current, Tile& ta
     for (Tile t : tmp_result) cout << "\t" << t << endl;
 
     DirectionalPath straightened = {};
-    return straightenerAndCutter(map, tmp_result, straightened, initialD, nbTile);
+    return straightenerAndCutter(map, tmp_result, straightened, computeDirection(current, unlooped[0]), nbTile);
 }
 
 Path pathfinder::aStarGenerator(Map& map, Path& path, Tile& current, Tile& target, Path& explored, Path& notExplored) {
@@ -83,7 +83,7 @@ Path pathfinder::aStarGenerator(Map& map, Path& path, Tile& current, Tile& targe
     return pathfinder::aStarGenerator(map, path, next, target, explored, notExplored);
 }
 
-Path pathfinder::unlooper(Map& map, Path& refPath, Path& path, int pos) {
+Path pathfinder::unlooper(Map& map, Path& refPath, Path& path, unsigned int pos) {
     if (pos == refPath.size()) {
         refPath.clear();
         return path;
@@ -120,15 +120,18 @@ Path pathfinder::unlooper(Map& map, Path& refPath, Path& path, int pos) {
     return pathfinder::unlooper(map, refPath, path, pos + 1);
 }
 
-DirectionalPath pathfinder::straightenerAndCutter(Map& map, Path& refPath, DirectionalPath& path, Direction initialD, int nbTile, int pos) {
-    if (path.size() == nbTile) return path;
+DirectionalPath pathfinder::straightenerAndCutter(Map& map, Path& refPath, DirectionalPath& path, Direction initialD, unsigned int nbTile, unsigned int pos) {
+    if (path.size() == nbTile) {
+        refPath.clear();
+        return path;
+    }
 
     //si reste moins de 5 points, ne peut pas y avoir de pont : retourne le restant dans la limite du nombre de cases
     if (pos + 4 == refPath.size()) {
         int newSize = path.size() + 4;
         Path::iterator endIt = refPath.end() - (newSize > nbTile ? newSize - nbTile : 0);
         for (Path::iterator iter = refPath.end() - 4; iter < endIt; ++iter) {
-            path.push_back({ *iter, computeDirection(path.back().first, *iter) });
+            path.push_back({ *iter, path.empty() ? initialD : computeDirection(path.back().first, *iter) });
         }
         refPath.clear();
         return path;
@@ -136,16 +139,16 @@ DirectionalPath pathfinder::straightenerAndCutter(Map& map, Path& refPath, Direc
 
     Tile current = refPath[pos];
     Tile next = refPath[pos + 4];
-    Tile last = path.empty() ? map.project(current, nextDirection.at(oppositeDirection.at(initialD))) : path.back().first;
+    Tile last = path.empty() ? map.computeLastPosition(current, initialD) : path.back().first;
     Direction dir = computeDirection(last, current);
     path.push_back({ current, dir });
 
     if (checkBothBridges(map, path, current.X() == next.X(), current, next, false, current.Y() - next.Y()) ||
         checkBothBridges(map, path, current.Y() == next.Y(), current, next, true, current.X() - next.X())) {
-        return pathfinder::straightenerAndCutter(map, refPath, path, initialD, pos + 5);
+        return pathfinder::straightenerAndCutter(map, refPath, path, initialD, nbTile, pos + 5);
     }
 
-    return pathfinder::straightenerAndCutter(map, refPath, path, initialD, pos + 1);
+    return pathfinder::straightenerAndCutter(map, refPath, path, initialD, nbTile, pos + 1);
 }
 
 bool pathfinder::checkBothBridges(Map &map, DirectionalPath& path, bool alignTest, Tile current, Tile next, bool first, int deltaBridge) {
