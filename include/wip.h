@@ -13,10 +13,10 @@
 
 // <--- Temporary stuff that will get included later
 /**
- * @enum Alliance
+ * @enum AllianceFactions
  * @brief Available Alliances between factions
  */
-enum Alliance { Evil, Good, NoAlliance };
+enum AllianceFactions { Evil, Good, NoAlliance };
 
 /**
  * @enum Faction

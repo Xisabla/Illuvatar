@@ -15,14 +15,15 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #include "map/Map.h"
 #include "map/PathFinder.h"
 #include "map/Tile.h"
-#include "model/playable/Master.h"
+#include "players/Master.h"
 #include "wip.h"
 
 #include <map>
 #include <set>
 #include <vector>
 
-class Minion {
+class Minion : public Character {
+  /*
   public:
     void move();
 
@@ -56,6 +57,7 @@ class Minion {
     pathfinder::DirectionalPath FindMaster(int const nbTile);
 
     void interactsWithSurroundings();
+    */
 };
 
 #endif // ILLUVATAR_MINION_H

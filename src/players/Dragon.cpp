@@ -1,21 +1,12 @@
 /*=========================================================================
 
 Project:   Illuvatar
-File:      Horde.h
+File:      Dragon.cpp
 
 Copyright (c) 2021 - All rights reserved
 Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 =========================================================================*/
-#ifndef ILLUVATAR_HORDE_H
-#define ILLUVATAR_HORDE_H
+#include "players/Dragon.h"
 
-#include "Alliance.h"
-#include "Minion.h"
-
-class Horde : public Minion {
-    void Meet(Horde hordeMinion);
-    void Meet(Alliance allianceMinion);
-};
-
-#endif // ILLUVATAR_HORDE_H
+using namespace std;

@@ -1,15 +1,23 @@
 /*=========================================================================
 
 Project:   Illuvatar
-File:      Vala.h
+File:      Alliance.h
 
 Copyright (c) 2021 - All rights reserved
 Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 =========================================================================*/
-#ifndef ILLUVATAR_VALA_H
-#define ILLUVATAR_VALA_H
+#ifndef ILLUVATAR_ALLIANCE_H
+#define ILLUVATAR_ALLIANCE_H
 
-class Vala { };
+#include "players/Minion.h"
+#include "players/Horde.h"
 
-#endif // ILLUVATAR_VALA_H
+class Horde;
+
+class Alliance : public Minion {
+    void Meet(Horde hordeMinion);
+    void Meet(Alliance allianceMinion);
+};
+
+#endif // ILLUVATAR_ALLIANCE_H

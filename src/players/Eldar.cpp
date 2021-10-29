@@ -1,15 +1,12 @@
 /*=========================================================================
 
 Project:   Illuvatar
-File:      Werewolf.h
+File:      Eldar.cpp
 
 Copyright (c) 2021 - All rights reserved
 Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 =========================================================================*/
-#ifndef ILLUVATAR_WEREWOLF_H
-#define ILLUVATAR_WEREWOLF_H
+#include "players/Eldar.h"
 
-class Werewolf { };
-
-#endif // ILLUVATAR_WEREWOLF_H
+using namespace std;

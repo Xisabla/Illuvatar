@@ -10,8 +10,10 @@
 #ifndef ILLUVATAR_MASTER_H
 #define ILLUVATAR_MASTER_H
 
-#include "model/abstract/Character.h"
-#include "model/abstract/Minion.h"
+#include "players/Character.h"
+#include "Players/Minion.h"
+
+class Minion;
 
 class Master : public Character {
   public:

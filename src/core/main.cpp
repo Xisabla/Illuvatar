@@ -20,8 +20,8 @@ int main(int argc, char* argv[]) {
 
     // Maps tiles (demo)
     TileSet tiles = TileSet::join({ generators::disk(5, Point(10, 10)),
-                                    generators::disk(2.8, Point(6, 6), Werewolves),
-                                    generators::disk(2.8, Point(14, 14), Valars),
+                                    generators::disk(2.8, Point(6, 6), Faction::Werewolves),
+                                    generators::disk(2.8, Point(14, 14), Faction::Valars),
                                     generators::disk(2.8, Point(6, 14), Eldars),
                                     generators::disk(2.8, Point(14, 6), Dragons) },
                                   true);

@@ -42,15 +42,15 @@ set(SOURCES
         include/map/PathFinder.h src/map/PathFinder.cpp
         include/map/Tile.h src/map/Tile.cpp
         include/map/TileSet.h src/map/TileSet.cpp
-        # include/model/abstract/Minion.h src/Model/Abstract/Minion.cpp
-        # include/model/abstract/Alliance.h src/Model/Abstract/Alliance.cpp
-        # include/model/abstract/Character.h src/Model/Abstract/Character.cpp
-        # include/model/abstract/Horde.h src/Model/Abstract/Horde.cpp
-        # include/model/playable/Dragon.h src/Model/Playable/Dragon.cpp
-        # include/model/playable/Eldar.h src/Model/Playable/Eldar.cpp
-        # include/model/playable/Master.h src/Model/Playable/Master.cpp
-        # include/model/playable/Vala.h src/Model/Playable/Vala.cpp
-        # include/model/playable/Werewolf.h src/Model/Playable/Werewolf.cpp
+        include/players/Character.h src/players/Character.cpp
+        include/players/Master.h src/players/Master.cpp
+        include/players/Minion.h src/players/Minion.cpp
+        include/players/Alliance.h src/players/Alliance.cpp
+        include/players/Horde.h src/players/Horde.cpp
+        include/players/Eldar.h src/players/Eldar.cpp
+        include/players/Valar.h src/players/Valar.cpp
+        include/players/Dragon.h src/players/Dragon.cpp
+        include/players/Werewolf.h src/players/Werewolf.cpp
         include/qt/QGameMap.h src/qt/QGameMap.cpp
         include/wip.h
         src/core/main.cpp

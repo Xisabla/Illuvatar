@@ -1,15 +1,17 @@
 /*=========================================================================
 
 Project:   Illuvatar
-File:      Dragon.h
+File:      Valar.h
 
 Copyright (c) 2021 - All rights reserved
 Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 =========================================================================*/
-#ifndef ILLUVATAR_DRAGON_H
-#define ILLUVATAR_DRAGON_H
+#ifndef ILLUVATAR_VALAR_H
+#define ILLUVATAR_VALAR_H
 
-class Dragon { };
+#include "players/Alliance.h"
 
-#endif // ILLUVATAR_DRAGON_H
+class Valar: public Alliance { };
+
+#endif // ILLUVATAR_VALAR_H

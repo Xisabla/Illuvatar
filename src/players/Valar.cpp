@@ -1,15 +1,12 @@
 /*=========================================================================
 
 Project:   Illuvatar
-File:      Eldar.h
+File:      Vala.cpp
 
 Copyright (c) 2021 - All rights reserved
 Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 =========================================================================*/
-#ifndef ILLUVATAR_ELDAR_H
-#define ILLUVATAR_ELDAR_H
+#include "players/Valar.h"
 
-class Eldar { };
-
-#endif // ILLUVATAR_ELDAR_H
+using namespace std;

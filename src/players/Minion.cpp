@@ -1,4 +1,7 @@
-#include "model/abstract/Minion.h"
+#include "players/Minion.h"
+
+/*
+
 
 using namespace std;
 using namespace directionutils;
@@ -105,3 +108,5 @@ void Minion::rollDice() { }
 void Minion::fight(Minion& minion) { }
 
 void Minion::exchange(Minion& minion) { }
+
+*/

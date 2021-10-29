@@ -1,12 +1,17 @@
 /*=========================================================================
 
 Project:   Illuvatar
-File:      Dragon.cpp
+File:      Werewolf.h
 
 Copyright (c) 2021 - All rights reserved
 Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 =========================================================================*/
-#include "model/playable/Dragon.h"
+#ifndef ILLUVATAR_WEREWOLF_H
+#define ILLUVATAR_WEREWOLF_H
 
-using namespace std;
+#include "players/Horde.h"
+
+class Werewolf: public Horde { };
+
+#endif // ILLUVATAR_WEREWOLF_H

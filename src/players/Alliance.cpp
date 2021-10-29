@@ -1,15 +1,15 @@
 /*=========================================================================
 
 Project:   Illuvatar
-File:      Horde.cpp
+File:      Alliance.cpp
 
 Copyright (c) 2021 - All rights reserved
 Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 =========================================================================*/
-#include "model/abstract/Horde.h"
+#include "players/Alliance.h"
 
 using namespace std;
 
-void Horde::Meet(Horde hordeMinion) { }
-void Horde::Meet(Alliance allianceMinion) { }
+void Alliance::Meet(Horde hordeMinion) { }
+void Alliance::Meet(Alliance allianceMinion) { }
