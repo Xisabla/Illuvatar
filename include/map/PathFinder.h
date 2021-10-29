@@ -33,7 +33,7 @@ namespace pathfinder {
   typedef std::vector<Tile> Path;
   typedef std::vector<std::pair<Tile, directionutils::Direction>> DirectionalPath;
 
-  DirectionalPath computeShortestPath(unsigned int nbTile);
+  DirectionalPath computeShortestPath(Map& map, Tile current, Tile& target, directionutils::Direction initialD, unsigned int nbTile);
 
   Path aStarGenerator(Map& map, Path& path, Tile& current, Tile& target, Path& explored, Path& notExplored);
 

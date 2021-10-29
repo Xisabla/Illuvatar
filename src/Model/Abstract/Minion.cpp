@@ -81,7 +81,7 @@ DirectionalPath Minion::findMaster(int const nbTile) {
     return computeShortestPath(this->map, this->tile, this->master->tile, this->currentDirection, nbTile);
 }
 
-ThingOnMap Minion::checkDirection(Tile const& tile, Direction const& direction) {
+ThingOnMap Minion::checkDirection(Tile &tile, Direction &direction) {
     int nextX = tile.X() + nextDirection.at(direction)->X();
     int nextY = tile.Y() + nextDirection.at(direction)->Y();
 

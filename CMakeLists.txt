@@ -42,15 +42,15 @@ set(SOURCES
         include/map/PathFinder.h src/map/PathFinder.cpp
         include/map/Tile.h src/map/Tile.cpp
         include/map/TileSet.h src/map/TileSet.cpp
-        include/model/abstract/Alliance.h src/Model/Abstract/Alliance.cpp
-        include/model/abstract/Character.h src/Model/Abstract/Character.cpp
-        include/model/abstract/Horde.h src/Model/Abstract/Horde.cpp
-        include/model/abstract/Minion.h src/Model/Abstract/Minion.cpp
-        include/model/playable/Dragon.h src/Model/Playable/Dragon.cpp
-        include/model/playable/Eldar.h src/Model/Playable/Eldar.cpp
-        include/model/playable/Master.h src/Model/Playable/Master.cpp
-        include/model/playable/Vala.h src/Model/Playable/Vala.cpp
-        include/model/playable/Werewolf.h src/Model/Playable/Werewolf.cpp
+        # include/model/abstract/Minion.h src/Model/Abstract/Minion.cpp
+        # include/model/abstract/Alliance.h src/Model/Abstract/Alliance.cpp
+        # include/model/abstract/Character.h src/Model/Abstract/Character.cpp
+        # include/model/abstract/Horde.h src/Model/Abstract/Horde.cpp
+        # include/model/playable/Dragon.h src/Model/Playable/Dragon.cpp
+        # include/model/playable/Eldar.h src/Model/Playable/Eldar.cpp
+        # include/model/playable/Master.h src/Model/Playable/Master.cpp
+        # include/model/playable/Vala.h src/Model/Playable/Vala.cpp
+        # include/model/playable/Werewolf.h src/Model/Playable/Werewolf.cpp
         include/qt/QGameMap.h src/qt/QGameMap.cpp
         include/wip.h
         src/core/main.cpp

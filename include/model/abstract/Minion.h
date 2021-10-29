@@ -27,7 +27,7 @@ class Minion {
     void move();
 
   protected:
-    Master* master;
+    Master& master;
     int energy = 100;
     const int lowEnergy = 20;
     const int rangeMax = 8;
@@ -47,7 +47,7 @@ class Minion {
 
     void rollDice();
 
-    ThingOnMap checkDirection(Tile const& tile, directionutils::Direction const& direction);
+    ThingOnMap checkDirection(Tile &tile, directionutils::Direction &direction);
 
     std::vector<ThingOnMap> checkAround();
 

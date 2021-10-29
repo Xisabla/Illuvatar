@@ -98,19 +98,19 @@ void QGameMap::paintMap(QPainter& p) {
                 // TODO: Retrieve color from a std::map<Faction, QColor> stored somewhere
                 //  this->paintTile(p, x, y, factionColor[t.getOwner()])
                 switch (t.getOwner()) {
-                    case Werewolves:
+                    case Faction::Werewolves:
                         this->paintTile(p, x, y, Qt::darkGray);
                         break;
-                    case Vala:
+                    case Faction::Valars:
                         this->paintTile(p, x, y, Qt::cyan);
                         break;
-                    case Dragons:
+                    case Faction::Dragons:
                         this->paintTile(p, x, y, Qt::red);
                         break;
-                    case Eldars:
+                    case Faction::Eldars:
                         this->paintTile(p, x, y, Qt::green);
                         break;
-                    case NoFaction:
+                    case Faction::NoFaction:
                     default:
                         this->paintTile(p, x, y, Qt::white);
                         break;

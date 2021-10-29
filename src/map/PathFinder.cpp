@@ -5,7 +5,7 @@ using namespace directionutils;
 using namespace pathfinder;
 
 
-DirectionalPath computeShortestPath(Map& map, Tile current, Tile& target, Direction initialD, unsigned int nbTile) {
+DirectionalPath pathfinder::computeShortestPath(Map& map, Tile current, Tile& target, Direction initialD, unsigned int nbTile) {
     Path generated = {};
     Path explored = {};
     Path notExplored = {};
@@ -18,7 +18,7 @@ DirectionalPath computeShortestPath(Map& map, Tile current, Tile& target, Direct
     return straightenerAndCutter(map, tmp_result, straightened, initialD, nbTile);
 }
 
-Path aStarGenerator(Map& map, Path& path, Tile& current, Tile& target, Path& explored, Path& notExplored) {
+Path pathfinder::aStarGenerator(Map& map, Path& path, Tile& current, Tile& target, Path& explored, Path& notExplored) {
     if (current == target) {
         explored.clear();
         notExplored.clear();
@@ -65,7 +65,7 @@ Path aStarGenerator(Map& map, Path& path, Tile& current, Tile& target, Path& exp
     return pathfinder::aStarGenerator(map, path, next, target, explored, notExplored);
 }
 
-Path unlooper(Map& map, Path& refPath, Path& path, int pos) {
+Path pathfinder::unlooper(Map& map, Path& refPath, Path& path, int pos) {
     if (pos == refPath.size()) {
         refPath.clear();
         return path;
@@ -102,7 +102,7 @@ Path unlooper(Map& map, Path& refPath, Path& path, int pos) {
     return pathfinder::unlooper(map, refPath, path, pos);
 }
 
-DirectionalPath straightenerAndCutter(Map& map, Path& refPath, DirectionalPath& path, Direction initialD, int nbTile, int pos) {
+DirectionalPath pathfinder::straightenerAndCutter(Map& map, Path& refPath, DirectionalPath& path, Direction initialD, int nbTile, int pos) {
     if (path.size() == nbTile) return path;
 
     //si reste moins de 5 points, ne peut pas y avoir de pont : retourne le restant dans la limite du nombre de cases
@@ -129,13 +129,13 @@ DirectionalPath straightenerAndCutter(Map& map, Path& refPath, DirectionalPath& 
     return pathfinder::straightenerAndCutter(map, refPath, path, initialD, pos + 1);
 }
 
-bool checkBothBridges(Map &map, DirectionalPath& path, bool alignTest, Tile current, Tile next, bool first, int deltaBridge) {
+bool pathfinder::checkBothBridges(Map &map, DirectionalPath& path, bool alignTest, Tile current, Tile next, bool first, int deltaBridge) {
     return alignTest &&
            (checkBridge(map, path, Point(next.X() - first, next.Y() - !first), deltaBridge == -2, current, next) ||
             checkBridge(map, path, Point(next.X() + first, next.Y() + !first), deltaBridge == 2, current, next));
 }
 
-bool checkBridge(Map &map, DirectionalPath& path, Point bridge, bool alignTest, Tile current, Tile next) {
+bool pathfinder::checkBridge(Map &map, DirectionalPath& path, Point bridge, bool alignTest, Tile current, Tile next) {
     if (!alignTest) return false;
 
     ThingOnMap content = map.getThingOnTile(bridge);
