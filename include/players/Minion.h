@@ -22,13 +22,16 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #include <set>
 #include <vector>
 
+class Master;
+
 class Minion : public Character {
-  /*
   public:
-    void move();
+    Minion(Map &map, Tile &Tile, Faction faction, Master &master);
+    //void move();
 
   protected:
     Master& master;
+
     int energy = 100;
     const int lowEnergy = 20;
     const int rangeMax = 8;
@@ -39,25 +42,24 @@ class Minion : public Character {
     void exchange(Minion& minion);
 
   private:
-    static const std::map<Faction, std::set<Faction>> alliances = {
-        { Faction::Eldars, { Faction::Eldars, Faction::Vala } },
-        { Faction::Vala, { Faction::Eldars, Faction::Vala } },
+    std::map<Faction, std::set<Faction>> alliances = {
+        { Faction::Eldars, { Faction::Eldars, Faction::Valars } },
+        { Faction::Valars, { Faction::Eldars, Faction::Valars } },
         { Faction::Dragons, { Faction::Dragons, Faction::Werewolves } },
         { Faction::Werewolves, { Faction::Dragons, Faction::Werewolves } },
     };
-
+    
     void rollDice();
-
-    ThingOnMap checkDirection(Tile &tile, directionutils::Direction &direction);
-
-    std::vector<ThingOnMap> checkAround();
-
+/*
     pathfinder::DirectionalPath explorate(int const nbTile);
 
     pathfinder::DirectionalPath FindMaster(int const nbTile);
 
     void interactsWithSurroundings();
     */
+    ThingOnMap checkDirection(Tile &tile, directionutils::Direction &direction);
+
+    std::vector<ThingOnMap> checkAround();
 };
 
 #endif // ILLUVATAR_MINION_H

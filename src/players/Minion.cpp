@@ -1,12 +1,12 @@
 #include "players/Minion.h"
 
-/*
-
-
 using namespace std;
 using namespace directionutils;
 using namespace pathfinder;
 
+
+Minion::Minion(Map &map, Tile &Tile, Faction faction, Master &master): Character(map, tile, faction), master(master) {}
+/*
 void Minion::move() {
     int nbTile = rand() % (this->rangeMax - this->rangeMin + 1) + this->rangeMin;
 
@@ -83,20 +83,18 @@ DirectionalPath Minion::explorate(int const nbTile) {
 DirectionalPath Minion::findMaster(int const nbTile) {
     return computeShortestPath(this->map, this->tile, this->master->tile, this->currentDirection, nbTile);
 }
+*/
 
 ThingOnMap Minion::checkDirection(Tile &tile, Direction &direction) {
-    int nextX = tile.X() + nextDirection.at(direction)->X();
-    int nextY = tile.Y() + nextDirection.at(direction)->Y();
-
-    return this->map->getThingOnTile(nextX, nextY, Minion::alliances[this->faction]);
+    return this->map.getThingOnTile(this->map.jump(tile, nextDirection.at(direction)), Minion::alliances.at(this->faction));
 }
 
 vector<ThingOnMap> Minion::checkAround() {
-    vector<ThingOnMap> things = vector();
+    vector<ThingOnMap> things = {};
 
-    for (Direction direction = Direction::Begin; direction != Direction::End;
-         ++direction) { // get all enum values
-        ThingOnMap thing = CheckDirection(this->tile, direction);
+    for (Direction d = Direction::DIRECTION_FIRST; d < Direction::DIRECTION_LAST;
+         d = Direction(static_cast<int>(d) + 1)) { // get all enum values
+        ThingOnMap thing = this->checkDirection(this->tile, d);
         if (thing == ThingOnMap::Ally || thing == ThingOnMap::Ennemy) things.push_back(thing);
     }
 
@@ -105,8 +103,6 @@ vector<ThingOnMap> Minion::checkAround() {
 
 void Minion::rollDice() { }
 
-void Minion::fight(Minion& minion) { }
+void Minion::fight(Minion& other) { }
 
-void Minion::exchange(Minion& minion) { }
-
-*/
+void Minion::exchange(Minion& other) { }

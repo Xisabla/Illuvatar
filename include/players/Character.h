@@ -18,16 +18,18 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #include <vector>
 
 class Character {
-  private:
-    std::vector<std::string> MessageList;
-
   public:
-    Map* map;
-    Tile* tile;
-    Faction faction;
-
+    Character(Map &map, Tile &Tile, Faction faction);
     std::vector<std::string> GetMessageList();
     void SetMessageList(std::vector<std::string>& messageList);
+
+  protected:
+    Map& map;
+    Tile& tile;
+    Faction faction;
+
+  private:
+    std::vector<std::string> MessageList;
 };
 
 
