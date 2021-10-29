@@ -86,7 +86,7 @@ DirectionalPath Minion::findMaster(int const nbTile) {
 */
 
 ThingOnMap Minion::checkDirection(Tile &tile, Direction &direction) {
-    return this->map.getThingOnTile(this->map.jump(tile, nextDirection.at(direction)), Minion::alliances.at(this->faction));
+    return this->map.getThingOnTile(this->map.project(tile, nextDirection.at(direction)), Minion::alliances.at(this->faction));
 }
 
 vector<ThingOnMap> Minion::checkAround() {

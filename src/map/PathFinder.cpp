@@ -30,7 +30,7 @@ Path pathfinder::aStarGenerator(Map& map, Path& path, Tile& current, Tile& targe
     vector<Tile> notExploredNeighbours = {};
     for (Direction d = Direction::DIRECTION_FIRST; d < Direction::DIRECTION_LAST;
          d = Direction(static_cast<int>(d) + 1)) {
-        Tile neighbor = map.jump(current, nextDirection.at(d));
+        Tile neighbor = map.project(current, nextDirection.at(d));
 
         ThingOnMap content = map.getThingOnTile(neighbor.getPoint());
         if (content == ThingOnMap::Void ||
