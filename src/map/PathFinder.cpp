@@ -118,7 +118,8 @@ DirectionalPath pathfinder::straightenerAndCutter(Map& map, Path& refPath, Direc
 
     Tile current = refPath[pos];
     Tile next = refPath[pos + 4];
-    Direction dir = path.empty() ? initialD : computeDirection(path.back().first, current);
+    Tile last = path.empty() ? map.project(current, nextDirection.at(oppositeDirection.at(initialD))) : path.back().first;
+    Direction dir = computeDirection(last, current);
     path.push_back({ current, dir });
 
     if (checkBothBridges(map, path, current.X() == next.X(), current, next, false, current.Y() - next.Y()) ||
