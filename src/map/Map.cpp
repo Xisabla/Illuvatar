@@ -80,6 +80,7 @@ Tile& Map::project(const Point& from, const Point& jump) {
     return this->getTile(Point(from.X() + jump.X(), from.Y() + jump.Y()));
 }
 
-void Map::jump(const Point& from, const Point& jump) {
-    //TODO : move minion from current tile to next tile
+void Map::jump(const Faction faction, Tile& from, Tile& to) {
+    from.removeOwnership();
+    to.setOwner(faction);
 }

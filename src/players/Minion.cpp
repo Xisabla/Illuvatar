@@ -6,24 +6,22 @@ using namespace pathfinder;
 
 
 Minion::Minion(Map &map, Tile &Tile, Faction faction, Master &master): Character(map, tile, faction), master(master) {}
-/*
+
 void Minion::move() {
     int nbTile = rand() % (this->rangeMax - this->rangeMin + 1) + this->rangeMin;
 
-    DirectionalPath path =
-    (this->energy - nbTile > this->lowEnergy) ? this->Explorate(nbTile) : this->FindMaster(nbTile);
+    bool kindCond = this->energy - nbTile > this->lowEnergy;
+    DirectionalPath path = kindCond ? this->explorate(nbTile) : this->findMaster(nbTile);
 
     if (path.empty()) {
-        interactsWithSurroundings();
+        this->interactsWithSurroundings();
         return;
     }
 
-    for (pair<Tile*, Direction> step: path) {
-        if (this->CheckDirection(step.first, step.second) == ThingOnMap::Nothing) {
-            this->tile.setOwner(Faction::NoFaction);
+    for (pair<Tile, Direction> step: path) {
+        if (this->checkDirection(step.first, step.second) == ThingOnMap::Nothing) {
+            this->map.jump(this->faction, this->tile, step.first);
             this->tile = step.first;
-            this->tile.setOwner(this->faction);
-
             this->currentDirection = step.second;
             this->energy--;
         }
@@ -34,8 +32,8 @@ void Minion::move() {
 
 bool Minion::interactsWithSurroundings() {
     bool interactFlag = false;
-    for (ThingOnMap thing: this->CheckAround()) {
-        swith(thing) {
+    for (ThingOnMap thing: this->checkAround()) {
+        switch(thing) {
             case ThingOnMap::Ally:
                 //échange les infos
                 interactFlag = true;
@@ -51,39 +49,37 @@ bool Minion::interactsWithSurroundings() {
 }
 
 DirectionalPath Minion::explorate(int const nbTile) {
-    vector<Direction> possibleDirs = vector();
+    vector<Direction> possibleDirs = {};
 
-    for (Direction dir: fanDirections[this->currentDirection]) {
-        if (this->CheckDirection(this->tile, dir) == ThingOnMap::Nothing)
+    for (Direction dir: fanDirections.at(this->currentDirection)) {
+        if (this->checkDirection(this->tile, dir) == ThingOnMap::Nothing)
             possibleDirs.push_back(dir);
     }
 
     Direction direction;
+    Direction opposite = oppositeDirection.at(this->currentDirection);
     if (!possibleDirs.empty()) {
         direction = possibleDirs[rand() % possibleDirs.size()];
-    } else if (this->CheckDirection(this->tile, oppositeDirection[this->currentDirection]) ==
-               ThingOnMap::Nothing) {
-        direction = oppositeDirection[this->currentDirection];
+    } else if (this->checkDirection(this->tile, opposite) == ThingOnMap::Nothing) {
+        direction = opposite;
     } else
-        return vector(); // reste sur place et interagit avec trucs autours
+        return {}; // aucune direction : reste sur place et interagit avec trucs autours
 
-    DirectionalPath path = vector();
-    Tile* futureTile = this->tile;
+    DirectionalPath path = {};
+    Tile& futureTile = this->map.project(this->tile.getPoint(), nextDirection.at(direction));
     int i = 0;
     do {
-        int nextX = futureTile->X() + nextDirection[direction]->X();
-        int nextY = futureTile->Y() + nextDirection[direction]->Y();
-        futureTile = this->map.getTile(nextX, nextY);
-        path.push_back({ futureTile, direction });
-    } while (++i < nbTile && this->CheckDirection(futureTile, direction) != ThingOnMap::Obstacle);
+        path.push_back({ futureTile, direction }); //on sait que la première prochaine tuile est libre
+        futureTile = this->map.project(futureTile.getPoint(), nextDirection.at(direction));
+    } while (++i < nbTile && this->checkDirection(futureTile, direction) != ThingOnMap::Obstacle);
 
     return path;
 }
 
 DirectionalPath Minion::findMaster(int const nbTile) {
-    return computeShortestPath(this->map, this->tile, this->master->tile, this->currentDirection, nbTile);
+    return computeShortestPath(this->map, this->tile, this->master.getTile(), this->currentDirection, nbTile);
 }
-*/
+
 
 ThingOnMap Minion::checkDirection(Tile &tile, Direction &direction) {
     return this->map.getThingOnTile(this->map.project(tile, nextDirection.at(direction)), Minion::alliances.at(this->faction));

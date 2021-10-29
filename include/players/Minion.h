@@ -27,7 +27,7 @@ class Master;
 class Minion : public Character {
   public:
     Minion(Map &map, Tile &Tile, Faction faction, Master &master);
-    //void move();
+    void move();
 
   protected:
     Master& master;
@@ -50,13 +50,13 @@ class Minion : public Character {
     };
     
     void rollDice();
-/*
+
     pathfinder::DirectionalPath explorate(int const nbTile);
 
-    pathfinder::DirectionalPath FindMaster(int const nbTile);
+    bool interactsWithSurroundings();
 
-    void interactsWithSurroundings();
-    */
+    pathfinder::DirectionalPath findMaster(int const nbTile);
+
     ThingOnMap checkDirection(Tile &tile, directionutils::Direction &direction);
 
     std::vector<ThingOnMap> checkAround();

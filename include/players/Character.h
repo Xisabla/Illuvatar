@@ -23,6 +23,8 @@ class Character {
     std::vector<std::string> GetMessageList();
     void SetMessageList(std::vector<std::string>& messageList);
 
+    Tile& getTile() { return this->tile; }
+
   protected:
     Map& map;
     Tile& tile;

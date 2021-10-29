@@ -75,9 +75,9 @@ class Map {
     ThingOnMap
     getThingOnTile(const Point& p, std::set<Faction> const minionAllies = {});
 
-    Tile& project(const Point& from, const Point& to);
+    Tile& project(const Point& from, const Point& jump);
 
-    void jump(const Point& from, const Point& to);
+    void jump(const Faction faction, Tile& from, Tile& to);
 
     // - Setters -----------------------------------------------------------------------------
     /**
