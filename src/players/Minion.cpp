@@ -8,9 +8,9 @@ using namespace pathfinder;
 Minion::Minion(Map &map, Tile &Tile, Faction faction, Master &master): Character(map, tile, faction), master(master) {}
 
 void Minion::move() {
-    int nbTile = rand() % (this->rangeMax - this->rangeMin + 1) + this->rangeMin;
+    int nbTile = rand() % (this->rangeMax - this->rangeMin + 1) + this->rangeMin; //todo : modulate with dice throw ?
 
-    bool kindCond = this->energy - nbTile > this->lowEnergy;
+    bool kindCond = this->energy - nbTile > this->lowEnergy; //todo : add msg conds at least
     DirectionalPath path = kindCond ? this->explorate(nbTile) : this->findMaster(nbTile);
 
     if (path.empty()) {
@@ -20,10 +20,10 @@ void Minion::move() {
 
     for (pair<Tile, Direction> step: path) {
         if (this->checkDirection(step.first, step.second) == ThingOnTile::Nothing) {
-            this->map.jump(this->faction, this->tile, step.first);
+            this->map.jump(this->faction, this->tile, step.first); // todo : add this to args
             this->tile = step.first;
             this->currentDirection = step.second;
-            this->energy--;
+            this->energy--; // todo : this->energy += this->tile.safeFor() == this->faction ? this->recovery : - this->loss;
         }
 
         if (interactsWithSurroundings()) return;
@@ -32,15 +32,15 @@ void Minion::move() {
 
 bool Minion::interactsWithSurroundings() {
     bool interactFlag = false;
-    for (ThingOnTile thing: this->checkAround()) {
-        switch(thing) {
+    for (pair<ThingOnTile, Point> thing: this->checkAround()) {
+        switch(thing.first) {
             case ThingOnTile::Ally:
-                //échange les infos
+                //échange les infos : todo get minion from tile
                 interactFlag = true;
                 break;
 
             case ThingOnTile::Ennemy:
-                // fight
+                // fight : todo get minion from tile
                 interactFlag = true;
                 break;
         }
@@ -52,7 +52,7 @@ DirectionalPath Minion::explorate(int const nbTile) {
     vector<Direction> possibleDirs = {};
 
     for (Direction dir: fanDirections.at(this->currentDirection)) {
-        if (this->checkDirection(this->tile, dir) == ThingOnTile::Nothing)
+        if (this->checkDirection(this->tile, dir).first == ThingOnTile::Nothing)
             possibleDirs.push_back(dir);
     }
 
@@ -60,7 +60,7 @@ DirectionalPath Minion::explorate(int const nbTile) {
     Direction opposite = oppositeDirection.at(this->currentDirection);
     if (!possibleDirs.empty()) {
         direction = possibleDirs[rand() % possibleDirs.size()];
-    } else if (this->checkDirection(this->tile, opposite) == ThingOnTile::Nothing) {
+    } else if (this->checkDirection(this->tile, opposite).first == ThingOnTile::Nothing) {
         direction = opposite;
     } else
         return {}; // aucune direction : reste sur place et interagit avec trucs autours
@@ -71,7 +71,7 @@ DirectionalPath Minion::explorate(int const nbTile) {
     do {
         path.push_back({ futureTile, direction }); //on sait que la première prochaine tuile est libre
         futureTile = this->map.getTile(this->map.project(futureTile.getPoint(), nextDirection.at(direction)));
-    } while (++i < nbTile && this->checkDirection(futureTile, direction) != ThingOnTile::Obstacle);
+    } while (++i < nbTile && this->checkDirection(futureTile, direction).first != ThingOnTile::Obstacle);
 
     return path;
 }
@@ -81,17 +81,18 @@ DirectionalPath Minion::findMaster(int const nbTile) {
 }
 
 
-ThingOnTile Minion::checkDirection(Tile &tile, Direction &direction) {
-    return this->map.getThingOnTile(this->map.project(tile, nextDirection.at(direction)), Minion::alliances.at(this->faction));
+pair<ThingOnTile, Point> Minion::checkDirection(Tile &tile, Direction &direction) {
+    Point p = this->map.project(tile, nextDirection.at(direction));
+    return { this->map.getThingOnTile(p, Minion::alliances.at(this->faction)), p };
 }
 
-vector<ThingOnTile> Minion::checkAround() {
-    vector<ThingOnTile> things = {};
+vector<pair<ThingOnTile, Point>> Minion::checkAround() {
+    vector<pair<ThingOnTile, Point>> things = {};
 
     for (Direction d = Direction::DIRECTION_FIRST; d <= Direction::DIRECTION_LAST;
          d = Direction(static_cast<int>(d) + 1)) { // get all enum values
-        ThingOnTile thing = this->checkDirection(this->tile, d);
-        if (thing == ThingOnTile::Ally || thing == ThingOnTile::Ennemy) things.push_back(thing);
+        pair<ThingOnTile, Point> thing = this->checkDirection(this->tile, d);
+        if (thing.first == ThingOnTile::Ally || thing.first == ThingOnTile::Ennemy) things.push_back(thing);
     }
 
     return things;
