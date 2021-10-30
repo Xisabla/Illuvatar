@@ -35,13 +35,25 @@ int main(int argc, char* argv[]) {
     // Instantiate map
     Map map(tiles);
 
+
+    Path refPath = { map.getTile(Point(9,6)),
+                      map.getTile(Point(9,7)),
+                      map.getTile(Point(10,7)),
+                      map.getTile(Point(11,7)),
+                      map.getTile(Point(11,6)) };
+    DirectionalPath path = {};
+    path = pathfinder::straightenerAndCutter(map, refPath, path, Direction::N, 100);
+    for (pair<Tile, Direction> step : path) cout << step.first << " - " << step.second << endl;
+
+    cout << endl;
+
     map.getTile(Point(9,6)).setObstacle();
     map.getTile(Point(9,7)).setObstacle();
     map.getTile(Point(10,7)).setObstacle();
     // map.getTile(Point(11,7)).setObstacle();
     // map.getTile(Point(11,6)).setObstacle();
 
-    DirectionalPath path = computeShortestPath(map, map.getTile(Point(10,5)), map.getTile(Point(6, 4)), Direction::N, 100);
+    path = computeShortestPath(map, map.getTile(Point(10,5)), map.getTile(Point(6, 4)), Direction::N, 100);
     for (pair<Tile, Direction> step : path) cout << step.first << " - " << step.second << endl;
     // add loop to test moves
     // pathfinding(position maitre) => rendre message ou plus d'énergie

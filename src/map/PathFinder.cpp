@@ -102,7 +102,6 @@ Path pathfinder::unlooper(Map& map, Path& refPath, Path& path, unsigned int pos)
         pair<Tile, int> neighbor = neighborsPos[i];
         if (neighborsOccurence.at(neighbor.first) == 1) {
             pos = neighbor.second;
-            // path.push_back(neighbor.first);
             break;
         }
     }
