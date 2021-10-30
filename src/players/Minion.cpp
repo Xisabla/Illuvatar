@@ -5,7 +5,7 @@ using namespace directionutils;
 using namespace pathfinder;
 
 
-Minion::Minion(Map &map, Tile &Tile, Faction faction, Master &master): Character(map, tile, faction), master(master) {}
+Minion::Minion(Map &map, Tile &tile, Faction faction, Master &master): Character(map, tile, faction), master(master), currentDirection(Direction::N) {}
 
 void Minion::move() {
     int nbTile = rand() % (this->rangeMax - this->rangeMin + 1) + this->rangeMin; //todo : modulate with dice throw ?
@@ -19,7 +19,7 @@ void Minion::move() {
     }
 
     for (pair<Tile, Direction> step: path) {
-        if (this->checkDirection(step.first, step.second) == ThingOnTile::Nothing) {
+        if (this->checkDirection(step.first, step.second).first == ThingOnTile::Nothing) {
             this->map.jump(this->faction, this->tile, step.first); // todo : add this to args
             this->tile = step.first;
             this->currentDirection = step.second;
@@ -66,12 +66,15 @@ DirectionalPath Minion::explorate(int const nbTile) {
         return {}; // aucune direction : reste sur place et interagit avec trucs autours
 
     DirectionalPath path = {};
-    Tile& futureTile = this->map.getTile(this->map.project(this->tile.getPoint(), nextDirection.at(direction)));
+    Point jump = nextDirection.at(direction);
+    Point futurePoint = this->tile.getPoint();
+    Tile& futureTile = this->tile;
     int i = 0;
-    do {
-        path.push_back({ futureTile, direction }); //on sait que la première prochaine tuile est libre
-        futureTile = this->map.getTile(this->map.project(futureTile.getPoint(), nextDirection.at(direction)));
-    } while (++i < nbTile && this->checkDirection(futureTile, direction).first != ThingOnTile::Obstacle);
+    do { //on sait que la première prochaine tuile est libre
+        futurePoint = this->map.project(futurePoint, jump);
+        futureTile = this->map.getTile(futurePoint);
+        path.push_back({ futureTile, direction });
+    } while (++i < nbTile && !this->map.exists(futurePoint) && this->checkDirection(futureTile, direction).first != ThingOnTile::Obstacle);
 
     return path;
 }

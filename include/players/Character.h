@@ -19,7 +19,7 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 class Character {
   public:
-    Character(Map &map, Tile &Tile, Faction faction);
+    Character(Map &map, Tile &tile, Faction faction);
     std::vector<std::string> GetMessageList();
     void SetMessageList(std::vector<std::string>& messageList);
 

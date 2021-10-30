@@ -12,12 +12,14 @@
 
 #include "players/Character.h"
 #include "Players/Minion.h"
+#include "map/Map.h"
+#include "map/Tile.h"
 
 class Minion;
 
 class Master : public Character {
   public:
-    Faction faction;
+    Master(Map &map, Tile &tile, Faction faction);
 
     std::string GetMessage(Minion& minion);
     void GiveMessage(Minion& minion);

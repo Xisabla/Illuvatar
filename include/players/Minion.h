@@ -21,15 +21,16 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #include <map>
 #include <set>
 #include <vector>
+#include <iostream>
 
 class Master;
 
 class Minion : public Character {
   public:
-    Minion(Map &map, Tile &Tile, Faction faction, Master &master);
+    Minion(Map &map, Tile &tile, Faction faction, Master &master);
     void move();
 
-  protected:
+  //protected:
     Master& master;
 
     int energy = 100;
@@ -41,7 +42,7 @@ class Minion : public Character {
     void fight(Minion& minion);
     void exchange(Minion& minion);
 
-  private:
+  //private:
     std::map<Faction, std::set<Faction>> alliances = {
         { Faction::Eldars, { Faction::Eldars, Faction::Valars } },
         { Faction::Valars, { Faction::Eldars, Faction::Valars } },
