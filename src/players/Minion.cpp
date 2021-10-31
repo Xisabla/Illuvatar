@@ -52,8 +52,9 @@ DirectionalPath Minion::explorate(int const nbTile) {
     vector<Direction> possibleDirs = {};
 
     for (Direction dir: fanDirections.at(this->currentDirection)) {
-        if (this->checkDirection(this->tile, dir).first == ThingOnTile::Nothing)
+        if (this->checkDirection(this->tile, dir).first == ThingOnTile::Nothing) {
             possibleDirs.push_back(dir);
+        }
     }
 
     Direction direction;
@@ -62,19 +63,21 @@ DirectionalPath Minion::explorate(int const nbTile) {
         direction = possibleDirs[rand() % possibleDirs.size()];
     } else if (this->checkDirection(this->tile, opposite).first == ThingOnTile::Nothing) {
         direction = opposite;
-    } else
+    } else {
         return {}; // aucune direction : reste sur place et interagit avec trucs autours
+    }
 
     DirectionalPath path = {};
     Point jump = nextDirection.at(direction);
-    Point futurePoint = this->tile.getPoint();
-    Tile& futureTile = this->tile;
+    Point futurePoint = this->map.project(this->tile.getPoint(), jump);
+    Tile futureTile = this->tile; // can't be NULL
     int i = 0;
     do { //on sait que la première prochaine tuile est libre
-        futurePoint = this->map.project(futurePoint, jump);
         futureTile = this->map.getTile(futurePoint);
         path.push_back({ futureTile, direction });
-    } while (++i < nbTile && !this->map.exists(futurePoint) && this->checkDirection(futureTile, direction).first != ThingOnTile::Obstacle);
+
+        futurePoint = this->map.project(futurePoint, jump);
+    } while (++i < nbTile && this->map.exists(futurePoint) && this->checkDirection(futureTile, direction).first != ThingOnTile::Obstacle);
 
     return path;
 }

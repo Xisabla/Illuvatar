@@ -52,13 +52,13 @@ int main(int argc, char* argv[]) {
     map.getTile(Point(9,6)).setObstacle();
     map.getTile(Point(9,7)).setObstacle();
     map.getTile(Point(10,7)).setObstacle();
-    // map.getTile(Point(11,7)).setObstacle();
+    map.getTile(Point(11,7)).setObstacle();
     // map.getTile(Point(11,6)).setObstacle();
 
-    // path = computeShortestPath(map, map.getTile(Point(10,5)), map.getTile(Point(6, 4)), Direction::N, 100);
-    // for (pair<Tile, Direction> step : path) cout << step.first << " - " << step.second << endl;
+    path = computeShortestPath(map, map.getTile(Point(10,5)), map.getTile(Point(6, 4)), Direction::N, 100);
+    for (pair<Tile, Direction> step : path) cout << step.first << " - " << step.second << endl;
     
-    // cout << endl;
+    cout << endl;
 
     Master master = Master(map, map.getTile(Point(14,14)), Faction::Valars);
     Minion minion = Minion(map, map.getTile(Point(10, 8)), Faction::Valars, master);
@@ -70,12 +70,20 @@ int main(int argc, char* argv[]) {
     pair<ThingOnTile, Point> check = minion.checkDirection(minion.getTile(), dir);
     cout << endl << check.first << " on point " << check.second << endl << endl;
 
+    dir = Direction::NW;
+    check = minion.checkDirection(minion.getTile(), dir);
+    cout << endl << check.first << " on point " << check.second << endl << endl;
+
+    dir = Direction::NE;
+    check = minion.checkDirection(minion.getTile(), dir);
+    cout << endl << check.first << " on point " << check.second << endl << endl;
+
     dir = Direction::N;
     check = minion.checkDirection(map.getTile(Point(10,5)), dir);
     cout << check.first << " on point " << check.second << endl << endl;
 
-    map.getTile(Point(10,9)).setOwner(Faction::Valars);
     map.getTile(Point(9,9)).setOwner(Faction::Eldars);
+    // map.getTile(Point(10,9)).setOwner(Faction::Valars);
     map.getTile(Point(11,9)).setOwner(Faction::Dragons);
     cout << "nb minion autour : " << minion.checkAround().size() << endl;
     for (pair<ThingOnTile, Point> check2 : minion.checkAround()) cout << check2.first << " on point " << check2.second << endl;
@@ -84,18 +92,18 @@ int main(int argc, char* argv[]) {
 
     path = minion.explorate(10);
     cout << "path size : " << path.size() << endl;
-    for (pair<Tile, Direction> step : path) cout << step.first << " - " << step.second << endl;
+    for (pair<Tile, Direction> step : path) cout << "\t" << step.first << " - " << step.second << endl;
 
     // add loop to test moves
     // pathfinding(position maitre) => rendre message ou plus d'énergie
     // explo(directionPrincipale) => se déplacer sur la map selon une direction principale
 
-    // // Create and show window
-    // MainWindow window(map);
-    // window.show();
+    // Create and show window
+    MainWindow window(map);
+    window.show();
 
-    // // Synchronize map tiles
-    // map.sync();
+    // Synchronize map tiles
+    map.sync();
 
     return QApplication::exec();
 }
