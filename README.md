@@ -4,7 +4,7 @@
 
 ## Dependencies
 - CMake >= 3.16
-- Qt 5
+- Qt 5.x.x
 
 ## Getting started
 
