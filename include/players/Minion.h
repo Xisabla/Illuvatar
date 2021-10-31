@@ -7,6 +7,8 @@ Copyright (c) 2021 - All rights reserved
 Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 =========================================================================*/
+#pragma once
+#pragma once
 #ifndef ILLUVATAR_MINION_H
 #define ILLUVATAR_MINION_H
 
@@ -14,7 +16,7 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #include "map/DirectionUtils.h"
 #include "map/Map.h"
 #include "map/PathFinder.h"
-#include "map/Tile.h"
+#include "map/Tile.h" // remove
 #include "players/Master.h"
 #include "wip.h"
 
@@ -27,7 +29,7 @@ class Master;
 
 class Minion : public Character {
   public:
-    Minion(Map &map, Tile &tile, Faction faction, Master &master);
+    Minion(Map &map, Point point, directionutils::Direction direction, Faction faction, Master &master);
     void move();
 
   //protected:
@@ -35,8 +37,8 @@ class Minion : public Character {
 
     int energy = 100;
     const int lowEnergy = 20;
-    const int rangeMax = 8;
-    const int rangeMin = 2;
+    const int rangeMax = 10;
+    const int rangeMin = 6;
     directionutils::Direction currentDirection;
 
     void fight(Minion& minion);
@@ -52,15 +54,15 @@ class Minion : public Character {
     
     void rollDice();
 
-    pathfinder::DirectionalPath explorate(int const nbTile);
+    pathfinder::DirectionalPath explorate(int const range);
 
     bool interactsWithSurroundings();
 
-    pathfinder::DirectionalPath findMaster(int const nbTile);
+    pathfinder::DirectionalPath findMaster(int const range);
 
-    std::pair<ThingOnTile, Point> checkDirection(Tile &tile, directionutils::Direction &direction);
+    std::pair<ThingAtPoint, Point> checkDirection(const Point &point, directionutils::Direction &direction);
 
-    std::vector<std::pair<ThingOnTile, Point>> checkAround();
+    std::vector<std::pair<ThingAtPoint, Point>> checkAround();
 };
 
 #endif // ILLUVATAR_MINION_H

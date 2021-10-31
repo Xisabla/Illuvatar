@@ -20,7 +20,7 @@
  */
 enum AllianceFactions { Evil, Good, NoAlliance };
 
-
+enum ThingAtPoint { Void, Nothing, Obstacle, Ennemy, Ally };
 // Temporary stuff that will get included later --->
 
 

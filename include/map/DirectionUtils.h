@@ -36,6 +36,16 @@ const std::map<Direction, std::vector<Direction>> fanDirections = {
     { Direction::W, { Direction::SW, Direction::W, Direction::NW } },
     { Direction::NW, { Direction::W, Direction::NW, Direction::N } }
 };
+const std::map<Direction, std::vector<Direction>> sideDirections = {
+    { Direction::N, { Direction::E, Direction::SE, Direction::SW, Direction::W } },
+    { Direction::NE, { Direction::SE, Direction::S, Direction::W, Direction::NW } },
+    { Direction::E, { Direction::S, Direction::SW, Direction::NW, Direction::N } },
+    { Direction::SE, { Direction::SW, Direction::W, Direction::N, Direction::NE } },
+    { Direction::S, { Direction::W, Direction::NW, Direction::NE, Direction::E } },
+    { Direction::SW, { Direction::NW, Direction::N, Direction::E, Direction::SE } },
+    { Direction::W, { Direction::N, Direction::NE, Direction::SE, Direction::S } },
+    { Direction::NW, { Direction::NE, Direction::E, Direction::S, Direction::SW } }
+};
 const std::map<Direction, Direction> oppositeDirection = {
     { Direction::N, Direction::S }, { Direction::NE, Direction::SW },
     { Direction::E, Direction::W }, { Direction::SE, Direction::NW },
@@ -58,7 +68,7 @@ const std::map<std::pair<int, int>, Direction> deltaDirection = {
     { {-1, 0}, Direction::W }, { {-1, -1}, Direction::NW }
 };
 
-Direction computeDirection(const Tile &last, const Tile &current);
+Direction computeDirection(const Point &last, const Point &current);
 Point computeLastJump(const Direction &direction);
 }; // namespace directionutils
 

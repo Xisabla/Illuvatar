@@ -5,8 +5,8 @@ using namespace directionutils;
 using namespace pathfinder;
 
 
-DirectionalPath pathfinder::computeShortestPath(Map& map, Tile current, Tile& target, Direction initialD, unsigned int nbTile) {
-    if (!map.exists(current.getPoint()) || !map.exists(target.getPoint())) {
+DirectionalPath pathfinder::computeShortestPath(Map& map, Point current, Point& target, Direction initialD, unsigned int nbTile) {
+    if (!map.exists(current) || !map.exists(target)) {
         cout << "error at pathfinder::computeShortestPath(...," << current << ", " << target << ", ...);" << endl;
         exit(1);
     }
@@ -23,7 +23,7 @@ DirectionalPath pathfinder::computeShortestPath(Map& map, Tile current, Tile& ta
     return straightenerAndCutter(map, tmp_result, straightened, computeDirection(current, unlooped[0]), nbTile);
 }
 
-Path pathfinder::aStarGenerator(Map& map, Path& path, Tile& current, Tile& target, Path& explored, Path& notExplored) {
+Path pathfinder::aStarGenerator(Map& map, Path& path, Point& current, Point& target, Path& explored, Path& notExplored) {
     if (current == target) {
         explored.clear();
         notExplored.clear();
@@ -32,24 +32,24 @@ Path pathfinder::aStarGenerator(Map& map, Path& path, Tile& current, Tile& targe
 
     explored.push_back(current);
 
-    vector<Tile> notExploredNeighbours = {};
+    vector<Point> notExploredNeighbours = {};
     for (Direction d = Direction::DIRECTION_FIRST; d <= Direction::DIRECTION_LAST; d = Direction(static_cast<int>(d) + 1)) {
-        Point neighborCoords = map.project(current, nextDirection.at(d));
-        ThingOnTile content = map.getThingOnTile(neighborCoords);
-        if (content == ThingOnTile::Void || content == ThingOnTile::Obstacle) continue;
+        Point neighbor = map.project(current, nextDirection.at(d));
+        ThingAtPoint content = map.getThingAtPoint(neighbor);
 
-        Tile neighbor = map.getTile(neighborCoords);
-        if (find(explored.begin(), explored.end(), neighbor) != explored.end()) continue;
+        if (content == ThingAtPoint::Void || content == ThingAtPoint::Obstacle ||
+            find(explored.begin(), explored.end(), neighbor) != explored.end())
+            continue;
 
         notExploredNeighbours.push_back(neighbor);
     }
 
-    Tile next = current;
+    Point next = current;
     if (!notExploredNeighbours.empty()) {
         sort(
         notExploredNeighbours.begin(),
         notExploredNeighbours.end(),
-        [&target] (Tile& a, Tile& b) { return target.distanceTo(a) > target.distanceTo(b); });
+        [&target] (Point& a, Point& b) { return target.distanceTo(a) > target.distanceTo(b); });
 
         next = notExploredNeighbours.back();
         notExploredNeighbours.pop_back();
@@ -72,7 +72,7 @@ Path pathfinder::aStarGenerator(Map& map, Path& path, Tile& current, Tile& targe
 }
 
 Path pathfinder::unlooper(Map& map, Path& refPath, Path& path, unsigned int pos) {
-    Tile current = refPath[pos - 1];
+    Point current = refPath[pos - 1];
     path.push_back(current);
 
     if (pos == refPath.size()) {
@@ -81,25 +81,25 @@ Path pathfinder::unlooper(Map& map, Path& refPath, Path& path, unsigned int pos)
     }
 
     //liste le nombre d'occurence de chaque voisins avec leur position
-    vector<pair<Tile, int>> neighborsPos = {};
-    std::map<Tile, int> neighborsOccurence = {};
+    vector<pair<Point, int>> neighborsPos = {};
+    std::map<Point, int> neighborsOccurence = {};
     for (int i = pos; i < refPath.size(); ++i) {
-        Tile tile = refPath[i];
-        if (current.isNeighbours(tile)) {
-            neighborsPos.push_back({ tile, i });
+        Point point = refPath[i];
+        if (map.areNeighbours(current, point)) {
+            neighborsPos.push_back({ point, i });
 
-            if (neighborsOccurence.count(tile)) {
-                neighborsOccurence.at(tile)++;
+            if (neighborsOccurence.count(point)) {
+                neighborsOccurence.at(point)++;
             }
             else {
-                neighborsOccurence.insert({ tile, 1 });
+                neighborsOccurence.insert({ point, 1 });
             }
         }
     }
 
     //saute au dernier voisin croisé une seule fois (point de sortie du sac de noeud)
     for (int i = neighborsPos.size() - 1; i >= 0; --i) {
-        pair<Tile, int> neighbor = neighborsPos[i];
+        pair<Point, int> neighbor = neighborsPos[i];
         if (neighborsOccurence.at(neighbor.first) == 1) {
             pos = neighbor.second;
             break;
@@ -127,9 +127,9 @@ DirectionalPath pathfinder::straightenerAndCutter(Map& map, Path& refPath, Direc
         return path;
     }
 
-    Tile current = refPath[pos];
-    Tile next = refPath[pos + 4];
-    Tile last = path.empty() ? map.computeLastPosition(current, initialD) : path.back().first;
+    Point current = refPath[pos];
+    Point next = refPath[pos + 4];
+    Point last = path.empty() ? map.computeLastPosition(current, initialD) : path.back().first;
     Direction dir = computeDirection(last, current);
     path.push_back({ current, dir });
 
@@ -141,20 +141,19 @@ DirectionalPath pathfinder::straightenerAndCutter(Map& map, Path& refPath, Direc
     return pathfinder::straightenerAndCutter(map, refPath, path, initialD, nbTile, pos + 1);
 }
 
-bool pathfinder::checkBothBridges(Map &map, DirectionalPath& path, bool alignTest, Tile current, Tile next, bool first, int deltaBridge) {
+bool pathfinder::checkBothBridges(Map &map, DirectionalPath& path, bool alignTest, Point current, Point next, bool first, int deltaBridge) {
     return alignTest &&
            (checkBridge(map, path, Point(next.X() - first, next.Y() - !first), deltaBridge == -2, current, next) ||
             checkBridge(map, path, Point(next.X() + first, next.Y() + !first), deltaBridge == 2, current, next));
 }
 
-bool pathfinder::checkBridge(Map &map, DirectionalPath& path, Point bridge, bool alignTest, Tile current, Tile next) {
+bool pathfinder::checkBridge(Map &map, DirectionalPath& path, Point bridge, bool alignTest, Point current, Point next) {
     if (!alignTest) return false;
 
-    ThingOnTile content = map.getThingOnTile(bridge);
-    if (content == ThingOnTile::Void || content == ThingOnTile::Obstacle) return false;
+    ThingAtPoint content = map.getThingAtPoint(bridge);
+    if (content == ThingAtPoint::Void || content == ThingAtPoint::Obstacle) return false;
 
-    Tile bridgeTile = map.getTile(bridge);
-    path.push_back({ bridgeTile, computeDirection(current, bridgeTile) });
-    path.push_back({ next, computeDirection(bridgeTile, next) });
+    path.push_back({ bridge, computeDirection(current, bridge) });
+    path.push_back({ next, computeDirection(bridge, next) });
     return true;
 }

@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Master::Master(Map &map, Tile &tile, Faction faction): Character(map, tile, faction) {}
+Master::Master(Map &map, Point point, Faction faction): Character(map, point, faction) {}
 
 string Master::GetMessage(Minion& minion) {
     return "";

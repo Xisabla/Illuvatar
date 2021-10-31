@@ -24,3 +24,11 @@ int Point::X() const { return x; }
 int Point::Y() const { return y; }
 
 Point Point::getPoint() { return Point(x, y); }
+
+//  --------------------------------------------------------------------------------------
+//  Point > PUBLIC METHODS
+//  --------------------------------------------------------------------------------------
+
+double Point::distanceTo(Point& p) {
+    return sqrt(pow(this->x - p.x, 2) + pow(this->y - p.y, 2));
+}
