@@ -21,7 +21,7 @@ ostream& directionutils::operator<<(ostream& out, const Direction value) {
     return out << s;
 }
 
-Direction directionutils::computeDirection(const Tile &last, const Tile &current) {
+Direction directionutils::computeDirection(const Point &last, const Point &current) {
     int deltaX = current.X() - last.X();
     int deltaY = current.Y() - last.Y();
     if (abs(deltaX) > 1 || abs(deltaY) > 1) {

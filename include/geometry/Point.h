@@ -12,6 +12,7 @@
 #define ILLUVATAR_POINT_H
 
 #include <iostream>
+#include <cmath>
 
 /**
  * @class Point
@@ -37,6 +38,9 @@ class Point {
     [[nodiscard]] int Y() const;
 
     Point getPoint();
+    
+    // - Methods -----------------------------------------------------------------------------
+    double distanceTo(Point& p);
 
     // - Operators ---------------------------------------------------------------------------
     inline bool operator==(const Point& p) const { return x == p.x && y == p.y; }
