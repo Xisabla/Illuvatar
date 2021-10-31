@@ -40,5 +40,4 @@ class Character {
     std::vector<std::string> MessageList;
 };
 
-
 #endif // ILLUVATAR_CHARACTER_H

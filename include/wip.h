@@ -14,14 +14,11 @@
 #include <iostream>
 
 // <--- Temporary stuff that will get included later
+// NOTE: Should be renamed Entity ?
 /**
- * @enum AllianceFactions
- * @brief Available Alliances between factions
+ * @brief Representation of an entity on the map
  */
-enum AllianceFactions { Evil, Good, NoAlliance };
-
-enum ThingAtPoint { Void, Nothing, Obstacle, Ennemy, Ally };
+enum ThingAtPoint { Void, Nothing, Obstacle, Enemy, Ally };
 // Temporary stuff that will get included later --->
-
 
 #endif // ILLUVATAR_WIP_H

@@ -14,9 +14,9 @@
 #include "geometry/Point.h"
 #include "map/Tile.h"
 
+#include <iostream>
 #include <map>
 #include <vector>
-#include <iostream>
 
 #define DIRECTION_FIRST N
 #define DIRECTION_LAST NW
@@ -24,7 +24,7 @@
 namespace directionutils {
 enum class Direction { DIRECTION_FIRST, NE, E, SE, S, SW, W, DIRECTION_LAST };
 
-std::ostream& operator<<(std::ostream& out, const Direction value);
+std::ostream& operator<<(std::ostream& out, Direction value);
 
 const std::map<Direction, std::vector<Direction>> fanDirections = {
     { Direction::N, { Direction::NW, Direction::N, Direction::NE } },
@@ -59,17 +59,18 @@ const std::map<Direction, Point> nextDirection = {
     { Direction::S, Point(0, 1) },  { Direction::SW, Point(-1, 1) },
     { Direction::W, Point(-1, 0) }, { Direction::NW, Point(-1, -1) }
 };
+
 /**
  * Used/secured by computeDirection
  */
 const std::map<std::pair<int, int>, Direction> deltaDirection = {
-    { {0, -1}, Direction::N }, { {1, -1}, Direction::NE }, { {1, 0}, Direction::E },
-    { {1, 1}, Direction::SE }, { {0, 1}, Direction::S },   { {-1, 1}, Direction::SW },
-    { {-1, 0}, Direction::W }, { {-1, -1}, Direction::NW }
+    { { 0, -1 }, Direction::N }, { { 1, -1 }, Direction::NE }, { { 1, 0 }, Direction::E },
+    { { 1, 1 }, Direction::SE }, { { 0, 1 }, Direction::S },   { { -1, 1 }, Direction::SW },
+    { { -1, 0 }, Direction::W }, { { -1, -1 }, Direction::NW }
 };
 
-Direction computeDirection(const Point &last, const Point &current);
-Point computeLastJump(const Direction &direction);
-}; // namespace directionutils
+Direction computeDirection(const Point& last, const Point& current);
+Point computeLastJump(const Direction& direction);
+} // namespace directionutils
 
 #endif // ILLUVATAR_DirectionUtils_H

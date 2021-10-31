@@ -16,7 +16,7 @@ std::ostream& operator<<(std::ostream& out, const ThingAtPoint value) {
         PROCESS_VAL(ThingAtPoint::Void);
         PROCESS_VAL(ThingAtPoint::Nothing);
         PROCESS_VAL(ThingAtPoint::Obstacle);
-        PROCESS_VAL(ThingAtPoint::Ennemy);
+        PROCESS_VAL(ThingAtPoint::Enemy);
         PROCESS_VAL(ThingAtPoint::Ally);
     }
 #undef PROCESS_VAL
@@ -44,7 +44,9 @@ Map::Map(Rectangle surface, TileSet tiles): tiles(std::move(tiles)) {
 //  Map > SETTERS
 //  --------------------------------------------------------------------------------------
 
-void Map::setTile(const Point& p, Faction faction) { this->tiles.push(Tile(p, faction)); }
+[[maybe_unused]] void Map::setTile(const Point& p, Faction faction) {
+    this->tiles.push(Tile(p, faction));
+}
 
 //  --------------------------------------------------------------------------------------
 //  Map > GETTERS
@@ -54,7 +56,9 @@ bool Map::exists(const Point& p) const { return this->tiles.exists(p); }
 
 Tile& Map::getTile(const Point& p) { return this->tiles.get(p); }
 
-TileSet Map::getNeighbours(const Point& p) { return this->tiles.getNeighbours(p.X(), p.Y()); }
+[[maybe_unused]] TileSet Map::getNeighbours(const Point& p) {
+    return this->tiles.getNeighbours(p.X(), p.Y());
+}
 
 QGameMap* Map::GMap() { return this->gmap; }
 
@@ -62,14 +66,14 @@ QGameMap* Map::GMap() { return this->gmap; }
 //  Map > PUBLIC METHODS
 //  --------------------------------------------------------------------------------------
 
-void Map::resize(Rectangle surface) {
+[[maybe_unused]] void Map::resize(Rectangle surface) {
     // TODO: Use reference while manipulate tiles, surface, ... in QGameMap (+ constructor) to avoid
-    // this:
+    //  this:
     this->gmap->setSurface(surface);
     // this->gmap->setTiles(this->tiles);
 }
 
-void Map::removeTile(const Point& p) {
+[[maybe_unused]] void Map::removeTile(const Point& p) {
     this->tiles.remove(p);
     this->sync();
 }
@@ -79,32 +83,30 @@ void Map::sync() {
     this->gmap->repaint();
 }
 
-ThingAtPoint Map::getThingAtPoint(const Point& p, const std::set<Faction> minionAllies) {
+ThingAtPoint Map::getThingAtPoint(const Point& p, const std::set<Faction>& allies) {
     if (!this->exists(p)) return ThingAtPoint::Void;
 
     Tile t = this->getTile(p);
 
     if (t.isObstacle()) return ThingAtPoint::Obstacle;
-
     if (t.belongsTo(NoFaction)) return ThingAtPoint::Nothing;
-
-    return minionAllies.find(t.getOwner()) == minionAllies.end() ? ThingAtPoint::Ennemy :
-                                                                   ThingAtPoint::Ally;
+    return allies.find(t.getOwner()) == allies.end() ? ThingAtPoint::Enemy : ThingAtPoint::Ally;
 }
 
 Point Map::project(const Point& from, const Point& jump) {
-    return Point(from.X() + jump.X(), from.Y() + jump.Y());
+    return { from.X() + jump.X(), from.Y() + jump.Y() };
 }
 
 void Map::jump(Point& from, Point& to, Faction faction) {
-    // todo : equivalent of thoses
+    // TODO: equivalent of those
     this->getTile(from).removeOwnership();
     this->getTile(to).setOwner(faction);
 }
 
-Tile& Map::computeLastPosition(const Point &point, const directionutils::Direction &direction) {
-    Point lastCoords = this->project(point, directionutils::computeLastJump(direction));
+Tile& Map::computeLastPosition(const Point& point, const directionutils::Direction& direction) {
+    Point lastCoords = Map::project(point, directionutils::computeLastJump(direction));
 
+    // TODO: Throw exception
     if (!this->exists(lastCoords)) {
         std::cout << "error at Map::computeLastPosition(" << point << ", ...)" << std::endl;
         exit(1);

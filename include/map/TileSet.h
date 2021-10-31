@@ -116,20 +116,20 @@ class TileSet {
      * @param x X component of the Tile
      * @param y Y component of the Tile
      */
-    void remove(int x, int y);
+    [[maybe_unused]] void remove(int x, int y);
 
     /**
      * @param p Point to find
      * @return True if a Tile exists at the Point coordinates
      */
-    bool exists(const Point& p) const;
+    [[nodiscard]] bool exists(const Point& p) const;
 
     /**
      * @param x X component of the Tile
      * @param y Y component of the Tile
      * @return True if a Tile exists at the given coordinates
      */
-    bool exists(int x, int y) const;
+    [[nodiscard]] bool exists(int x, int y) const;
 
     /**
      * Merge the current TileSet with another one

@@ -10,9 +10,7 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #include "core/MainWindow.h"
 #include "map/Generators.h"
 #include "map/PathFinder.h"
-#include "map/DirectionUtils.h"
 #include "players/Minion.h"
-#include "players/Master.h"
 
 #include <QApplication>
 
@@ -24,7 +22,7 @@ using namespace directionutils;
 // TODO (late): Remove all unused methods
 
 int main(int argc, char* argv[]) {
-    srand(time(NULL));
+    srand(time(nullptr));
 
     QApplication app(argc, argv);
 
@@ -51,20 +49,21 @@ int main(int argc, char* argv[]) {
 
     // cout << endl;
 
-    map.getTile(Point(9,6)).setObstacle();
-    map.getTile(Point(9,7)).setObstacle();
-    map.getTile(Point(10,7)).setObstacle();
-    map.getTile(Point(11,7)).setObstacle();
+    map.getTile(Point(9, 6)).setObstacle();
+    map.getTile(Point(9, 7)).setObstacle();
+    map.getTile(Point(10, 7)).setObstacle();
+    map.getTile(Point(11, 7)).setObstacle();
     // map.getTile(Point(11,6)).setObstacle();
 
-    // path = computeShortestPath(map, map.getTile(Point(10,5)), map.getTile(Point(6, 4)), Direction::N, 100);
-    // for (pair<Tile, Direction> step : path) cout << step.first << " - " << step.second << endl;
-    
+    // path = shortest(map, map.getTile(Point(10,5)), map.getTile(Point(6, 4)),
+    // Direction::N, 100); for (pair<Tile, Direction> step : path) cout << step.first << " - " <<
+    // step.second << endl;
+
     // cout << endl;
 
-    Master master = Master(map, Point(14,14), Faction::Valars);
+    Master master = Master(map, Point(14, 14), Faction::Valars);
     // Minion minion = Minion(map, map.getTile(Point(10, 8)), Faction::Valars, master);
-    
+
     // path = minion.findMaster(10);
     // for (pair<Tile, Direction> step : path) cout << step.first << " - " << step.second << endl;
 
@@ -88,13 +87,15 @@ int main(int argc, char* argv[]) {
     // map.getTile(Point(10,9)).setOwner(Faction::Valars);
     // map.getTile(Point(11,9)).setOwner(Faction::Dragons);
     // cout << "nb minion autour : " << minion.checkAround().size() << endl;
-    // for (pair<ThingAtPoint, Point> check2 : minion.checkAround()) cout << check2.first << " on point " << check2.second << endl;
+    // for (pair<ThingAtPoint, Point> check2 : minion.checkAround()) cout << check2.first << " on
+    // point " << check2.second << endl;
 
     // cout << endl << minion.interactsWithSurroundings() << endl << endl;
 
     // path = minion.explorate(10);
     // cout << "path size : " << path.size() << endl;
-    // for (pair<Tile, Direction> step : path) cout << "\t" << step.first << " - " << step.second << endl;
+    // for (pair<Tile, Direction> step : path) cout << "\t" << step.first << " - " << step.second <<
+    // endl;
 
     // cout << endl;
 

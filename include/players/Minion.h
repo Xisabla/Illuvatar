@@ -16,23 +16,27 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #include "map/DirectionUtils.h"
 #include "map/Map.h"
 #include "map/PathFinder.h"
-#include "map/Tile.h" // remove
 #include "players/Master.h"
+#include "players/Character.h"
 #include "wip.h"
 
+#include <iostream>
 #include <map>
 #include <set>
 #include <vector>
-#include <iostream>
 
 class Master;
 
 class Minion : public Character {
   public:
-    Minion(Map &map, Point point, directionutils::Direction direction, Faction faction, Master &master);
+    Minion(Map& map,
+           Point point,
+           directionutils::Direction direction,
+           Faction faction,
+           Master& master);
     void move();
 
-  //protected:
+    // protected:
     Master& master;
 
     int energy = 100;
@@ -44,23 +48,24 @@ class Minion : public Character {
     void fight(Minion& minion);
     void exchange(Minion& minion);
 
-  //private:
+    // private:
     std::map<Faction, std::set<Faction>> alliances = {
         { Faction::Eldars, { Faction::Eldars, Faction::Valars } },
         { Faction::Valars, { Faction::Eldars, Faction::Valars } },
         { Faction::Dragons, { Faction::Dragons, Faction::Werewolves } },
         { Faction::Werewolves, { Faction::Dragons, Faction::Werewolves } },
     };
-    
+
     void rollDice();
 
-    pathfinder::DirectionalPath explorate(int const range);
+    pathfinder::DirectionalPath explorate(int range);
 
     bool interactsWithSurroundings();
 
-    pathfinder::DirectionalPath findMaster(int const range);
+    pathfinder::DirectionalPath findMaster(int range);
 
-    std::pair<ThingAtPoint, Point> checkDirection(const Point &point, directionutils::Direction &direction);
+    std::pair<ThingAtPoint, Point> checkDirection(const Point& point,
+                                                  directionutils::Direction& direction);
 
     std::vector<std::pair<ThingAtPoint, Point>> checkAround();
 };

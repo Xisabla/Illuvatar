@@ -11,5 +11,5 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 using namespace std;
 
-void Alliance::Meet(Horde hordeMinion) { }
-void Alliance::Meet(Alliance allianceMinion) { }
+void Alliance::Meet(const Horde& hordeMinion) { }
+void Alliance::Meet(const Alliance& allianceMinion) { }

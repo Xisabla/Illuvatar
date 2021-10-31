@@ -42,14 +42,14 @@ set(SOURCES
         include/map/PathFinder.h src/map/PathFinder.cpp
         include/map/Tile.h src/map/Tile.cpp
         include/map/TileSet.h src/map/TileSet.cpp
+        include/players/Alliance.h src/players/Alliance.cpp
         include/players/Character.h src/players/Character.cpp
+        include/players/Dragon.h src/players/Dragon.cpp
+        include/players/Eldar.h src/players/Eldar.cpp
+        include/players/Horde.h src/players/Horde.cpp
         include/players/Master.h src/players/Master.cpp
         include/players/Minion.h src/players/Minion.cpp
-        include/players/Alliance.h src/players/Alliance.cpp
-        include/players/Horde.h src/players/Horde.cpp
-        include/players/Eldar.h src/players/Eldar.cpp
-        include/players/Valar.h src/players/Valar.cpp
-        include/players/Dragon.h src/players/Dragon.cpp
+        include/players/Vala.h src/players/Vala.cpp
         include/players/Werewolf.h src/players/Werewolf.cpp
         include/qt/QGameMap.h src/qt/QGameMap.cpp
         include/wip.h

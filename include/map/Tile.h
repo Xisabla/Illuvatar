@@ -14,15 +14,16 @@
 #include "geometry/Point.h"
 #include "wip.h"
 
-#include <utility>
 #include <iostream>
+#include <utility>
 
 /**
  * @enum Faction
  * @brief Available Factions in the simulation
  */
 enum Faction { Eldars, Valars, Dragons, Werewolves, NoFaction };
-std::ostream& operator<<(std::ostream& out, const Faction value);
+
+std::ostream& operator<<(std::ostream& out, Faction value);
 
 /**
  * @class Tile
@@ -55,7 +56,10 @@ class Tile : public Point {
      */
     bool belongsTo(Faction f);
 
-    bool isObstacle();
+    /**
+     * @return True if the Tile is an obstacle
+     */
+    bool isObstacle() const;
 
     // - Setters -----------------------------------------------------------------------------
     /**
@@ -63,9 +67,15 @@ class Tile : public Point {
      * @param f Faction to set ownership to
      */
     void setOwner(Faction f);
-    
+
+    /**
+     * @brief Set the Tile as an obstacle
+     */
     void setObstacle();
 
+    /**
+     * @brief Unset the Tile as an obstacle
+     */
     void unsetObstacle();
 
     /**
@@ -78,7 +88,9 @@ class Tile : public Point {
 
     inline bool operator<(const Tile& t) const { return Point::operator<(t); }
 
-    inline friend std::ostream& operator<<(std::ostream& out, Tile& t) { return out << t.getPoint() << " " << t.getOwner(); }
+    inline friend std::ostream& operator<<(std::ostream& out, Tile& t) {
+        return out << t.getPoint() << " " << t.getOwner();
+    }
 
   private:
     // - Attributes --------------------------------------------------------------------------
@@ -87,6 +99,9 @@ class Tile : public Point {
      */
     Faction owner;
 
+    /**
+     * @brief Is the Tile an obstacle ?
+     */
     bool obstacle = false;
 
     // TODO: Character

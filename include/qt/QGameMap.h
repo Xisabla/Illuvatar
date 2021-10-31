@@ -62,12 +62,12 @@ class QGameMap : public QWidget {
     /**
      * Set the size of the tiles
      */
-    void setTileSize(unsigned int size);
+    [[maybe_unused]] void setTileSize(unsigned int size);
 
     /**
      * Show or hide coordinates of the Tiles
      */
-    void setCoordinates(bool status);
+    [[maybe_unused]] void setCoordinates(bool status);
 
     /**
      * Toggle Tile coordinates visibility

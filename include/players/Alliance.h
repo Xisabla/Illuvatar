@@ -17,8 +17,8 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 class Horde;
 
 class Alliance : public Minion {
-    void Meet(Horde hordeMinion);
-    void Meet(Alliance allianceMinion);
+    void Meet(const Horde& hordeMinion);
+    void Meet(const Alliance& allianceMinion);
 };
 
 #endif // ILLUVATAR_ALLIANCE_H

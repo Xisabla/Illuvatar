@@ -11,10 +11,9 @@
 #ifndef ILLUVATAR_PathFinder_H
 #define ILLUVATAR_PathFinder_H
 
+#include "geometry/Point.h"
 #include "map/DirectionUtils.h"
 #include "map/Map.h"
-#include "map/Tile.h" // remove
-#include "geometry/Point.h"
 #include "wip.h"
 
 #include <algorithm>
@@ -25,20 +24,53 @@
 class Map;
 
 namespace pathfinder {
-  typedef std::vector<Point> Path;
-  typedef std::vector<std::pair<Point, directionutils::Direction>> DirectionalPath;
+typedef std::vector<Point> Path;
+typedef std::vector<std::pair<Point, directionutils::Direction>> DirectionalPath;
 
-  DirectionalPath computeShortestPath(Map& map, Point current, Point& target, directionutils::Direction initialD, unsigned int nbTile);
+/**
+ * @brief Compute the shortest Path between two points
+ * @param map Map on which the Path will be computed
+ * @param current Origin position
+ * @param target Final position
+ * @param maxDistance Maximum number of Tiles to use (may stop the Path before the target)
+ * @return The computed Path
+ */
+DirectionalPath shortest(Map& map, Point current, Point& target, unsigned int maxDistance);
 
-  Path aStarGenerator(Map& map, Path& path, Point& current, Point& target, Path& explored, Path& notExplored);
+/**
+ * @brief Implementation of the A* algorithm to compute the shortest path between 2 Points on the
+ * map
+ * @return The computed path
+ */
+Path AStar(Map& map, Path& path, Point& current, Point& target, Path& explored, Path& unexplored);
 
-  Path unlooper(Map& map, Path& refPath, Path& path, unsigned int pos = 1);
+/**
+ * @brief Remove all loops on a Path
+ * @return The unlooped path
+ */
+Path unlooper(Map& map, Path& refPath, Path& path, unsigned int pos = 1);
 
-  DirectionalPath straightenerAndCutter(Map& map, Path& refPath, DirectionalPath& path, directionutils::Direction initialD, unsigned int nbTile, unsigned int pos = 0);
+DirectionalPath straightenerAndCutter(Map& map,
+                                      Path& ref,
+                                      DirectionalPath& path,
+                                      directionutils::Direction direction,
+                                      unsigned int maxDistance,
+                                      unsigned int pos = 0);
 
-  bool checkBothBridges(Map &map, DirectionalPath& path, bool alignTest, Point current, Point next, bool first, int deltaBridge);
+bool checkBothBridges(Map& map,
+                      DirectionalPath& path,
+                      bool alignTest,
+                      Point current,
+                      Point next,
+                      bool first,
+                      int deltaBridge);
 
-  bool checkBridge(Map &map, DirectionalPath& path, Point bridge, bool alignTest, Point current, Point next);
-};
+bool checkBridge(Map& map,
+                 DirectionalPath& path,
+                 Point bridge,
+                 bool alignTest,
+                 Point current,
+                 Point next);
+} // namespace pathfinder
 
 #endif // ILLUVATAR_PathFinder_H

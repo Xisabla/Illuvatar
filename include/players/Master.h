@@ -11,16 +11,16 @@
 #ifndef ILLUVATAR_MASTER_H
 #define ILLUVATAR_MASTER_H
 
-#include "players/Character.h"
-#include "Players/Minion.h"
+#include "players/Minion.h"
 #include "map/Map.h"
 #include "map/Tile.h"
+#include "players/Character.h"
 
 class Minion;
 
 class Master : public Character {
   public:
-    Master(Map &map, Point point, Faction faction);
+    Master(Map& map, Point point, Faction faction);
 
     std::string GetMessage(Minion& minion);
     void GiveMessage(Minion& minion);

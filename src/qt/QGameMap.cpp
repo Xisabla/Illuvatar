@@ -32,12 +32,12 @@ void QGameMap::setSurface(Rectangle s) {
 
 void QGameMap::setTiles(TileSet tileSet) { this->tiles = std::move(tileSet); }
 
-void QGameMap::setTileSize(unsigned int size) {
+[[maybe_unused]] void QGameMap::setTileSize(unsigned int size) {
     this->tileSize = size;
     this->repaint();
 }
 
-void QGameMap::setCoordinates(bool status) {
+[[maybe_unused]] void QGameMap::setCoordinates(bool status) {
     if (status != this->showCoordinates) this->toggleCoordinates();
 }
 

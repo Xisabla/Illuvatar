@@ -11,14 +11,14 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #ifndef ILLUVATAR_HORDE_H
 #define ILLUVATAR_HORDE_H
 
-#include "players/Minion.h"
 #include "players/Alliance.h"
+#include "players/Minion.h"
 
 class Alliance;
 
 class Horde : public Minion {
-    void Meet(Horde hordeMinion);
-    void Meet(Alliance allianceMinion);
+    void Meet(const Horde& hordeMinion);
+    void Meet(const Alliance& allianceMinion);
 };
 
 #endif // ILLUVATAR_HORDE_H

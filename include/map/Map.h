@@ -12,9 +12,9 @@
 #define ILLUVATAR_MAP_H
 
 #include "geometry/Rectangle.h"
+#include "map/DirectionUtils.h"
 #include "map/Tile.h"
 #include "map/TileSet.h"
-#include "map/DirectionUtils.h"
 #include "qt/QGameMap.h"
 #include "wip.h"
 
@@ -22,7 +22,7 @@
 #include <utility>
 #include <vector>
 
-//std::ostream& operator<<(std::ostream& out, const ThingAtPoint value);
+// std::ostream& operator<<(std::ostream& out, const ThingAtPoint value);
 
 /**
  * @class Map
@@ -54,7 +54,7 @@ class Map {
      * @param p Position of the Tile
      * @return True if the Tile exists
      */
-    bool exists(const Point& p) const;
+    [[nodiscard]] bool exists(const Point& p) const;
 
     /**
      * Get a Tile on the map
@@ -68,23 +68,23 @@ class Map {
      * @param p Position of the Tile
      * @return A TileSet of neighbours
      */
-    TileSet getNeighbours(const Point& p);
+    [[maybe_unused]] TileSet getNeighbours(const Point& p);
 
     /**
      * @return The Qt graphical map object linked to the map
      */
     QGameMap* GMap();
 
-    bool areNeighbours(const Point& first, const Point& second);
-
-    ThingAtPoint
-    getThingAtPoint(const Point& p, std::set<Faction> const minionAllies = {});
-
-    Point project(const Point& from, const Point& jump);
+    /**
+     * @param p Position to check for entity
+     * @param allies List of Factions that are considered as allies
+     * @return What kind of entity is at the position
+     */
+    ThingAtPoint getThingAtPoint(const Point& p, std::set<Faction> const& allies = {});
 
     void jump(Point& from, Point& to, Faction faction);
 
-    Tile& computeLastPosition(const Point &point, const directionutils::Direction &direction);
+    Tile& computeLastPosition(const Point& point, const directionutils::Direction& direction);
 
     // - Setters -----------------------------------------------------------------------------
     /**
@@ -92,25 +92,35 @@ class Map {
      * @param p Position of the Tile
      * @param faction Faction that owns the Tile
      */
-    void setTile(const Point& p, Faction faction = NoFaction);
+    [[maybe_unused]] void setTile(const Point& p, Faction faction = NoFaction);
 
     // - Methods -----------------------------------------------------------------------------
     /**
      * Change the Map surface
      * @param surface New surface of the Map
      */
-    void resize(Rectangle surface);
+    [[maybe_unused]] void resize(Rectangle surface);
 
     /**
      * Remove a Tile from the Map
      * @param p Position of the Tile
      */
-    void removeTile(const Point& p);
+    [[maybe_unused]] void removeTile(const Point& p);
 
     /**
      * Synchronize the Qt graphical map and redraw it
      */
     void sync();
+
+    /**
+     * @return True if the two points are neighbours on the map
+     */
+    static bool areNeighbours(const Point& first, const Point& second);
+
+    /**
+     * @brief Helper method to sum the components of two Points
+     */
+    static Point project(const Point& from, const Point& jump);
 
   private:
     // - Attributes --------------------------------------------------------------------------

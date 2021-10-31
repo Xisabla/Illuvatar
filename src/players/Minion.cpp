@@ -61,7 +61,7 @@ bool Minion::interactsWithSurroundings() {
                 interactFlag = true;
                 break;
 
-            case ThingAtPoint::Ennemy:
+            case ThingAtPoint::Enemy:
                 // fight : todo get minion from tile
                 interactFlag = true;
                 break;
@@ -110,7 +110,7 @@ DirectionalPath Minion::explorate(int const range) {
 }
 
 DirectionalPath Minion::findMaster(int const range) {
-    return computeShortestPath(this->map, this->point, this->master.getPoint(), this->currentDirection, range);
+    return shortest(this->map, this->point, this->master.getPoint(), range);
 }
 
 pair<ThingAtPoint, Point> Minion::checkDirection(const Point &point, Direction &direction) {
@@ -124,7 +124,7 @@ vector<pair<ThingAtPoint, Point>> Minion::checkAround() {
     for (Direction d = Direction::DIRECTION_FIRST; d <= Direction::DIRECTION_LAST;
          d = Direction(static_cast<int>(d) + 1)) { // get all enum values
         pair<ThingAtPoint, Point> thing = this->checkDirection(this->point, d);
-        if (thing.first == ThingAtPoint::Ally || thing.first == ThingAtPoint::Ennemy) things.push_back(thing);
+        if (thing.first == ThingAtPoint::Ally || thing.first == ThingAtPoint::Enemy) things.push_back(thing);
     }
 
     return things;

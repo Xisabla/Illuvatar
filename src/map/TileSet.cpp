@@ -167,7 +167,7 @@ void TileSet::remove(const Point& p) {
         }));
 }
 
-void TileSet::remove(int x, int y) { return this->remove(Point(x, y)); }
+[[maybe_unused]] void TileSet::remove(int x, int y) { return this->remove(Point(x, y)); }
 
 void TileSet::merge(TileSet set, bool overwrite) {
     for (auto& t: set) this->push(t, overwrite);
