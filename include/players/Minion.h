@@ -7,6 +7,8 @@ Copyright (c) 2021 - All rights reserved
 Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 =========================================================================*/
+#pragma once
+#pragma once
 #ifndef ILLUVATAR_MINION_H
 #define ILLUVATAR_MINION_H
 
@@ -27,7 +29,7 @@ class Master;
 
 class Minion : public Character {
   public:
-    Minion(Map &map, Point &point, directionutils::Direction direction, Faction faction, Master &master);
+    Minion(Map &map, Point point, directionutils::Direction direction, Faction faction, Master &master);
     void move();
 
   //protected:

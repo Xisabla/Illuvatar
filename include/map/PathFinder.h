@@ -22,6 +22,8 @@
 #include <map>
 #include <vector>
 
+class Map;
+
 namespace pathfinder {
   typedef std::vector<Point> Path;
   typedef std::vector<std::pair<Point, directionutils::Direction>> DirectionalPath;

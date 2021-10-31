@@ -17,14 +17,12 @@
 #include "map/DirectionUtils.h"
 #include "qt/QGameMap.h"
 #include "wip.h"
-#include "players/Minion.h"
 
 #include <set>
 #include <utility>
 #include <vector>
 
-enum ThingAtPoint { Void, Nothing, Obstacle, Ennemy, Ally };
-std::ostream& operator<<(std::ostream& out, const ThingAtPoint value);
+//std::ostream& operator<<(std::ostream& out, const ThingAtPoint value);
 
 /**
  * @class Map
@@ -84,7 +82,7 @@ class Map {
 
     Point project(const Point& from, const Point& jump);
 
-    void jump(const Minion minion, Point& from, Point& to);
+    void jump(Point& from, Point& to, Faction faction);
 
     Tile& computeLastPosition(const Point &point, const directionutils::Direction &direction);
 

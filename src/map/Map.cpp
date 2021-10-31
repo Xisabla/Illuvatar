@@ -8,7 +8,7 @@
 
 =========================================================================*/
 #include "map/Map.h"
-
+/*
 std::ostream& operator<<(std::ostream& out, const ThingAtPoint value) {
     const char* s = 0;
 #define PROCESS_VAL(p) case(p): s = #p; break;
@@ -23,6 +23,7 @@ std::ostream& operator<<(std::ostream& out, const ThingAtPoint value) {
 
     return out << s;
 }
+*/
 
 //  --------------------------------------------------------------------------------------
 //  Map
@@ -95,10 +96,10 @@ Point Map::project(const Point& from, const Point& jump) {
     return Point(from.X() + jump.X(), from.Y() + jump.Y());
 }
 
-void Map::jump(const Minion minion, Point& from, Point& to) {
+void Map::jump(Point& from, Point& to, Faction faction) {
     // todo : equivalent of thoses
     this->getTile(from).removeOwnership();
-    this->getTile(to).setOwner(minion.getFaction());
+    this->getTile(to).setOwner(faction);
 }
 
 Tile& Map::computeLastPosition(const Point &point, const directionutils::Direction &direction) {

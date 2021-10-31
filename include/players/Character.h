@@ -7,6 +7,7 @@ Copyright (c) 2021 - All rights reserved
 Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 =========================================================================*/
+#pragma once
 #ifndef ILLUVATAR_CHARACTER_H
 #define ILLUVATAR_CHARACTER_H
 
@@ -18,9 +19,11 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #include <string>
 #include <vector>
 
+class Map;
+
 class Character {
   public:
-    Character(Map &map, Point &point, Faction faction);
+    Character(Map &map, Point point, Faction faction);
     std::vector<std::string> GetMessageList();
     void SetMessageList(std::vector<std::string>& messageList);
 

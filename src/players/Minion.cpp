@@ -6,7 +6,7 @@ using namespace directionutils;
 using namespace pathfinder;
 
 
-Minion::Minion(Map &map, Point &point, Direction direction, Faction faction, Master &master): Character(map, point, faction), currentDirection(direction), master(master) {}
+Minion::Minion(Map &map, Point point, Direction direction, Faction faction, Master &master): Character(map, point, faction), currentDirection(direction), master(master) {}
 
 void Minion::move() {
     int range = rand() % (this->rangeMax - this->rangeMin + 1) + this->rangeMin; //todo : modulate with dice throw ?
@@ -26,7 +26,7 @@ void Minion::move() {
     for (pair<Point, Direction> step: path) {
         cout << step.first << " - " << step.second << endl;
         if (this->checkDirection(step.first, step.second).first == ThingAtPoint::Nothing) {
-            this->map.jump(this, this->point, step.first); // todo : add this to args
+            this->map.jump(this->point, step.first, this->faction); // todo : add this to args
             this->point = step.first;
             this->currentDirection = step.second;
             this->energy--; // todo : this->energy += this->tile.safeFor() == this->faction ? 100 : - this->loss;
@@ -110,7 +110,7 @@ DirectionalPath Minion::explorate(int const range) {
 }
 
 DirectionalPath Minion::findMaster(int const range) {
-    return computeShortestPath(this->map, this->point, this->master.getTile(), this->currentDirection, range);
+    return computeShortestPath(this->map, this->point, this->master.getPoint(), this->currentDirection, range);
 }
 
 pair<ThingAtPoint, Point> Minion::checkDirection(const Point &point, Direction &direction) {

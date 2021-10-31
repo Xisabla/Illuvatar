@@ -7,6 +7,7 @@
   Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 =========================================================================*/
+#pragma once
 #ifndef ILLUVATAR_MASTER_H
 #define ILLUVATAR_MASTER_H
 
@@ -19,7 +20,7 @@ class Minion;
 
 class Master : public Character {
   public:
-    Master(Map &map, Tile &tile, Faction faction);
+    Master(Map &map, Point point, Faction faction);
 
     std::string GetMessage(Minion& minion);
     void GiveMessage(Minion& minion);
