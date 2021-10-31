@@ -10,12 +10,9 @@ Minion::Minion(Map &map, Point point, Direction direction, Faction faction, Mast
 
 void Minion::move() {
     int range = rand() % (this->rangeMax - this->rangeMin + 1) + this->rangeMin; //todo : modulate with dice throw ?
-    cout << endl << "range : " << range << endl;
 
     bool kindCond = this->energy - range > this->lowEnergy; //todo : add msg conds at least
-    cout << (kindCond ? "explo" : "master") << endl;
     DirectionalPath path = kindCond ? this->explorate(range) : this->findMaster(range);
-    cout << "nb moves visualized : " << path.size() << endl;
 
     if (path.empty()) {
         cout << "empty path : fight" << endl;  
@@ -24,32 +21,26 @@ void Minion::move() {
     }
 
     for (pair<Point, Direction> step: path) {
-        cout << step.first << " - " << step.second << endl;
-        if (this->checkDirection(step.first, step.second).first == ThingAtPoint::Nothing) {
-            this->map.jump(this->point, step.first, this->faction); // todo : add this to args
+        if (this->checkPosition(step.first) == ThingAtPoint::Nothing) {
+            this->map.jump(this->point, step.first, this->faction);
             this->point = step.first;
             this->currentDirection = step.second;
             this->energy--; // todo : this->energy += this->tile.safeFor() == this->faction ? 100 : - this->loss;
-            cout << "new pos : " << this->point << " - " << this->currentDirection << endl;
 
             if (interactsWithSurroundings()) {
-                cout << "interacted with neighbors" << endl;
                 return;
             }
 
             if (!this->energy) {
-                cout << "exhausted";
+                //cout << "exhausted";
                 return;
             }
         }
         else {
-            cout << "something or nothing on the road" << endl;
             interactsWithSurroundings();
             return;
         }
     }
-
-    cout << "no neighbors !" << endl;
 }
 
 bool Minion::interactsWithSurroundings() {
@@ -113,9 +104,13 @@ DirectionalPath Minion::findMaster(int const range) {
     return computeShortestPath(this->map, this->point, this->master.getPoint(), this->currentDirection, range);
 }
 
+ThingAtPoint Minion::checkPosition(const Point &point) {
+    return this->map.getThingAtPoint(point, Minion::alliances.at(this->faction));
+}
+
 pair<ThingAtPoint, Point> Minion::checkDirection(const Point &point, Direction &direction) {
     Point p = this->map.project(point, nextDirection.at(direction));
-    return { this->map.getThingAtPoint(p, Minion::alliances.at(this->faction)), p };
+    return { this->checkPosition(p), p };
 }
 
 vector<pair<ThingAtPoint, Point>> Minion::checkAround() {

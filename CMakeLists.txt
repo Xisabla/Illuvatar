@@ -52,7 +52,7 @@ set(SOURCES
         include/players/Dragon.h src/players/Dragon.cpp
         include/players/Werewolf.h src/players/Werewolf.cpp
         include/qt/QGameMap.h src/qt/QGameMap.cpp
-        include/wip.h
+        include/wip.h src/wip.cpp
         src/core/main.cpp
         )
 
