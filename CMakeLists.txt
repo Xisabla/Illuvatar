@@ -52,6 +52,7 @@ set(SOURCES
         include/players/Vala.h src/players/Vala.cpp
         include/players/Werewolf.h src/players/Werewolf.cpp
         include/qt/QGameMap.h src/qt/QGameMap.cpp
+        include/unirand.h src/unirand.cpp
         include/wip.h
         src/core/main.cpp
         )

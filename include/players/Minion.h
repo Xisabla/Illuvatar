@@ -18,8 +18,10 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #include "map/PathFinder.h"
 #include "players/Master.h"
 #include "players/Character.h"
+#include "unirand.h"
 #include "wip.h"
 
+#include <iterator>
 #include <iostream>
 #include <map>
 #include <set>
@@ -36,7 +38,7 @@ class Minion : public Character {
            Master& master);
     void move();
 
-    // protected:
+  protected:
     Master& master;
 
     int energy = 100;
@@ -48,7 +50,7 @@ class Minion : public Character {
     void fight(Minion& minion);
     void exchange(Minion& minion);
 
-    // private:
+  private:
     std::map<Faction, std::set<Faction>> alliances = {
         { Faction::Eldars, { Faction::Eldars, Faction::Valars } },
         { Faction::Valars, { Faction::Eldars, Faction::Valars } },

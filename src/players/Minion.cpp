@@ -1,5 +1,4 @@
 #include "players/Minion.h"
-#include <iterator>
 
 using namespace std;
 using namespace directionutils;
@@ -9,7 +8,7 @@ using namespace pathfinder;
 Minion::Minion(Map &map, Point point, Direction direction, Faction faction, Master &master): Character(map, point, faction), currentDirection(direction), master(master) {}
 
 void Minion::move() {
-    int range = rand() % (this->rangeMax - this->rangeMin + 1) + this->rangeMin; //todo : modulate with dice throw ?
+    int range = unirand::getValue(this->rangeMin, this->rangeMax); //todo : modulate with dice throw ?
     cout << endl << "range : " << range << endl;
 
     bool kindCond = this->energy - range > this->lowEnergy; //todo : add msg conds at least
@@ -89,7 +88,7 @@ DirectionalPath Minion::explorate(int const range) {
     Direction direction;
     Direction opposite = oppositeDirection.at(this->currentDirection);
     if (!possibleDirs.empty()) {
-        direction = possibleDirs[rand() % possibleDirs.size()];
+        direction = possibleDirs[unirand::getValue(0, possibleDirs.size() - 1)];
     } else if (this->checkDirection(this->point, opposite).first == ThingAtPoint::Nothing) {
         direction = opposite;
     } else {

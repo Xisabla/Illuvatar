@@ -13,7 +13,12 @@
 
 #include <iterator>
 #include <random>
+#include <chrono>
 
+namespace unirand {
+    int getValue(int min, int max);
+}
+/*
 template<typename RandomGenerator = std::default_random_engine> struct uniformRandom {
     // On most platforms, you probably want to use std::random_device("/dev/urandom")()
     uniformRandom(RandomGenerator g = RandomGenerator(std::random_device()())): gen(g) { }
@@ -35,6 +40,6 @@ template<typename RandomGenerator = std::default_random_engine> struct uniformRa
 
   private:
     RandomGenerator gen;
-};
+};*/
 
 #endif // ILLUVATAR_UNIFORMRANDOM_H
