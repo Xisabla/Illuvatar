@@ -14,6 +14,7 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #include "map/Map.h"
 #include "wip.h"
 #include "geometry/Point.h"
+#include "unirand.h"
 
 #include <list>
 #include <string>
@@ -24,8 +25,8 @@ class Map;
 class Character {
   public:
     Character(Map &map, Point point, Faction faction);
-    std::vector<std::string> GetMessageList();
-    void SetMessageList(std::vector<std::string>& messageList);
+    void setMsgList(std::vector<std::string>& msgList);
+    std::vector<std::string>& getMsgList();
 
     Point& getPoint() { return this->point; }
 
@@ -36,8 +37,14 @@ class Character {
     Point point;
     Faction faction;
 
+    void addMsg(std::string msg);
+    void addMsgList(std::vector<std::string>& msgList);
+    std::string getRandomMsg();
+    std::string dropRandomMsg();
+    void dropMsgList();
+
   private:
-    std::vector<std::string> MessageList;
+    std::vector<std::string> msgList;
 };
 
 #endif // ILLUVATAR_CHARACTER_H

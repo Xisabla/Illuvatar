@@ -9,46 +9,35 @@ Minion::Minion(Map &map, Point point, Direction direction, Faction faction, Mast
 
 void Minion::move() {
     int range = unirand::getValue(this->rangeMin, this->rangeMax); //todo : modulate with dice throw ?
-    cout << endl << "range : " << range << endl;
 
     bool kindCond = this->energy - range > this->lowEnergy; //todo : add msg conds at least
-    cout << (kindCond ? "explo" : "master") << endl;
     DirectionalPath path = kindCond ? this->explorate(range) : this->findMaster(range);
-    cout << "nb moves visualized : " << path.size() << endl;
 
     if (path.empty()) {
-        cout << "empty path : fight" << endl;  
         this->interactsWithSurroundings();
         return;
     }
 
     for (pair<Point, Direction> step: path) {
-        cout << step.first << " - " << step.second << endl;
         if (this->checkDirection(step.first, step.second).first == ThingAtPoint::Nothing) {
             this->map.jump(this->point, step.first, this->faction); // todo : add this to args
             this->point = step.first;
             this->currentDirection = step.second;
             this->energy--; // todo : this->energy += this->tile.safeFor() == this->faction ? 100 : - this->loss;
-            cout << "new pos : " << this->point << " - " << this->currentDirection << endl;
 
             if (interactsWithSurroundings()) {
-                cout << "interacted with neighbors" << endl;
                 return;
             }
 
             if (!this->energy) {
-                cout << "exhausted";
                 return;
             }
         }
         else {
-            cout << "something or nothing on the road" << endl;
             interactsWithSurroundings();
             return;
         }
     }
-
-    cout << "no neighbors !" << endl;
 }
 
 bool Minion::interactsWithSurroundings() {
@@ -57,11 +46,13 @@ bool Minion::interactsWithSurroundings() {
         switch(thing.first) {
             case ThingAtPoint::Ally:
                 //échange les infos : todo get minion from tile
+                //this->exchange(other);
                 interactFlag = true;
                 break;
 
             case ThingAtPoint::Enemy:
                 // fight : todo get minion from tile
+                //if (!this->fightAndWin(other)) return true; // dead
                 interactFlag = true;
                 break;
         }
@@ -129,8 +120,70 @@ vector<pair<ThingAtPoint, Point>> Minion::checkAround() {
     return things;
 }
 
-void Minion::rollDice() { }
+Result Minion::rollDice() {
+    return Result::SUCCESS; //todo : voir avec charles
+}
 
-void Minion::fight(Minion& other) { }
+void Minion::exchange(Minion& other) {
+    switch(this->rollDice()) {
+        case Result::CRITIC_SUCCESS:
+            this->addMsg(other.getRandomMsg());
+            break;
 
-void Minion::exchange(Minion& other) { }
+        case Result::SUCCESS:
+            this->addMsg(other.dropRandomMsg());
+            other.addMsg(this->dropRandomMsg());
+            break;
+
+        case Result::FAILURE:
+            this->dropRandomMsg();
+            break;
+
+        case Result::CRITIC_FAILURE:
+            this->dropRandomMsg();
+            other.dropRandomMsg();
+            break;
+    }
+}
+
+bool Minion::isAlive() {
+    return this->life && this->energy;
+}
+
+void Minion::reduceLife(int damages) {
+    this->life -= damages;
+}
+
+void Minion::searchCorpse(Minion& other) {
+    switch(this->rollDice()) {
+        case Result::CRITIC_SUCCESS:
+            this->addMsgList(other.getMsgList());
+            break;
+
+        case Result::SUCCESS:
+            this->addMsg(other.dropRandomMsg());
+            break;
+
+        case Result::FAILURE:
+            this->dropRandomMsg();
+            break;
+
+        case Result::CRITIC_FAILURE:
+            this->dropMsgList();
+            break;
+    }
+}
+
+bool Minion::fightAndWin(Minion& other) {
+    do {
+        other.reduceLife(this->attack());
+        if (!other.isAlive()) {
+            this->searchCorpse(other);
+            return true;
+        }
+        this->reduceLife(other.attack());
+    } while(this->isAlive());
+
+    other.searchCorpse(*this);
+    return false;
+}

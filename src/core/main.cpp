@@ -37,15 +37,6 @@ int main(int argc, char* argv[]) {
     // Instantiate map
     Map map(tiles);
 
-    map.getTile(Point(9, 6)).setObstacle();
-    map.getTile(Point(9, 7)).setObstacle();
-    map.getTile(Point(10, 7)).setObstacle();
-    map.getTile(Point(11, 7)).setObstacle();
-
-    Master master = Master(map, Point(14, 14), Faction::Valars);
-
-    Minion(map, Point(10, 10), Direction::S, Faction::Valars, master).move();
-
     // add loop to test moves
     // pathfinding(position maitre) => rendre message ou plus d'énergie
     // explo(directionPrincipale) => se déplacer sur la map selon une direction principale

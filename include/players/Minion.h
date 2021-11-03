@@ -29,6 +29,8 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 class Master;
 
+enum class Result { CRITIC_SUCCESS, SUCCESS, FAILURE, CRITIC_FAILURE };
+
 class Minion : public Character {
   public:
     Minion(Map& map,
@@ -37,6 +39,7 @@ class Minion : public Character {
            Faction faction,
            Master& master);
     void move();
+    bool isAlive();
 
   protected:
     Master& master;
@@ -47,8 +50,11 @@ class Minion : public Character {
     const int rangeMin = 6;
     directionutils::Direction currentDirection;
 
-    void fight(Minion& minion);
-    void exchange(Minion& minion);
+    int life = 100;
+
+    void exchange(Minion& other);
+    bool fightAndWin(Minion& other);
+    virtual int attack() = 0;
 
   private:
     std::map<Faction, std::set<Faction>> alliances = {
@@ -58,7 +64,7 @@ class Minion : public Character {
         { Faction::Werewolves, { Faction::Dragons, Faction::Werewolves } },
     };
 
-    void rollDice();
+    Result rollDice();
 
     pathfinder::DirectionalPath explorate(int range);
 
@@ -70,6 +76,10 @@ class Minion : public Character {
                                                   directionutils::Direction& direction);
 
     std::vector<std::pair<ThingAtPoint, Point>> checkAround();
+    
+    void reduceLife(int damages);
+
+    void searchCorpse(Minion& other);
 };
 
 #endif // ILLUVATAR_MINION_H
