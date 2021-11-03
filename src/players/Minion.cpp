@@ -19,8 +19,8 @@ void Minion::move() {
     }
 
     for (pair<Point, Direction> step: path) {
-        if (this->checkDirection(step.first, step.second).first == ThingAtPoint::Nothing) {
-            this->map.jump(this->point, step.first, this->faction); // todo : add this to args
+        if (this->checkPosition(step.first) == ThingAtPoint::Nothing) {
+            this->map.jump(this->point, step.first, this->faction);
             this->point = step.first;
             this->currentDirection = step.second;
             this->energy--; // todo : this->energy += this->tile.safeFor() == this->faction ? 100 : - this->loss;
@@ -30,6 +30,7 @@ void Minion::move() {
             }
 
             if (!this->energy) {
+                //cout << "exhausted";
                 return;
             }
         }
@@ -103,9 +104,13 @@ DirectionalPath Minion::findMaster(int const range) {
     return shortest(this->map, this->point, this->master.getPoint(), range);
 }
 
+ThingAtPoint Minion::checkPosition(const Point &point) {
+    return this->map.getThingAtPoint(point, Minion::alliances.at(this->faction));
+}
+
 pair<ThingAtPoint, Point> Minion::checkDirection(const Point &point, Direction &direction) {
     Point p = this->map.project(point, nextDirection.at(direction));
-    return { this->map.getThingAtPoint(p, Minion::alliances.at(this->faction)), p };
+    return { this->checkPosition(p), p };
 }
 
 vector<pair<ThingAtPoint, Point>> Minion::checkAround() {

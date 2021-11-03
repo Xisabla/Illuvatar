@@ -22,7 +22,6 @@
 #include <utility>
 #include <vector>
 
-// std::ostream& operator<<(std::ostream& out, const ThingAtPoint value);
 
 /**
  * @class Map

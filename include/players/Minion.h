@@ -72,8 +72,9 @@ class Minion : public Character {
 
     pathfinder::DirectionalPath findMaster(int range);
 
-    std::pair<ThingAtPoint, Point> checkDirection(const Point& point,
-                                                  directionutils::Direction& direction);
+    ThingAtPoint checkPosition(const Point &point);
+
+    std::pair<ThingAtPoint, Point> checkDirection(const Point &point, directionutils::Direction &direction);
 
     std::vector<std::pair<ThingAtPoint, Point>> checkAround();
     
