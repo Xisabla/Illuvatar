@@ -75,7 +75,7 @@ ThingAtPoint Map::getThingAtPoint(const Point& p, const std::set<Faction>& allie
 
     if (t.isObstacle()) return ThingAtPoint::Obstacle;
     if (t.belongsTo(NoFaction)) return ThingAtPoint::Nothing;
-    return allies.find(t.getOwner()) == allies.end() ? ThingAtPoint::Enemy : ThingAtPoint::Ally;
+    return allies.find(t.getOwner()) == allies.end() ? ThingAtPoint::Ennemy : ThingAtPoint::Ally;
 }
 
 Point Map::project(const Point& from, const Point& jump) {

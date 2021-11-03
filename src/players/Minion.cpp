@@ -51,7 +51,7 @@ bool Minion::interactsWithSurroundings() {
                 interactFlag = true;
                 break;
 
-            case ThingAtPoint::Enemy:
+            case ThingAtPoint::Ennemy:
                 // fight : todo get minion from tile
                 //if (!this->fightAndWin(other)) return true; // dead
                 interactFlag = true;
@@ -119,7 +119,7 @@ vector<pair<ThingAtPoint, Point>> Minion::checkAround() {
     for (Direction d = Direction::DIRECTION_FIRST; d <= Direction::DIRECTION_LAST;
          d = Direction(static_cast<int>(d) + 1)) { // get all enum values
         pair<ThingAtPoint, Point> thing = this->checkDirection(this->point, d);
-        if (thing.first == ThingAtPoint::Ally || thing.first == ThingAtPoint::Enemy) things.push_back(thing);
+        if (thing.first == ThingAtPoint::Ally || thing.first == ThingAtPoint::Ennemy) things.push_back(thing);
     }
 
     return things;
