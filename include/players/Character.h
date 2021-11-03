@@ -11,8 +11,8 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #ifndef ILLUVATAR_CHARACTER_H
 #define ILLUVATAR_CHARACTER_H
 
+#include "enums/Faction.h"
 #include "map/Map.h"
-#include "wip.h"
 #include "geometry/Point.h"
 #include "unirand.h"
 

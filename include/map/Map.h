@@ -11,12 +11,13 @@
 #ifndef ILLUVATAR_MAP_H
 #define ILLUVATAR_MAP_H
 
+#include "enums/Faction.h"
+#include "enums/ThingAtPoint.h"
 #include "geometry/Rectangle.h"
 #include "map/DirectionUtils.h"
 #include "map/Tile.h"
 #include "map/TileSet.h"
 #include "qt/QGameMap.h"
-#include "wip.h"
 
 #include <set>
 #include <utility>

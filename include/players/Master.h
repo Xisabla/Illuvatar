@@ -13,7 +13,6 @@
 
 #include "players/Minion.h"
 #include "map/Map.h"
-#include "map/Tile.h"
 #include "players/Character.h"
 
 class Minion;

@@ -20,9 +20,6 @@
  */
 enum AllianceFactions { Evil, Good, NoAlliance };
 
-enum ThingAtPoint { Void, Nothing, Obstacle, Ennemy, Ally };
-std::ostream& operator<<(std::ostream& out, const ThingAtPoint value);
-
 // Temporary stuff that will get included later --->
 
 #endif // ILLUVATAR_WIP_H

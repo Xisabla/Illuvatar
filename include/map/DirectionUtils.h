@@ -12,7 +12,6 @@
 #define ILLUVATAR_DirectionUtils_H
 
 #include "geometry/Point.h"
-#include "map/Tile.h"
 
 #include <iostream>
 #include <map>

@@ -12,14 +12,14 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #ifndef ILLUVATAR_MINION_H
 #define ILLUVATAR_MINION_H
 
+#include "enums/Faction.h"
+#include "enums/ThingAtPoint.h"
 #include "geometry/Point.h"
-#include "map/DirectionUtils.h"
 #include "map/Map.h"
 #include "map/PathFinder.h"
 #include "players/Master.h"
 #include "players/Character.h"
 #include "unirand.h"
-#include "wip.h"
 
 #include <iterator>
 #include <iostream>

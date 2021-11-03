@@ -12,16 +12,13 @@
 #define ILLUVATAR_PathFinder_H
 
 #include "geometry/Point.h"
-#include "map/DirectionUtils.h"
 #include "map/Map.h"
-#include "wip.h"
 
 #include <algorithm>
 #include <cmath>
 #include <map>
 #include <vector>
 
-class Map;
 
 namespace pathfinder {
 typedef std::vector<Point> Path;

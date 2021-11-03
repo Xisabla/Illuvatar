@@ -12,18 +12,10 @@
 #define ILLUVATAR_TILE_H
 
 #include "geometry/Point.h"
-#include "wip.h"
+#include "enums/Faction.h"
+//#include "players/Character.h"
 
-#include <iostream>
 #include <utility>
-
-/**
- * @enum Faction
- * @brief Available Factions in the simulation
- */
-enum Faction { Eldars, Valars, Dragons, Werewolves, NoFaction };
-
-std::ostream& operator<<(std::ostream& out, Faction value);
 
 /**
  * @class Tile
@@ -105,6 +97,7 @@ class Tile : public Point {
     bool obstacle = false;
 
     // TODO: Character
+    //Character* character;
 };
 
 #endif // ILLUVATAR_TILE_H

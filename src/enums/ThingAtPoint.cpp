@@ -1,6 +1,8 @@
-#include "wip.h"
+#include "enums/ThingAtPoint.h"
 
-std::ostream& operator<<(std::ostream& out, const ThingAtPoint value) {
+using namespace std;
+
+ostream& operator<<(ostream& out, const ThingAtPoint value) {
     const char* s = 0;
 #define PROCESS_VAL(p) case(p): s = #p; break;
     switch(value){

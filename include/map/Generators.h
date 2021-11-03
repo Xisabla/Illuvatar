@@ -11,8 +11,6 @@
 #ifndef ILLUVATAR_GENERATORS_H
 #define ILLUVATAR_GENERATORS_H
 
-#include "map/Map.h"
-#include "map/Tile.h"
 #include "map/TileSet.h"
 
 #include <cmath>
