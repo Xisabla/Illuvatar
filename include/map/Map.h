@@ -12,6 +12,7 @@
 #define ILLUVATAR_MAP_H
 
 #include "enums/Faction.h"
+#include "enums/Direction.h"
 #include "enums/ThingAtPoint.h"
 #include "geometry/Rectangle.h"
 #include "map/DirectionUtils.h"
@@ -84,7 +85,7 @@ class Map {
 
     void jump(Point& from, Point& to, Faction faction);
 
-    Tile& computeLastPosition(const Point& point, const directionutils::Direction& direction);
+    Tile& computeLastPosition(const Point& point, const Direction& direction);
 
     // - Setters -----------------------------------------------------------------------------
     /**
@@ -92,7 +93,7 @@ class Map {
      * @param p Position of the Tile
      * @param faction Faction that owns the Tile
      */
-    [[maybe_unused]] void setTile(const Point& p, Faction faction = NoFaction);
+    [[maybe_unused]] void setTile(const Point& p, Faction faction = Faction::NoFaction);
 
     // - Methods -----------------------------------------------------------------------------
     /**

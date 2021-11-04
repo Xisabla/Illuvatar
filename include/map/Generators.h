@@ -11,6 +11,8 @@
 #ifndef ILLUVATAR_GENERATORS_H
 #define ILLUVATAR_GENERATORS_H
 
+#include "enums/Faction.h"
+#include "geometry/Point.h"
 #include "map/TileSet.h"
 
 #include <cmath>
@@ -25,7 +27,7 @@ namespace generators {
  * @param faction Faction that owns the Tiles
  * @return A set of tiles
  */
-TileSet disk(double radius, const Point& center, Faction faction = NoFaction);
+TileSet disk(double radius, const Point& center, Faction faction = Faction::NoFaction);
 
 /**
  * Generates a set of Tiles shaping a filled Disk

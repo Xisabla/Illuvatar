@@ -28,13 +28,13 @@ class Tile : public Point {
      * @param y Y position of the Tile
      * @param faction Faction that owns the Tile
      */
-    Tile(int x, int y, Faction faction = NoFaction);
+    Tile(int x, int y, Faction faction = Faction::NoFaction);
 
     /**
      * @param p Position of the Tile
      * @param faction Faction that owns the Tile
      */
-    explicit Tile(Point p, Faction faction = NoFaction);
+    explicit Tile(Point p, Faction faction = Faction::NoFaction);
 
     // - Getters -----------------------------------------------------------------------------
     /**

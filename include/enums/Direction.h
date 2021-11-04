@@ -8,17 +8,21 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 =========================================================================*/
 #pragma once
-#ifndef ILLUVATAR_FACTION_H
-#define ILLUVATAR_FACTION_H
+#ifndef ILLUVATAR_DIRECTION_H
+#define ILLUVATAR_DIRECTION_H
+
 
 #include <iostream>
 
+#define DIRECTION_FIRST N
+#define DIRECTION_LAST NW
+
 /**
- * @enum Faction
- * @brief Available Factions in the simulation
+ * @enum Direction
+ * @brief Cardinal directions in the map
  */
-enum class Faction { Eldars, Valars, Dragons, Werewolves, NoFaction };
+enum class Direction { DIRECTION_FIRST, NE, E, SE, S, SW, W, DIRECTION_LAST };
 
-std::ostream& operator<<(std::ostream& out, Faction value);
+std::ostream& operator<<(std::ostream& out, Direction value);
 
-#endif // ILLUVATAR_FACTION_H
+#endif // ILLUVATAR_DIRECTION_H

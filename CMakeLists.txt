@@ -35,6 +35,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(SOURCES
         include/core/MainWindow.h src/core/MainWindow.cpp
         include/enums/Faction.h src/enums/Faction.cpp
+        include/enums/Direction.h src/enums/Direction.cpp
         include/enums/ThingAtPoint.h src/enums/ThingAtPoint.cpp
         include/geometry/Point.h src/geometry/Point.cpp
         include/geometry/Rectangle.h src/geometry/Rectangle.cpp

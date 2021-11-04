@@ -34,7 +34,7 @@ bool Tile::isObstacle() const { return this->obstacle; }
 
 void Tile::setOwner(Faction f) { this->owner = f; }
 
-void Tile::removeOwnership() { this->owner = NoFaction; }
+void Tile::removeOwnership() { this->owner = Faction::NoFaction; }
     
 void Tile::setObstacle() { this->obstacle = true; }
 

@@ -11,20 +11,14 @@
 #ifndef ILLUVATAR_DirectionUtils_H
 #define ILLUVATAR_DirectionUtils_H
 
+#include "enums/Direction.h"
 #include "geometry/Point.h"
 
 #include <iostream>
 #include <map>
 #include <vector>
 
-#define DIRECTION_FIRST N
-#define DIRECTION_LAST NW
-
 namespace directionutils {
-enum class Direction { DIRECTION_FIRST, NE, E, SE, S, SW, W, DIRECTION_LAST };
-
-std::ostream& operator<<(std::ostream& out, Direction value);
-
 const std::map<Direction, std::vector<Direction>> fanDirections = {
     { Direction::N, { Direction::NW, Direction::N, Direction::NE } },
     { Direction::NE, { Direction::N, Direction::NE, Direction::E } },

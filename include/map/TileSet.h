@@ -11,12 +11,15 @@
 #ifndef ILLUVATAR_TILESET_H
 #define ILLUVATAR_TILESET_H
 
+#include "enums/Faction.h"
 #include "geometry/Rectangle.h"
 #include "map/Tile.h"
 
 #include <functional>
 #include <stdexcept>
 #include <vector>
+
+class Tile;
 
 /**
  * @class TileSet
@@ -34,7 +37,7 @@ class TileSet {
      * @param faction Faction that owns the generated Tiles
      * @param fill If set on true, will fill all the surface with Tiles
      */
-    explicit TileSet(Rectangle surface, Faction faction = NoFaction, bool fill = true);
+    explicit TileSet(Rectangle surface, Faction faction = Faction::NoFaction, bool fill = true);
 
     /**
      * @param surface Surface of the map
@@ -102,7 +105,7 @@ class TileSet {
      * @param faction Faction that owns the Tile
      * @param overwrite If set on true, will overwrite the (maybe) existing Tile
      */
-    void emplace(int x, int y, Faction faction = NoFaction, bool overwrite = true);
+    void emplace(int x, int y, Faction faction = Faction::NoFaction, bool overwrite = true);
 
     // - Methods -----------------------------------------------------------------------------
     /**

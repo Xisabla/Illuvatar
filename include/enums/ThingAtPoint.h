@@ -17,7 +17,7 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
  * @enum ThingAtPoint
  * @brief Objects that can be found on tile - or no tile at all
  */
-enum ThingAtPoint { Void, Nothing, Obstacle, Ennemy, Ally };
+enum class ThingAtPoint { Void, Nothing, Obstacle, Ennemy, Ally };
 
 std::ostream& operator<<(std::ostream& out, const ThingAtPoint value);
 

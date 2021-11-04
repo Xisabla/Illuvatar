@@ -13,6 +13,7 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #define ILLUVATAR_MINION_H
 
 #include "enums/Faction.h"
+#include "enums/Direction.h"
 #include "enums/ThingAtPoint.h"
 #include "geometry/Point.h"
 #include "map/Map.h"
@@ -35,7 +36,7 @@ class Minion : public Character {
   public:
     Minion(Map& map,
            Point point,
-           directionutils::Direction direction,
+           Direction direction,
            Faction faction,
            Master& master);
     void move();
@@ -48,7 +49,7 @@ class Minion : public Character {
     const int lowEnergy = 20;
     const int rangeMax = 10;
     const int rangeMin = 6;
-    directionutils::Direction currentDirection;
+    Direction currentDirection;
 
     int life = 100;
 
@@ -74,7 +75,7 @@ class Minion : public Character {
 
     ThingAtPoint checkPosition(const Point &point);
 
-    std::pair<ThingAtPoint, Point> checkDirection(const Point &point, directionutils::Direction &direction);
+    std::pair<ThingAtPoint, Point> checkDirection(const Point &point, Direction &direction);
 
     std::vector<std::pair<ThingAtPoint, Point>> checkAround();
     

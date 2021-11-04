@@ -74,7 +74,7 @@ ThingAtPoint Map::getThingAtPoint(const Point& p, const std::set<Faction>& allie
     Tile t = this->getTile(p);
 
     if (t.isObstacle()) return ThingAtPoint::Obstacle;
-    if (t.belongsTo(NoFaction)) return ThingAtPoint::Nothing;
+    if (t.belongsTo(Faction::NoFaction)) return ThingAtPoint::Nothing;
     return allies.find(t.getOwner()) == allies.end() ? ThingAtPoint::Ennemy : ThingAtPoint::Ally;
 }
 
@@ -88,7 +88,7 @@ void Map::jump(Point& from, Point& to, Faction faction) {
     this->getTile(to).setOwner(faction);
 }
 
-Tile& Map::computeLastPosition(const Point& point, const directionutils::Direction& direction) {
+Tile& Map::computeLastPosition(const Point& point, const Direction& direction) {
     Point lastCoords = Map::project(point, directionutils::computeLastJump(direction));
 
     // TODO: Throw exception

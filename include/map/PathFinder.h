@@ -11,6 +11,7 @@
 #ifndef ILLUVATAR_PathFinder_H
 #define ILLUVATAR_PathFinder_H
 
+#include "enums/Direction.h"
 #include "geometry/Point.h"
 #include "map/Map.h"
 
@@ -22,7 +23,7 @@
 
 namespace pathfinder {
 typedef std::vector<Point> Path;
-typedef std::vector<std::pair<Point, directionutils::Direction>> DirectionalPath;
+typedef std::vector<std::pair<Point, Direction>> DirectionalPath;
 
 /**
  * @brief Compute the shortest Path between two points
@@ -50,7 +51,7 @@ Path unlooper(Map& map, Path& refPath, Path& path, unsigned int pos = 1);
 DirectionalPath straightenerAndCutter(Map& map,
                                       Path& ref,
                                       DirectionalPath& path,
-                                      directionutils::Direction direction,
+                                      Direction direction,
                                       unsigned int maxDistance,
                                       unsigned int pos = 0);
 
