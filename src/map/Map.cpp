@@ -83,6 +83,7 @@ Point Map::project(const Point& from, const Point& jump) {
 }
 
 void Map::jump(Point& from, Point& to, Character* character) {
+    // todo : verify if from & to are really neighbors ?
     this->getTile(from).unsetCharacter();
     this->getTile(to).setCharacter(character);
 }

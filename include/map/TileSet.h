@@ -44,6 +44,9 @@ class TileSet {
      */
     TileSet(Rectangle surface, const std::function<Faction(Point p)>& predicate, bool fill = true);
 
+    /**
+     * @brief Frees the Tiles vector
+     */
     ~TileSet();
 
     // - Getters -----------------------------------------------------------------------------

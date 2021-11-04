@@ -85,8 +85,20 @@ class Map {
      */
     ThingAtPoint getThingAtPoint(const Point& p);
 
-    void jump(Point& from, Point& to, Character* Character);
+    /**
+     * Apply a Character move from one point to another to the map
+     * @param from The current position of the Character
+     * @param to The next position of the Character
+     * @param character A pointer of the moving Character
+     */
+    void jump(Point& from, Point& to, Character* character);
 
+    /**
+     * Compute the initial position from a destination and a direction
+     * @param point The current position
+     * @param direction The direction of the vector
+     * @return The origin of the vector
+     */
     Tile& computeLastPosition(const Point& point, const Direction& direction);
 
     // - Setters -----------------------------------------------------------------------------

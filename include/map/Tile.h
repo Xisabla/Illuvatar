@@ -43,15 +43,24 @@ class Tile : public Point {
      */
     Faction getOwner();
 
+    /**
+     * @return A reference to the Character on the Tile if occupied
+     */
     Character& getCharacter();
 
+    /**
+     * @param character Character to place on the Tile
+     */
     void setCharacter(Character* character);
 
+    /**
+     * @brief Frees the tile from its character
+     */
     void unsetCharacter();
 
     /**
      * @param f Faction to test
-     * @return True of the faction is owning the Tile
+     * @return True if the faction is owning the Tile
      */
     bool safeFor(Faction f);
 
@@ -108,7 +117,10 @@ class Tile : public Point {
      */
     bool obstacle = false;
 
-    Character* character;
+    /**
+     * @brief Character that occupies the Tile, can be set to nullPtr if none
+     */
+    Character* character = nullptr;
 };
 
 #endif // ILLUVATAR_TILE_H

@@ -17,7 +17,14 @@
 #include <vector>
 
 namespace superTypes {
+/**
+ * @brief A vector of Point
+ */
 typedef std::vector<Point> Path;
+
+/**
+ * @brief A vector of pair of Point and Direction
+ */
 typedef std::vector<std::pair<Point, Direction>> DirectionalPath;
 }
 

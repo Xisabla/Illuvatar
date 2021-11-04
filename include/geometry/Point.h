@@ -37,9 +37,17 @@ class Point {
      */
     [[nodiscard]] int Y() const;
 
+    /**
+     * @return A new instance of Point with same coords // TODO : try to pass current instance reference
+     */
     Point getPoint();
 
     // - Methods -----------------------------------------------------------------------------
+    /**
+     * Compute the distance between the current Point and another one
+     * @param p Other point to compute the distance
+     * @return The distance computed
+     */
     double distanceTo(Point& p);
 
     // - Operators ---------------------------------------------------------------------------
