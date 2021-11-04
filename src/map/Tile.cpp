@@ -34,6 +34,8 @@ Character& Tile::getCharacter() {
 
 void Tile::setCharacter(Character* character) { this->character = character; }
 
+void Tile::unsetCharacter() { this->character = nullptr; }
+
 bool Tile::safeFor(Faction f) { return this->owner == f; }
 
 bool Tile::isObstacle() const { return this->obstacle; }

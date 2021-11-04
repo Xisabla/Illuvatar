@@ -45,6 +45,11 @@ TileSet::TileSet(Rectangle surface, const std::function<Faction(Point)>& predica
     this->removeDuplicates();
 }
 
+TileSet::~TileSet() {
+    std::cout << "clear TileSet" << std::endl;
+    this->tiles.clear();
+}
+
 //  --------------------------------------------------------------------------------------
 //  TileSet > GETTERS
 //  --------------------------------------------------------------------------------------

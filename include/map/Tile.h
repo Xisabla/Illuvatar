@@ -47,6 +47,8 @@ class Tile : public Point {
 
     void setCharacter(Character* character);
 
+    void unsetCharacter();
+
     /**
      * @param f Faction to test
      * @return True of the faction is owning the Tile

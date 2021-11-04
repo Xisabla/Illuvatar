@@ -44,6 +44,8 @@ class TileSet {
      */
     TileSet(Rectangle surface, const std::function<Faction(Point p)>& predicate, bool fill = true);
 
+    ~TileSet();
+
     // - Getters -----------------------------------------------------------------------------
     /**
      * @param p Point to find

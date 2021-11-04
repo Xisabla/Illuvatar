@@ -191,6 +191,7 @@ bool Minion::fightAndWin(Minion& other) {
         other.reduceLife(this->attack());
         if (!other.isAlive()) {
             this->searchCorpse(other);
+            //delete other; //risky
             return true;
         }
         this->reduceLife(other.attack());

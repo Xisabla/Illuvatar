@@ -7,6 +7,10 @@ Character::Character(Map& map, Point point, Faction faction): map(map), point(po
     this->map.getTile(this->point).setCharacter(this);
 }
 
+Character::~Character() {
+    this->map.getTile(this->point).unsetCharacter();
+}
+
 vector<string>& Character::getMsgList() { return this->msgList; }
 
 void Character::setMsgList(vector<string>& msgList) {

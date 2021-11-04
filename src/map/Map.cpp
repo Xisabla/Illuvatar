@@ -74,8 +74,8 @@ ThingAtPoint Map::getThingAtPoint(const Point& p) {
     Tile& t = this->getTile(p);
 
     if (t.isObstacle()) return ThingAtPoint::Obstacle;
-    if (!t.isOccupied()) return ThingAtPoint::Nothing;
-    return ThingAtPoint::Character;
+    if (t.isOccupied()) return ThingAtPoint::Character;
+    return ThingAtPoint::Nothing;
 }
 
 Point Map::project(const Point& from, const Point& jump) {
@@ -83,7 +83,7 @@ Point Map::project(const Point& from, const Point& jump) {
 }
 
 void Map::jump(Point& from, Point& to, Character* character) {
-    this->getTile(from).setCharacter(nullptr);
+    this->getTile(from).unsetCharacter();
     this->getTile(to).setCharacter(character);
 }
 
