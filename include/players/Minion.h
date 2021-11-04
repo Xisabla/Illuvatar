@@ -39,7 +39,15 @@ class Minion : public Character {
            Direction direction,
            Faction faction,
            Master& master);
+
+    /**
+     * @brief Perform Minion turn : move on map and interact with his meetings
+     */
     void move();
+
+    /**
+     * @brief Return true if Minion have lifepoints and energy
+     */
     bool isAlive();
 
   protected:
@@ -53,8 +61,22 @@ class Minion : public Character {
 
     int life = 100;
 
+    /**
+     * @brief Message exchange between two allied Minions
+     * @param other The passive Minion met
+     */
     void exchange(Minion& other);
+    
+    /**
+     * @brief Message fight between two ennemy Minions
+     * @param other The passive Minion met
+     * @return True if alive at the end of the fight
+     */
     bool fightAndWin(Minion& other);
+
+    /**
+     * @brief The computation of the damages : specific to each race
+     */
     virtual int attack() { return 0; };
 
   private:
