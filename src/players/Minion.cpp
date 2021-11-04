@@ -47,14 +47,12 @@ bool Minion::interactsWithSurroundings() {
     for (pair<ThingAtPoint, Point> thing: this->checkAround()) {
         switch(thing.first) {
             case ThingAtPoint::Ally:
-                //échange les infos : todo get minion from tile
-                //this->exchange(other);
+                this->exchange(static_cast<Minion&>(this->map.getTile(this->point).getCharacter()));
                 interactFlag = true;
                 break;
 
             case ThingAtPoint::Ennemy:
-                // fight : todo get minion from tile
-                //if (!this->fightAndWin(other)) return true; // dead
+                if (!this->fightAndWin(static_cast<Minion&>(this->map.getTile(this->point).getCharacter()))) return true; // dead
                 interactFlag = true;
                 break;
         }
@@ -105,11 +103,11 @@ DirectionalPath Minion::findMaster(int const range) {
     return shortest(this->map, this->point, this->master.getPoint(), range);
 }
 
-ThingAtPoint Minion::checkPosition(const Point &point) {
+ThingAtPoint Minion::checkPosition(const Point& point) {
     return this->map.getThingAtPoint(point, Minion::alliances.at(this->faction));
 }
 
-pair<ThingAtPoint, Point> Minion::checkDirection(const Point &point, Direction &direction) {
+pair<ThingAtPoint, Point> Minion::checkDirection(const Point& point, Direction& direction) {
     Point p = this->map.project(point, nextDirection.at(direction));
     return { this->checkPosition(p), p };
 }

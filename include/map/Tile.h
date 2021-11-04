@@ -13,9 +13,10 @@
 
 #include "geometry/Point.h"
 #include "enums/Faction.h"
-//#include "players/Character.h"
 
 #include <utility>
+
+class Character;
 
 /**
  * @class Tile
@@ -41,6 +42,8 @@ class Tile : public Point {
      * @return The faction owning the Tile
      */
     Faction getOwner();
+
+    Character& getCharacter();
 
     /**
      * @param f Faction to test
@@ -96,8 +99,7 @@ class Tile : public Point {
      */
     bool obstacle = false;
 
-    // TODO: Character
-    //Character* character;
+    Character* character;
 };
 
 #endif // ILLUVATAR_TILE_H

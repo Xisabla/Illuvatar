@@ -21,8 +21,8 @@ class Master : public Character {
   public:
     Master(Map& map, Point point, Faction faction);
 
-    std::string GetMessage(Minion& minion);
-    void GiveMessage(Minion& minion);
+    std::string getMessage(Minion& minion);
+    void giveMessage(Minion& minion);
 };
 
 

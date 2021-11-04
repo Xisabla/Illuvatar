@@ -23,7 +23,7 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 class Character {
   public:
-    Character(Map &map, Point point, Faction faction);
+    Character(Map& map, Point point, Faction faction);
     void setMsgList(std::vector<std::string>& msgList);
     std::vector<std::string>& getMsgList();
 

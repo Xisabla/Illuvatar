@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Character::Character(Map &map, Point point, Faction faction): map(map), point(point), faction(faction) {}
+Character::Character(Map& map, Point point, Faction faction): map(map), point(point), faction(faction) {}
 
 vector<string>& Character::getMsgList() { return this->msgList; }
 

@@ -15,6 +15,7 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #include "enums/Faction.h"
 #include "enums/Direction.h"
 #include "enums/ThingAtPoint.h"
+#include "enums/Result.h"
 #include "geometry/Point.h"
 #include "map/Map.h"
 #include "map/PathFinder.h"
@@ -30,8 +31,6 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #include <vector>
 
 class Master;
-
-enum class Result { CRITIC_SUCCESS, SUCCESS, FAILURE, CRITIC_FAILURE };
 
 class Minion : public Character {
   public:
@@ -56,7 +55,7 @@ class Minion : public Character {
 
     void exchange(Minion& other);
     bool fightAndWin(Minion& other);
-    virtual int attack() = 0;
+    virtual int attack() { return 0; };
 
   private:
     std::map<Faction, std::set<Faction>> alliances = {
@@ -74,9 +73,9 @@ class Minion : public Character {
 
     superTypes::DirectionalPath findMaster(int range);
 
-    ThingAtPoint checkPosition(const Point &point);
+    ThingAtPoint checkPosition(const Point& point);
 
-    std::pair<ThingAtPoint, Point> checkDirection(const Point &point, Direction &direction);
+    std::pair<ThingAtPoint, Point> checkDirection(const Point& point, Direction& direction);
 
     std::vector<std::pair<ThingAtPoint, Point>> checkAround();
     
