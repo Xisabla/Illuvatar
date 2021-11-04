@@ -68,24 +68,23 @@ void Map::sync() {
     this->gmap->repaint();
 }
 
-ThingAtPoint Map::getThingAtPoint(const Point& p, const std::set<Faction>& allies) {
+ThingAtPoint Map::getThingAtPoint(const Point& p) {
     if (!this->exists(p)) return ThingAtPoint::Void;
 
-    Tile t = this->getTile(p);
+    Tile& t = this->getTile(p);
 
     if (t.isObstacle()) return ThingAtPoint::Obstacle;
-    if (t.belongsTo(Faction::NoFaction)) return ThingAtPoint::Nothing;
-    return allies.find(t.getOwner()) == allies.end() ? ThingAtPoint::Ennemy : ThingAtPoint::Ally;
+    if (!t.isOccupied()) return ThingAtPoint::Nothing;
+    return ThingAtPoint::Character;
 }
 
 Point Map::project(const Point& from, const Point& jump) {
     return { from.X() + jump.X(), from.Y() + jump.Y() };
 }
 
-void Map::jump(Point& from, Point& to, Faction faction) {
-    // TODO: equivalent of those
-    this->getTile(from).removeOwnership();
-    this->getTile(to).setOwner(faction);
+void Map::jump(Point& from, Point& to, Character* character) {
+    this->getTile(from).setCharacter(nullptr);
+    this->getTile(to).setCharacter(character);
 }
 
 Tile& Map::computeLastPosition(const Point& point, const Direction& direction) {

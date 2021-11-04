@@ -32,9 +32,13 @@ Character& Tile::getCharacter() {
     return *(this->character);
 }
 
-bool Tile::belongsTo(Faction f) { return this->owner == f; }
+void Tile::setCharacter(Character* character) { this->character = character; }
+
+bool Tile::safeFor(Faction f) { return this->owner == f; }
 
 bool Tile::isObstacle() const { return this->obstacle; }
+
+bool Tile::isOccupied() { return this->character != nullptr; }
 
 //  --------------------------------------------------------------------------------------
 //  Tile > SETTERS

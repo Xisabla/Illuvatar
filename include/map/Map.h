@@ -24,6 +24,8 @@
 #include <utility>
 #include <vector>
 
+class Character;
+class Master;
 
 /**
  * @class Map
@@ -81,9 +83,9 @@ class Map {
      * @param allies List of Factions that are considered as allies
      * @return What kind of entity is at the position
      */
-    ThingAtPoint getThingAtPoint(const Point& p, std::set<Faction> const& allies = {});
+    ThingAtPoint getThingAtPoint(const Point& p);
 
-    void jump(Point& from, Point& to, Faction faction);
+    void jump(Point& from, Point& to, Character* Character);
 
     Tile& computeLastPosition(const Point& point, const Direction& direction);
 

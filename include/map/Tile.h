@@ -39,22 +39,29 @@ class Tile : public Point {
 
     // - Getters -----------------------------------------------------------------------------
     /**
-     * @return The faction owning the Tile
+     * @return The faction owning the Tile : safe for her
      */
     Faction getOwner();
 
     Character& getCharacter();
 
+    void setCharacter(Character* character);
+
     /**
      * @param f Faction to test
      * @return True of the faction is owning the Tile
      */
-    bool belongsTo(Faction f);
+    bool safeFor(Faction f);
 
     /**
      * @return True if the Tile is an obstacle
      */
     bool isObstacle() const;
+
+    /**
+     * @return True if there is a character on the Tile
+     */
+    bool isOccupied();
 
     // - Setters -----------------------------------------------------------------------------
     /**
@@ -84,7 +91,7 @@ class Tile : public Point {
     inline bool operator<(const Tile& t) const { return Point::operator<(t); }
 
     inline friend std::ostream& operator<<(std::ostream& out, Tile& t) {
-        return out << t.getPoint() << " " << t.getOwner();
+        return out << t.getPoint() << " safe for " << t.getOwner() << " occupied by " << (t.isObstacle()? "obstacle" : (t.isOccupied()? "some character" : "nothing"));
     }
 
   private:

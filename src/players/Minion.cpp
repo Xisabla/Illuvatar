@@ -21,7 +21,7 @@ void Minion::move() {
 
     for (pair<Point, Direction> step: path) {
         if (this->checkPosition(step.first) == ThingAtPoint::Nothing) {
-            this->map.jump(this->point, step.first, this->faction);
+            this->map.jump(this->point, step.first, this);
             this->point = step.first;
             this->currentDirection = step.second;
             this->energy--; // todo : this->energy += this->tile.safeFor() == this->faction ? 100 : - this->loss;
@@ -55,6 +55,10 @@ bool Minion::interactsWithSurroundings() {
                 if (!this->fightAndWin(static_cast<Minion&>(this->map.getTile(this->point).getCharacter()))) return true; // dead
                 interactFlag = true;
                 break;
+
+            //case ThingAtPoint::Master:
+                //can interact with him - check if personnal master ?
+                //break;
         }
     }
     return interactFlag;
@@ -104,7 +108,11 @@ DirectionalPath Minion::findMaster(int const range) {
 }
 
 ThingAtPoint Minion::checkPosition(const Point& point) {
-    return this->map.getThingAtPoint(point, Minion::alliances.at(this->faction));
+    ThingAtPoint thing = this->map.getThingAtPoint(point);
+    if (thing != ThingAtPoint::Character) return thing;
+
+    set<Faction>& allies = Minion::alliances.at(this->faction);
+    return allies.find(this->map.getTile(point).getCharacter().getFaction()) == allies.end() ? ThingAtPoint::Ennemy : ThingAtPoint::Ally;
 }
 
 pair<ThingAtPoint, Point> Minion::checkDirection(const Point& point, Direction& direction) {

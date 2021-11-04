@@ -50,7 +50,7 @@ Path pathfinder::AStar(Map& map,
         Point neighbor = Map::project(current, nextDirection.at(d));
         ThingAtPoint content = map.getThingAtPoint(neighbor);
 
-        if (content == ThingAtPoint::Void || content == ThingAtPoint::Obstacle ||
+        if (content == ThingAtPoint::Void || content == ThingAtPoint::Obstacle || //ou si character et que ce character est master ?
             find(explored.begin(), explored.end(), neighbor) != explored.end())
             continue;
 
@@ -195,7 +195,7 @@ bool pathfinder::checkBridge(Map& map,
     if (!alignTest) return false;
 
     ThingAtPoint content = map.getThingAtPoint(bridge);
-    if (content == ThingAtPoint::Void || content == ThingAtPoint::Obstacle) return false;
+    if (content == ThingAtPoint::Void || content == ThingAtPoint::Obstacle) return false; //ou si character et que ce character est master ?
 
     path.push_back({ bridge, computeDirection(current, bridge) });
     path.push_back({ next, computeDirection(bridge, next) });
