@@ -3,7 +3,9 @@
 
 using namespace std;
 
-Character::Character(Map& map, Point point, Faction faction): map(map), point(point), faction(faction) {}
+Character::Character(Map& map, Point point, Faction faction): map(map), point(point), faction(faction) {
+    this->map.getTile(this->point).setCharacter(this);
+}
 
 vector<string>& Character::getMsgList() { return this->msgList; }
 
