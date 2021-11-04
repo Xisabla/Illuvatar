@@ -19,8 +19,6 @@
 #include <stdexcept>
 #include <vector>
 
-class Tile;
-
 /**
  * @class TileSet
  * @brief Tiles aggregator. Allow only one Tile for a given position (x,y)

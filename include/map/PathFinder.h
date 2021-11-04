@@ -8,8 +8,8 @@
 
 =========================================================================*/
 #pragma once
-#ifndef ILLUVATAR_PathFinder_H
-#define ILLUVATAR_PathFinder_H
+#ifndef ILLUVATAR_PATHFINDER_H
+#define ILLUVATAR_PATHFINDER_H
 
 #include "enums/Direction.h"
 #include "geometry/Point.h"
@@ -70,4 +70,4 @@ bool checkBridge(Map& map,
                  Point next);
 } // namespace pathfinder
 
-#endif // ILLUVATAR_PathFinder_H
+#endif // ILLUVATAR_PATHFINDER_H
