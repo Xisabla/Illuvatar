@@ -21,6 +21,7 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #include "players/Master.h"
 #include "players/Character.h"
 #include "unirand.h"
+#include "superTypes.h"
 
 #include <iterator>
 #include <iostream>
@@ -67,11 +68,11 @@ class Minion : public Character {
 
     Result rollDice();
 
-    pathfinder::DirectionalPath explorate(int range);
+    superTypes::DirectionalPath explorate(int range);
 
     bool interactsWithSurroundings();
 
-    pathfinder::DirectionalPath findMaster(int range);
+    superTypes::DirectionalPath findMaster(int range);
 
     ThingAtPoint checkPosition(const Point &point);
 

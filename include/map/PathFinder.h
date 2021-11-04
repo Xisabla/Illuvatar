@@ -14,6 +14,7 @@
 #include "enums/Direction.h"
 #include "geometry/Point.h"
 #include "map/Map.h"
+#include "superTypes.h"
 
 #include <algorithm>
 #include <cmath>
@@ -22,8 +23,6 @@
 
 
 namespace pathfinder {
-typedef std::vector<Point> Path;
-typedef std::vector<std::pair<Point, Direction>> DirectionalPath;
 
 /**
  * @brief Compute the shortest Path between two points
@@ -33,30 +32,30 @@ typedef std::vector<std::pair<Point, Direction>> DirectionalPath;
  * @param maxDistance Maximum number of Tiles to use (may stop the Path before the target)
  * @return The computed Path
  */
-DirectionalPath shortest(Map& map, Point current, Point& target, unsigned int maxDistance);
+superTypes::DirectionalPath shortest(Map& map, Point current, Point& target, unsigned int maxDistance);
 
 /**
  * @brief Implementation of the A* algorithm to compute the shortest path between 2 Points on the
  * map
  * @return The computed path
  */
-Path AStar(Map& map, Path& path, Point& current, Point& target, Path& explored, Path& unexplored);
+superTypes::Path AStar(Map& map, superTypes::Path& path, Point& current, Point& target, superTypes::Path& explored, superTypes::Path& unexplored);
 
 /**
  * @brief Remove all loops on a Path
  * @return The unlooped path
  */
-Path unlooper(Map& map, Path& refPath, Path& path, unsigned int pos = 1);
+superTypes::Path unlooper(Map& map, superTypes::Path& refPath, superTypes::Path& path, unsigned int pos = 1);
 
-DirectionalPath straightenerAndCutter(Map& map,
-                                      Path& ref,
-                                      DirectionalPath& path,
+superTypes::DirectionalPath straightenerAndCutter(Map& map,
+                                      superTypes::Path& ref,
+                                      superTypes::DirectionalPath& path,
                                       Direction direction,
                                       unsigned int maxDistance,
                                       unsigned int pos = 0);
 
 bool checkBothBridges(Map& map,
-                      DirectionalPath& path,
+                      superTypes::DirectionalPath& path,
                       bool alignTest,
                       Point current,
                       Point next,
@@ -64,7 +63,7 @@ bool checkBothBridges(Map& map,
                       int deltaBridge);
 
 bool checkBridge(Map& map,
-                 DirectionalPath& path,
+                 superTypes::DirectionalPath& path,
                  Point bridge,
                  bool alignTest,
                  Point current,

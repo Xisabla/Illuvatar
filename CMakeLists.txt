@@ -56,6 +56,7 @@ set(SOURCES
         include/players/Werewolf.h src/players/Werewolf.cpp
         include/qt/QGameMap.h src/qt/QGameMap.cpp
         include/unirand.h src/unirand.cpp
+        include/superTypes.h
         include/wip.h
         src/core/main.cpp
         )

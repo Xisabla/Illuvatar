@@ -2,6 +2,7 @@
 
 using namespace std;
 using namespace directionutils;
+using namespace superTypes;
 using namespace pathfinder;
 
 
