@@ -162,11 +162,11 @@ bool Minion::isAlive() {
     return this->life && this->energy;
 }
 
-void Minion::reduceLife(int damages) {
+void Minion::reduceLife(unsigned int damages) {
     this->life -= damages;
 }
 
-void Minion::reduceEnergy(int damages) {
+void Minion::reduceEnergy(unsigned int damages) {
     this->energy -= damages;
 }
 

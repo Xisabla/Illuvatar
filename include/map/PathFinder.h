@@ -59,6 +59,14 @@ superTypes::DirectionalPath straightenerAndCutter(Map& map,
                                       unsigned int pos = 0);
 
 /**
+ * @brief Verify pattern on both side of both axis
+ * @param current The departure of a potential bridge
+ * @param next The arrival of a potential bridge
+ * @return True if a bridge is detected
+ */
+bool checkAllBridges(Map& map, superTypes::DirectionalPath& path, Point current, Point next);
+
+/**
  * @brief Verify pattern on both side of a secondary axis for a given primary axis
  * @param alignTest The result of primary axis alignment logic test
  * @param current The departure of a potential bridge

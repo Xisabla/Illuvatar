@@ -111,12 +111,14 @@ Path pathfinder::unlooper(Map& map, Path& refPath, Path& path, unsigned int pos)
         }
     }
 
-    // Figure out pos
-    for (unsigned int i = neighbours.size() - 1; i >= 0; --i) {
-        pair<Point, int> neighbor = neighbours[i];
-        if (occurrences.at(neighbor.first) == 1) {
-            pos = neighbor.second;
-            break;
+    if (!neighbours.empty()) {
+        // Figure out pos
+        for (unsigned int i = neighbours.size() - 1; i >= 0; --i) {
+            pair<Point, int> neighbor = neighbours[i];
+            if (occurrences.at(neighbor.first) == 1) {
+                pos = neighbor.second;
+                break;
+            }
         }
     }
 
@@ -129,18 +131,21 @@ DirectionalPath pathfinder::straightenerAndCutter(Map& map,
                                                   Direction direction,
                                                   unsigned int maxDistance,
                                                   unsigned int pos) {
-
     // Recursion endpoint
     if (path.size() == maxDistance) {
+        cout << "easy end" << endl;
         ref.clear();
         return path;
     }
 
-    int deltaSize = static_cast<int>(ref.size()) - pos;
+    unsigned int deltaSize = static_cast<unsigned int>(ref.size()) - pos;
 
     // Can't have bridges if there are less than 5 points
     if (deltaSize < 5) {
-        int size = static_cast<int>(path.size()) + deltaSize;
+        cout << "buggy end" << endl;
+        cout << ref.size() << " - " << pos << " = " << deltaSize << endl;
+        unsigned int size = static_cast<unsigned int>(path.size()) + deltaSize;
+        cout << "add " << ref.size() - (size > maxDistance ? size - maxDistance : 0) << " elems to path of " << path.size() << " elems (max is " << size << ")" << endl;
         auto endIt = ref.end() - (size > maxDistance ? size - maxDistance : 0);
 
         for (auto iter = ref.end() - deltaSize; iter < endIt; ++iter) {
@@ -159,14 +164,16 @@ DirectionalPath pathfinder::straightenerAndCutter(Map& map,
     Direction dir = computeDirection(last, current);
     path.push_back({ current, dir });
 
-    // TODO: Shorten line using a helper method performing the two "checkBothBriges" call
-    if (checkBothBridges(
-        map, path, current.X() == next.X(), current, next, false, current.Y() - next.Y()) ||
-        checkBothBridges(
-        map, path, current.Y() == next.Y(), current, next, true, current.X() - next.X()))
+    if (checkAllBridges(map, path, current, next))
         return pathfinder::straightenerAndCutter(map, ref, path, direction, maxDistance, pos + 5);
 
     return pathfinder::straightenerAndCutter(map, ref, path, direction, maxDistance, pos + 1);
+}
+
+bool pathfinder::checkAllBridges(Map& map, DirectionalPath& path, Point current, Point next) {
+    bool xAxis = checkBothBridges(map, path, current.X() == next.X(), current, next, false, current.Y() - next.Y());
+    bool yAxis = checkBothBridges(map, path, current.Y() == next.Y(), current, next, true, current.X() - next.X());
+    return xAxis || yAxis;
 }
 
 bool pathfinder::checkBothBridges(Map& map,
@@ -176,14 +183,11 @@ bool pathfinder::checkBothBridges(Map& map,
                                   Point next,
                                   bool first,
                                   int deltaBridge) {
+    if (!alignTest) return false;
 
-    bool firstCheck = checkBridge(
-    map, path, Point(next.X() - first, next.Y() - !first), deltaBridge == -2, current, next);
-
-    bool secondCheck = checkBridge(
-    map, path, Point(next.X() + first, next.Y() + !first), deltaBridge == 2, current, next);
-
-    return alignTest && (firstCheck || secondCheck);
+    bool firstCheck = checkBridge(map, path, Point(next.X() - first, next.Y() - !first), deltaBridge == -2, current, next);
+    bool secondCheck = checkBridge(map, path, Point(next.X() + first, next.Y() + !first), deltaBridge == 2, current, next);
+    return firstCheck || secondCheck;
 }
 
 bool pathfinder::checkBridge(Map& map,

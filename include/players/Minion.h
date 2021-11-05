@@ -53,13 +53,12 @@ class Minion : public Character {
   protected:
     Master& master;
 
-    int energy = 100;
+    unsigned int life = 100;
+    unsigned int energy = 100;
     const int lowEnergy = 20;
     const int rangeMax = 10;
     const int rangeMin = 6;
     Direction currentDirection;
-
-    int life = 100;
 
     /**
      * @brief Message exchange between two allied Minions
@@ -135,12 +134,12 @@ class Minion : public Character {
     /**
      * @brief Setter for the lifepoint
      */    
-    void reduceLife(int damages);
+    void reduceLife(unsigned int damages);
 
     /**
      * @brief Setter for the energy
      */    
-    void reduceEnergy(int damages);
+    void reduceEnergy(unsigned int damages);
 
     /**
      * @brief Message search onto dead ennemy minions
