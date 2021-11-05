@@ -23,7 +23,7 @@ int Point::X() const { return x; }
 
 int Point::Y() const { return y; }
 
-Point Point::getPoint() { return Point(x, y); }
+Point& Point::getPoint() { return *this; }
 
 //  --------------------------------------------------------------------------------------
 //  Point > PUBLIC METHODS

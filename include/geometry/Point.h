@@ -38,9 +38,9 @@ class Point {
     [[nodiscard]] int Y() const;
 
     /**
-     * @return A new instance of Point with same coords // TODO : try to pass current instance reference
+     * @return A reference to the internal Point instance
      */
-    Point getPoint();
+    Point& getPoint();
 
     // - Methods -----------------------------------------------------------------------------
     /**
