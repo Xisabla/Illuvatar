@@ -76,7 +76,7 @@ class Minion : public Character {
     /**
      * @brief The computation of the damages : specific to each race
      */
-    virtual int attack() { return 0; };
+    virtual int attack() { std::cout << "error at Minion::attack() - forbidden usage of base definition" << std::endl; exit(1); return 0; };
 
   private:
     /**

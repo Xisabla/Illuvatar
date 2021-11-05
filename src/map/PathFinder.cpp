@@ -133,24 +133,14 @@ DirectionalPath pathfinder::straightenerAndCutter(Map& map,
                                                   unsigned int pos) {
     // Recursion endpoint
     if (path.size() == maxDistance) {
-        cout << "easy end" << endl;
         ref.clear();
         return path;
     }
 
-    unsigned int deltaSize = static_cast<unsigned int>(ref.size()) - pos;
-
     // Can't have bridges if there are less than 5 points
-    if (deltaSize < 5) {
-        cout << "buggy end" << endl;
-        cout << ref.size() << " - " << pos << " = " << deltaSize << endl;
-        unsigned int size = static_cast<unsigned int>(path.size()) + deltaSize;
-        cout << "add " << ref.size() - (size > maxDistance ? size - maxDistance : 0) << " elems to path of " << path.size() << " elems (max is " << size << ")" << endl;
-        auto endIt = ref.end() - (size > maxDistance ? size - maxDistance : 0);
-
-        for (auto iter = ref.end() - deltaSize; iter < endIt; ++iter) {
-            path.push_back(
-            { *iter, path.empty() ? direction : computeDirection(path.back().first, *iter) });
+    if (pos + 5 > ref.size()) {
+        for (auto iter = ref.begin() + pos; iter < ref.begin() + min(static_cast<unsigned int>(ref.size()), maxDistance); ++iter) {
+            path.push_back({ *iter, path.empty() ? direction : computeDirection(path.back().first, *iter) });
         }
 
         ref.clear();
