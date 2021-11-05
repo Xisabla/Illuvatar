@@ -68,7 +68,7 @@ class Minion : public Character {
     void exchange(Minion& other);
     
     /**
-     * @brief Message fight between two ennemy Minions
+     * @brief Fight between two ennemy Minions
      * @param other The passive Minion met
      * @return True if alive at the end of the fight
      */
@@ -80,6 +80,9 @@ class Minion : public Character {
     virtual int attack() { return 0; };
 
   private:
+    /**
+     * @brief Transform the faction into a set of its allies
+     */
     std::map<Faction, std::set<Faction>> alliances = {
         { Faction::Eldars, { Faction::Eldars, Faction::Valars } },
         { Faction::Valars, { Faction::Eldars, Faction::Valars } },
@@ -89,20 +92,60 @@ class Minion : public Character {
 
     Result rollDice();
 
+    /**
+     * @brief Generate a path into a free direction without change of direction, until meeting obstacle or void (ignore characters)
+     * @param range Limit size of the path
+     * @return A mono directional path of existing Points
+     */
     superTypes::DirectionalPath explorate(int range);
 
+    /**
+     * @brief List surroundings Minions and interact with them if there are any
+     * @return True if interacted with someone(s)
+     */
     bool interactsWithSurroundings();
 
+    /**
+     * @brief Generate the shortest path to the master, with change of direction
+     * @param range Limit size of the path
+     * @return A multi directional path of existing Points
+     */
     superTypes::DirectionalPath findMaster(int range);
 
+    /**
+     * @brief Returns what can be found at the given position and specify into ally of ennemy if Character
+     * @param point The position to verify
+     */
     ThingAtPoint checkPosition(const Point& point);
 
+    /**
+     * @brief Returns what can be found at the vector arrival position and specify into ally of ennemy if Character
+     * @param point Origin of vector
+     * @param direction Orientation of vector
+     * @return Couple of thing and vector arrival position
+     */
     std::pair<ThingAtPoint, Point> checkDirection(const Point& point, Direction& direction);
 
+    /**
+     * @brief Check all positions around current minion and list allies and ennemies with their position
+     * @return List of allies and ennemies with their position in check order (N to NW)
+     */
     std::vector<std::pair<ThingAtPoint, Point>> checkAround();
-    
+
+    /**
+     * @brief Setter for the lifepoint
+     */    
     void reduceLife(int damages);
 
+    /**
+     * @brief Setter for the energy
+     */    
+    void reduceEnergy(int damages);
+
+    /**
+     * @brief Message search onto dead ennemy minions
+     * @param other The passive dead Minion
+     */
     void searchCorpse(Minion& other);
 };
 

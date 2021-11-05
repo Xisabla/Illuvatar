@@ -166,6 +166,10 @@ void Minion::reduceLife(int damages) {
     this->life -= damages;
 }
 
+void Minion::reduceEnergy(int damages) {
+    this->energy -= damages;
+}
+
 void Minion::searchCorpse(Minion& other) {
     switch(this->rollDice()) {
         case Result::CRITIC_SUCCESS:
