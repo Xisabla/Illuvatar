@@ -26,10 +26,18 @@ void Character::addMsgList(vector<string>& msgList) {
 }
 
 string Character::getRandomMsg() {
+    if (this->msgList.empty()) {
+        cout << "error at Character::getRandomMsg()" << endl;
+        exit(1);
+    }
     return this->msgList[unirand::getValue(0, this->msgList.size() - 1)];
 }
 
 string Character::dropRandomMsg() {
+    if (this->msgList.empty()) {
+        cout << "error at Character::dropRandomMsg()" << endl;
+        exit(1);
+    }
     int pos = unirand::getValue(0, this->msgList.size() - 1);
     string msg = this->msgList[pos];
     this->msgList.erase(this->msgList.begin() + pos - 1);

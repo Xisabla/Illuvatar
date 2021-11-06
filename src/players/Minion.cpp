@@ -139,21 +139,21 @@ Result Minion::rollDice() {
 void Minion::exchange(Minion& other) {
     switch(this->rollDice()) {
         case Result::CRITIC_SUCCESS:
-            this->addMsg(other.getRandomMsg());
+            if (!other.getMsgList().empty()) this->addMsg(other.getRandomMsg());
             break;
 
         case Result::SUCCESS:
-            this->addMsg(other.dropRandomMsg());
-            other.addMsg(this->dropRandomMsg());
+            if (!other.getMsgList().empty()) this->addMsg(other.dropRandomMsg());
+            if (!this->getMsgList().empty()) other.addMsg(this->dropRandomMsg());
             break;
 
         case Result::FAILURE:
-            this->dropRandomMsg();
+            if (!this->getMsgList().empty()) this->dropRandomMsg();
             break;
 
         case Result::CRITIC_FAILURE:
-            this->dropRandomMsg();
-            other.dropRandomMsg();
+            if (!this->getMsgList().empty()) this->dropRandomMsg();
+            if (!other.getMsgList().empty()) other.dropRandomMsg();
             break;
     }
 }
@@ -177,11 +177,11 @@ void Minion::searchCorpse(Minion& other) {
             break;
 
         case Result::SUCCESS:
-            this->addMsg(other.dropRandomMsg());
+            if (!other.getMsgList().empty()) this->addMsg(other.dropRandomMsg());
             break;
 
         case Result::FAILURE:
-            this->dropRandomMsg();
+            if (!this->getMsgList().empty()) this->dropRandomMsg();
             break;
 
         case Result::CRITIC_FAILURE:
