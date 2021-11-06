@@ -1,14 +1,20 @@
 /*=========================================================================
 
 Project:   Illuvatar
-File:      Dragon.cpp
+File:      Result.h
 
 Copyright (c) 2021 - All rights reserved
 Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 =========================================================================*/
-#include "players/Dragon.h"
+#pragma once
+#ifndef ILLUVATAR_RESULT_H
+#define ILLUVATAR_RESULT_H
 
-using namespace std;
+/**
+ * @enum Result
+ * @brief Available dice results in the simulation
+ */
+enum class Result { CRITIC_SUCCESS, SUCCESS, FAILURE, CRITIC_FAILURE };
 
-Dragon::Dragon(Map &map, Point point, Direction direction, Faction faction, Master &master): Horde(map, point, direction, faction, master) {}
+#endif // ILLUVATAR_RESULT_H

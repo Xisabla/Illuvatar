@@ -34,6 +34,10 @@ set(CMAKE_CXX_STANDARD 20)
 # Source files
 set(SOURCES
         include/core/MainWindow.h src/core/MainWindow.cpp
+        include/enums/Result.h
+        include/enums/Faction.h src/enums/Faction.cpp
+        include/enums/Direction.h src/enums/Direction.cpp
+        include/enums/ThingAtPoint.h src/enums/ThingAtPoint.cpp
         include/geometry/Point.h src/geometry/Point.cpp
         include/geometry/Rectangle.h src/geometry/Rectangle.cpp
         include/map/DirectionUtils.h src/map/DirectionUtils.cpp
@@ -53,6 +57,7 @@ set(SOURCES
         include/players/Werewolf.h src/players/Werewolf.cpp
         include/qt/QGameMap.h src/qt/QGameMap.cpp
         include/unirand.h src/unirand.cpp
+        include/superTypes.h
         include/wip.h
         src/core/main.cpp
         )

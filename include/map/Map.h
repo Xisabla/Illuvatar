@@ -11,18 +11,21 @@
 #ifndef ILLUVATAR_MAP_H
 #define ILLUVATAR_MAP_H
 
+#include "enums/Faction.h"
+#include "enums/Direction.h"
+#include "enums/ThingAtPoint.h"
 #include "geometry/Rectangle.h"
 #include "map/DirectionUtils.h"
 #include "map/Tile.h"
 #include "map/TileSet.h"
 #include "qt/QGameMap.h"
-#include "wip.h"
 
 #include <set>
 #include <utility>
 #include <vector>
 
-// std::ostream& operator<<(std::ostream& out, const ThingAtPoint value);
+class Character;
+class Master;
 
 /**
  * @class Map
@@ -80,11 +83,23 @@ class Map {
      * @param allies List of Factions that are considered as allies
      * @return What kind of entity is at the position
      */
-    ThingAtPoint getThingAtPoint(const Point& p, std::set<Faction> const& allies = {});
+    ThingAtPoint getThingAtPoint(const Point& p);
 
-    void jump(Point& from, Point& to, Faction faction);
+    /**
+     * Apply a Character move from one point to another to the map
+     * @param from The current position of the Character
+     * @param to The next position of the Character
+     * @param character A pointer of the moving Character
+     */
+    void jump(Point& from, Point& to, Character* character);
 
-    Tile& computeLastPosition(const Point& point, const directionutils::Direction& direction);
+    /**
+     * Compute the initial position from a destination and a direction
+     * @param point The current position
+     * @param direction The direction of the vector
+     * @return The origin of the vector
+     */
+    Tile& computeLastPosition(const Point& point, const Direction& direction);
 
     // - Setters -----------------------------------------------------------------------------
     /**
@@ -92,7 +107,7 @@ class Map {
      * @param p Position of the Tile
      * @param faction Faction that owns the Tile
      */
-    [[maybe_unused]] void setTile(const Point& p, Faction faction = NoFaction);
+    [[maybe_unused]] void setTile(const Point& p, Faction faction = Faction::NoFaction);
 
     // - Methods -----------------------------------------------------------------------------
     /**

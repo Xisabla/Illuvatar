@@ -8,22 +8,7 @@
 
 =========================================================================*/
 #include "map/Map.h"
-/*
-std::ostream& operator<<(std::ostream& out, const ThingAtPoint value) {
-    const char* s = 0;
-#define PROCESS_VAL(p) case(p): s = #p; break;
-    switch(value){
-        PROCESS_VAL(ThingAtPoint::Void);
-        PROCESS_VAL(ThingAtPoint::Nothing);
-        PROCESS_VAL(ThingAtPoint::Obstacle);
-        PROCESS_VAL(ThingAtPoint::Enemy);
-        PROCESS_VAL(ThingAtPoint::Ally);
-    }
-#undef PROCESS_VAL
 
-    return out << s;
-}
-*/
 
 //  --------------------------------------------------------------------------------------
 //  Map
@@ -83,27 +68,27 @@ void Map::sync() {
     this->gmap->repaint();
 }
 
-ThingAtPoint Map::getThingAtPoint(const Point& p, const std::set<Faction>& allies) {
+ThingAtPoint Map::getThingAtPoint(const Point& p) {
     if (!this->exists(p)) return ThingAtPoint::Void;
 
-    Tile t = this->getTile(p);
+    Tile& t = this->getTile(p);
 
     if (t.isObstacle()) return ThingAtPoint::Obstacle;
-    if (t.belongsTo(NoFaction)) return ThingAtPoint::Nothing;
-    return allies.find(t.getOwner()) == allies.end() ? ThingAtPoint::Enemy : ThingAtPoint::Ally;
+    if (t.isOccupied()) return ThingAtPoint::Character;
+    return ThingAtPoint::Nothing;
 }
 
 Point Map::project(const Point& from, const Point& jump) {
     return { from.X() + jump.X(), from.Y() + jump.Y() };
 }
 
-void Map::jump(Point& from, Point& to, Faction faction) {
-    // TODO: equivalent of those
-    this->getTile(from).removeOwnership();
-    this->getTile(to).setOwner(faction);
+void Map::jump(Point& from, Point& to, Character* character) {
+    // todo : verify if from & to are really neighbors ?
+    this->getTile(from).unsetCharacter();
+    this->getTile(to).setCharacter(character);
 }
 
-Tile& Map::computeLastPosition(const Point& point, const directionutils::Direction& direction) {
+Tile& Map::computeLastPosition(const Point& point, const Direction& direction) {
     Point lastCoords = Map::project(point, directionutils::computeLastJump(direction));
 
     // TODO: Throw exception

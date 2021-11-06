@@ -11,5 +11,7 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 using namespace std;
 
+Horde::Horde(Map &map, Point point, Direction direction, Faction faction, Master &master): Minion(map, point, direction, faction, master) {}
+
 void Horde::Meet(const Horde& hordeMinion) { }
 void Horde::Meet(const Alliance& allianceMinion) { }

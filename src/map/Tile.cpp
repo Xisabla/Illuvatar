@@ -9,20 +9,6 @@
 =========================================================================*/
 #include "map/Tile.h"
 
-std::ostream& operator<<(std::ostream& out, const Faction value) {
-    const char* s = nullptr;
-#define PROCESS_VAL(p) case(p): s = #p; break;
-    switch(value){
-        PROCESS_VAL(Faction::Eldars)
-        PROCESS_VAL(Faction::Valars)
-        PROCESS_VAL(Faction::Dragons)
-        PROCESS_VAL(Faction::Werewolves)
-        PROCESS_VAL(Faction::NoFaction)
-    }
-#undef PROCESS_VAL
-
-    return out << s;
-}
 
 //  --------------------------------------------------------------------------------------
 //  Tile
@@ -38,9 +24,23 @@ Tile::Tile(Point p, Faction faction): Point(p), owner(faction) { }
 
 Faction Tile::getOwner() { return this->owner; }
 
-bool Tile::belongsTo(Faction f) { return this->owner == f; }
+Character& Tile::getCharacter() {
+    if (this->character == nullptr) {
+        std::cout << "error at TileSet::getCharacter()" << std::endl;
+        exit(1);
+    }
+    return *(this->character);
+}
+
+void Tile::setCharacter(Character* character) { this->character = character; }
+
+void Tile::unsetCharacter() { this->character = nullptr; }
+
+bool Tile::safeFor(Faction f) { return this->owner == f; }
 
 bool Tile::isObstacle() const { return this->obstacle; }
+
+bool Tile::isOccupied() { return this->character != nullptr; }
 
 //  --------------------------------------------------------------------------------------
 //  Tile > SETTERS
@@ -48,7 +48,7 @@ bool Tile::isObstacle() const { return this->obstacle; }
 
 void Tile::setOwner(Faction f) { this->owner = f; }
 
-void Tile::removeOwnership() { this->owner = NoFaction; }
+void Tile::removeOwnership() { this->owner = Faction::NoFaction; }
     
 void Tile::setObstacle() { this->obstacle = true; }
 

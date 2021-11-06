@@ -12,18 +12,11 @@
 #define ILLUVATAR_TILE_H
 
 #include "geometry/Point.h"
-#include "wip.h"
+#include "enums/Faction.h"
 
-#include <iostream>
 #include <utility>
 
-/**
- * @enum Faction
- * @brief Available Factions in the simulation
- */
-enum Faction { Eldars, Valars, Dragons, Werewolves, NoFaction };
-
-std::ostream& operator<<(std::ostream& out, Faction value);
+class Character;
 
 /**
  * @class Tile
@@ -36,30 +29,50 @@ class Tile : public Point {
      * @param y Y position of the Tile
      * @param faction Faction that owns the Tile
      */
-    Tile(int x, int y, Faction faction = NoFaction);
+    Tile(int x, int y, Faction faction = Faction::NoFaction);
 
     /**
      * @param p Position of the Tile
      * @param faction Faction that owns the Tile
      */
-    explicit Tile(Point p, Faction faction = NoFaction);
+    explicit Tile(Point p, Faction faction = Faction::NoFaction);
 
     // - Getters -----------------------------------------------------------------------------
     /**
-     * @return The faction owning the Tile
+     * @return The faction owning the Tile : safe for her
      */
     Faction getOwner();
 
     /**
-     * @param f Faction to test
-     * @return True of the faction is owning the Tile
+     * @return A reference to the Character on the Tile if occupied
      */
-    bool belongsTo(Faction f);
+    Character& getCharacter();
+
+    /**
+     * @param character Character to place on the Tile
+     */
+    void setCharacter(Character* character);
+
+    /**
+     * @brief Frees the tile from its character
+     */
+    void unsetCharacter();
+
+    /**
+     * @param f Faction to test
+     * @return True if the faction is owning the Tile
+     */
+    bool safeFor(Faction f);
 
     /**
      * @return True if the Tile is an obstacle
      */
     bool isObstacle() const;
+
+    /**
+     * @return True if there is a character on the Tile
+     */
+    bool isOccupied();
 
     // - Setters -----------------------------------------------------------------------------
     /**
@@ -89,7 +102,7 @@ class Tile : public Point {
     inline bool operator<(const Tile& t) const { return Point::operator<(t); }
 
     inline friend std::ostream& operator<<(std::ostream& out, Tile& t) {
-        return out << t.getPoint() << " " << t.getOwner();
+        return out << t.getPoint() << " safe for " << t.getOwner() << " occupied by " << (t.isObstacle()? "obstacle" : (t.isOccupied()? "some character" : "nothing"));
     }
 
   private:
@@ -104,7 +117,10 @@ class Tile : public Point {
      */
     bool obstacle = false;
 
-    // TODO: Character
+    /**
+     * @brief Character that occupies the Tile, can be set to nullPtr if none
+     */
+    Character* character = nullptr;
 };
 
 #endif // ILLUVATAR_TILE_H

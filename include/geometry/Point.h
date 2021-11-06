@@ -37,9 +37,17 @@ class Point {
      */
     [[nodiscard]] int Y() const;
 
-    Point getPoint();
+    /**
+     * @return A reference to the internal Point instance
+     */
+    Point& getPoint();
 
     // - Methods -----------------------------------------------------------------------------
+    /**
+     * Compute the distance between the current Point and another one
+     * @param p Other point to compute the distance
+     * @return The distance computed
+     */
     double distanceTo(Point& p);
 
     // - Operators ---------------------------------------------------------------------------

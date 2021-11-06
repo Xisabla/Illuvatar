@@ -11,21 +11,17 @@
 #ifndef ILLUVATAR_DirectionUtils_H
 #define ILLUVATAR_DirectionUtils_H
 
+#include "enums/Direction.h"
 #include "geometry/Point.h"
-#include "map/Tile.h"
 
 #include <iostream>
 #include <map>
 #include <vector>
 
-#define DIRECTION_FIRST N
-#define DIRECTION_LAST NW
-
-namespace directionutils {
-enum class Direction { DIRECTION_FIRST, NE, E, SE, S, SW, W, DIRECTION_LAST };
-
-std::ostream& operator<<(std::ostream& out, Direction value);
-
+namespace directionutils { 
+/**
+ * @brief Transform a direction into a list of "continuous" directions (same and diagonals)
+ */
 const std::map<Direction, std::vector<Direction>> fanDirections = {
     { Direction::N, { Direction::NW, Direction::N, Direction::NE } },
     { Direction::NE, { Direction::N, Direction::NE, Direction::E } },
@@ -36,6 +32,10 @@ const std::map<Direction, std::vector<Direction>> fanDirections = {
     { Direction::W, { Direction::SW, Direction::W, Direction::NW } },
     { Direction::NW, { Direction::W, Direction::NW, Direction::N } }
 };
+
+/**
+ * @brief Transform a direction into a list of "sides" directions (sides and opposite diagonals)
+ */
 const std::map<Direction, std::vector<Direction>> sideDirections = {
     { Direction::N, { Direction::E, Direction::SE, Direction::SW, Direction::W } },
     { Direction::NE, { Direction::SE, Direction::S, Direction::W, Direction::NW } },
@@ -46,6 +46,10 @@ const std::map<Direction, std::vector<Direction>> sideDirections = {
     { Direction::W, { Direction::N, Direction::NE, Direction::SE, Direction::S } },
     { Direction::NW, { Direction::NE, Direction::E, Direction::S, Direction::SW } }
 };
+
+/**
+ * @brief Transform a direction into its opposite direction
+ */
 const std::map<Direction, Direction> oppositeDirection = {
     { Direction::N, Direction::S }, { Direction::NE, Direction::SW },
     { Direction::E, Direction::W }, { Direction::SE, Direction::NW },
@@ -53,6 +57,9 @@ const std::map<Direction, Direction> oppositeDirection = {
     { Direction::W, Direction::E }, { Direction::NW, Direction::SE }
 };
 
+/**
+ * @brief Transform a direction into a variation of coordinates
+ */
 const std::map<Direction, Point> nextDirection = {
     { Direction::N, Point(0, -1) }, { Direction::NE, Point(1, -1) },
     { Direction::E, Point(1, 0) },  { Direction::SE, Point(1, 1) },
@@ -61,7 +68,7 @@ const std::map<Direction, Point> nextDirection = {
 };
 
 /**
- * Used/secured by computeDirection
+ * @brief Transform a variation of coordinates into a direction
  */
 const std::map<std::pair<int, int>, Direction> deltaDirection = {
     { { 0, -1 }, Direction::N }, { { 1, -1 }, Direction::NE }, { { 1, 0 }, Direction::E },
@@ -69,7 +76,19 @@ const std::map<std::pair<int, int>, Direction> deltaDirection = {
     { { -1, 0 }, Direction::W }, { { -1, -1 }, Direction::NW }
 };
 
+/**
+ * Compute the direction of the vector composed by two neighboring points
+ * @param last The origin of the vector
+ * @param current the arrival of the vector
+ * @return The direction of the vector
+ */
 Direction computeDirection(const Point& last, const Point& current);
+
+/**
+ * Compute the reverse variation of coordinates corresponding to the direction
+ * @param direction The direction of the vector
+ * @return The variation to the origin of the vector
+ */
 Point computeLastJump(const Direction& direction);
 } // namespace directionutils
 

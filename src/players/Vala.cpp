@@ -10,3 +10,5 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #include "players/Vala.h"
 
 using namespace std;
+
+Vala::Vala(Map &map, Point point, Direction direction, Faction faction, Master &master): Alliance(map, point, direction, faction, master) {}

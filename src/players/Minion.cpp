@@ -2,6 +2,7 @@
 
 using namespace std;
 using namespace directionutils;
+using namespace superTypes;
 using namespace pathfinder;
 
 
@@ -9,46 +10,36 @@ Minion::Minion(Map &map, Point point, Direction direction, Faction faction, Mast
 
 void Minion::move() {
     int range = unirand::getValue(this->rangeMin, this->rangeMax); //todo : modulate with dice throw ?
-    cout << endl << "range : " << range << endl;
 
     bool kindCond = this->energy - range > this->lowEnergy; //todo : add msg conds at least
-    cout << (kindCond ? "explo" : "master") << endl;
     DirectionalPath path = kindCond ? this->explorate(range) : this->findMaster(range);
-    cout << "nb moves visualized : " << path.size() << endl;
 
     if (path.empty()) {
-        cout << "empty path : fight" << endl;  
         this->interactsWithSurroundings();
         return;
     }
 
     for (pair<Point, Direction> step: path) {
-        cout << step.first << " - " << step.second << endl;
-        if (this->checkDirection(step.first, step.second).first == ThingAtPoint::Nothing) {
-            this->map.jump(this->point, step.first, this->faction); // todo : add this to args
+        if (this->checkPosition(step.first) == ThingAtPoint::Nothing) {
+            this->map.jump(this->point, step.first, this);
             this->point = step.first;
             this->currentDirection = step.second;
             this->energy--; // todo : this->energy += this->tile.safeFor() == this->faction ? 100 : - this->loss;
-            cout << "new pos : " << this->point << " - " << this->currentDirection << endl;
 
             if (interactsWithSurroundings()) {
-                cout << "interacted with neighbors" << endl;
                 return;
             }
 
             if (!this->energy) {
-                cout << "exhausted";
+                //cout << "exhausted";
                 return;
             }
         }
         else {
-            cout << "something or nothing on the road" << endl;
             interactsWithSurroundings();
             return;
         }
     }
-
-    cout << "no neighbors !" << endl;
 }
 
 bool Minion::interactsWithSurroundings() {
@@ -56,14 +47,18 @@ bool Minion::interactsWithSurroundings() {
     for (pair<ThingAtPoint, Point> thing: this->checkAround()) {
         switch(thing.first) {
             case ThingAtPoint::Ally:
-                //échange les infos : todo get minion from tile
+                this->exchange(static_cast<Minion&>(this->map.getTile(this->point).getCharacter()));
                 interactFlag = true;
                 break;
 
-            case ThingAtPoint::Enemy:
-                // fight : todo get minion from tile
+            case ThingAtPoint::Ennemy:
+                if (!this->fightAndWin(static_cast<Minion&>(this->map.getTile(this->point).getCharacter()))) return true; // dead
                 interactFlag = true;
                 break;
+
+            //case ThingAtPoint::Master:
+                //can interact with him - check if personnal master ?
+                //break;
         }
     }
     return interactFlag;
@@ -112,9 +107,17 @@ DirectionalPath Minion::findMaster(int const range) {
     return shortest(this->map, this->point, this->master.getPoint(), range);
 }
 
-pair<ThingAtPoint, Point> Minion::checkDirection(const Point &point, Direction &direction) {
+ThingAtPoint Minion::checkPosition(const Point& point) {
+    ThingAtPoint thing = this->map.getThingAtPoint(point);
+    if (thing != ThingAtPoint::Character) return thing;
+
+    set<Faction>& allies = Minion::alliances.at(this->faction);
+    return allies.find(this->map.getTile(point).getCharacter().getFaction()) == allies.end() ? ThingAtPoint::Ennemy : ThingAtPoint::Ally;
+}
+
+pair<ThingAtPoint, Point> Minion::checkDirection(const Point& point, Direction& direction) {
     Point p = this->map.project(point, nextDirection.at(direction));
-    return { this->map.getThingAtPoint(p, Minion::alliances.at(this->faction)), p };
+    return { this->checkPosition(p), p };
 }
 
 vector<pair<ThingAtPoint, Point>> Minion::checkAround() {
@@ -123,14 +126,81 @@ vector<pair<ThingAtPoint, Point>> Minion::checkAround() {
     for (Direction d = Direction::DIRECTION_FIRST; d <= Direction::DIRECTION_LAST;
          d = Direction(static_cast<int>(d) + 1)) { // get all enum values
         pair<ThingAtPoint, Point> thing = this->checkDirection(this->point, d);
-        if (thing.first == ThingAtPoint::Ally || thing.first == ThingAtPoint::Enemy) things.push_back(thing);
+        if (thing.first == ThingAtPoint::Ally || thing.first == ThingAtPoint::Ennemy) things.push_back(thing);
     }
 
     return things;
 }
 
-void Minion::rollDice() { }
+Result Minion::rollDice() {
+    return Result::SUCCESS; //todo : voir avec charles
+}
 
-void Minion::fight(Minion& other) { }
+void Minion::exchange(Minion& other) {
+    switch(this->rollDice()) {
+        case Result::CRITIC_SUCCESS:
+            if (!other.getMsgList().empty()) this->addMsg(other.getRandomMsg());
+            break;
 
-void Minion::exchange(Minion& other) { }
+        case Result::SUCCESS:
+            if (!other.getMsgList().empty()) this->addMsg(other.dropRandomMsg());
+            if (!this->getMsgList().empty()) other.addMsg(this->dropRandomMsg());
+            break;
+
+        case Result::FAILURE:
+            if (!this->getMsgList().empty()) this->dropRandomMsg();
+            break;
+
+        case Result::CRITIC_FAILURE:
+            if (!this->getMsgList().empty()) this->dropRandomMsg();
+            if (!other.getMsgList().empty()) other.dropRandomMsg();
+            break;
+    }
+}
+
+bool Minion::isAlive() {
+    return this->life && this->energy;
+}
+
+void Minion::reduceLife(unsigned int damages) {
+    this->life -= damages;
+}
+
+void Minion::reduceEnergy(unsigned int damages) {
+    this->energy -= damages;
+}
+
+void Minion::searchCorpse(Minion& other) {
+    switch(this->rollDice()) {
+        case Result::CRITIC_SUCCESS:
+            this->addMsgList(other.getMsgList());
+            break;
+
+        case Result::SUCCESS:
+            if (!other.getMsgList().empty()) this->addMsg(other.dropRandomMsg());
+            break;
+
+        case Result::FAILURE:
+            if (!this->getMsgList().empty()) this->dropRandomMsg();
+            break;
+
+        case Result::CRITIC_FAILURE:
+            this->dropMsgList();
+            break;
+    }
+}
+
+bool Minion::fightAndWin(Minion& other) {
+    do {
+        other.reduceLife(this->attack());
+        if (!other.isAlive()) {
+            this->searchCorpse(other);
+            //delete other; //risky
+            return true;
+        }
+        this->reduceLife(other.attack());
+    } while(this->isAlive());
+
+    other.searchCorpse(*this);
+    return false;
+}

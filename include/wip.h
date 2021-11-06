@@ -18,7 +18,8 @@
 /**
  * @brief Representation of an entity on the map
  */
-enum ThingAtPoint { Void, Nothing, Obstacle, Enemy, Ally };
+enum AllianceFactions { Evil, Good, NoAlliance };
+
 // Temporary stuff that will get included later --->
 
 #endif // ILLUVATAR_WIP_H
