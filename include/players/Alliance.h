@@ -12,25 +12,28 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #define ILLUVATAR_ALLIANCE_H
 
 #include "players/Minion.h"
-#include "players/Horde.h"
 #include "players/Master.h"
 #include "enums/Faction.h"
 #include "enums/Direction.h"
 #include "geometry/Point.h"
 #include "map/Map.h"
-
-class Horde;
+#include "unirand.h"
 
 class Alliance : public Minion {
     public:
-    Alliance(Map& map,
-           Point point,
-           Direction direction,
-           Faction faction,
-           Master& master);
+        Alliance(Map& map,
+            Point point,
+            Direction direction,
+            Faction faction,
+            Master& master);
 
-    void Meet(const Horde& hordeMinion);
-    void Meet(const Alliance& allianceMinion);
+    protected:
+        unsigned int energyReduction = this->energyCost * 2 / 3;
+
+        /**
+         * @brief Alliance skill : remove energy to ennemy and attack him
+         */
+        virtual void specialAttack(Minion& other);
 };
 
 #endif // ILLUVATAR_ALLIANCE_H

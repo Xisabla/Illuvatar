@@ -13,5 +13,7 @@ using namespace std;
 
 Horde::Horde(Map &map, Point point, Direction direction, Faction faction, Master &master): Minion(map, point, direction, faction, master) {}
 
-void Horde::Meet(const Horde& hordeMinion) { }
-void Horde::Meet(const Alliance& allianceMinion) { }
+void Horde::specialAttack(Minion& other) {
+    this->normalAttack(other);
+    this->restoreLife(unirand::getValueAround(this->lifeHeal, 2));
+}

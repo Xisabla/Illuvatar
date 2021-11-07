@@ -13,5 +13,7 @@ using namespace std;
 
 Alliance::Alliance(Map &map, Point point, Direction direction, Faction faction, Master &master): Minion(map, point, direction, faction, master) {}
 
-void Alliance::Meet(const Horde& hordeMinion) { }
-void Alliance::Meet(const Alliance& allianceMinion) { }
+void Alliance::specialAttack(Minion& other) {
+    other.reduceEnergy(unirand::getValueAround(this->energyReduction, 2));
+    this->normalAttack(other);
+}

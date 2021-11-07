@@ -5,3 +5,7 @@ int unirand::getValue(int min, int max) {
     std::uniform_int_distribution<int> distrib(min, max);
     return distrib(generator);
 }
+
+int unirand::getValueAround(int value, int range) {
+    return unirand::getValue(value - range, value + range);
+}

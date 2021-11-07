@@ -50,6 +50,26 @@ class Minion : public Character {
      */
     bool isAlive();
 
+    /**
+     * @brief Setter for lifepoint
+     */
+    void reduceLife(unsigned int damages);
+
+    /**
+     * @brief Setter for lifepoint
+     */
+    void restoreLife(unsigned int heal);
+
+    /**
+     * @brief Setter for energy
+     */
+    void reduceEnergy(unsigned int damages);
+
+    /**
+     * @brief Setter for energy
+     */
+    void restoreEnergy(unsigned int heal);
+
   protected:
     Master& master;
 
@@ -67,22 +87,19 @@ class Minion : public Character {
     Direction currentDirection;
 
     /**
-     * @brief Message exchange between two allied Minions
-     * @param other The passive Minion met
+     * @brief Alliance or Horde skill
      */
-    void exchange(Minion& other);
-    
-    /**
-     * @brief Fight between two ennemy Minions
-     * @param other The passive Minion met
-     * @return True if alive at the end of the fight
-     */
-    bool fightAndWin(Minion& other);
+    virtual void specialAttack(Minion& other) { std::cout << "error at Minion::specialAttack(...) - forbidden usage of base definition" << std::endl; exit(1); };
 
     /**
-     * @brief Inflict life or energy damages to other Minion - specific to each race
+     * Specific to each Race
      */
-    virtual void attack(Minion& other) { std::cout << "error at Minion::attack(...) - forbidden usage of base definition" << std::endl; exit(1); };
+    virtual void normalAttack(Minion& other) { std::cout << "error at Minion::normalAttack(...) - forbidden usage of base definition" << std::endl; exit(1); };
+
+    /**
+     * Specific to each Race
+     */
+    virtual void hurtItself() { std::cout << "error at Minion::hurtItself() - forbidden usage of base definition" << std::endl; exit(1); };
 
   private:
     /**
@@ -96,6 +113,24 @@ class Minion : public Character {
     };
 
     Result rollDice();
+
+    /**
+     * @brief Message exchange between two allied Minions
+     * @param other The passive Minion met
+     */
+    void exchange(Minion& other);
+    
+    /**
+     * @brief Fight between two ennemy Minions
+     * @param other The passive Minion met
+     * @return True if alive at the end of the fight
+     */
+    bool fightAndWin(Minion& other);
+    
+    /**
+     * @brief Inflict life or energy damages to other Minion - specific to each race
+     */
+    void attack(Minion& other);
 
     /**
      * @brief Generate a path into a free direction without change of direction, until meeting obstacle or void (ignore characters)
@@ -136,26 +171,6 @@ class Minion : public Character {
      * @return List of allies and ennemies with their position in check order (N to NW)
      */
     std::vector<std::pair<ThingAtPoint, Point>> checkAround();
-
-    /**
-     * @brief Setter for lifepoint
-     */
-    void reduceLife(unsigned int damages);
-
-    /**
-     * @brief Setter for lifepoint
-     */
-    void restoreLife(unsigned int heal);
-
-    /**
-     * @brief Setter for energy
-     */
-    void reduceEnergy(unsigned int damages);
-
-    /**
-     * @brief Setter for energy
-     */
-    void restoreEnergy(unsigned int heal);
 
     /**
      * @brief Message search onto dead ennemy minions

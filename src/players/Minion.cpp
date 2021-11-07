@@ -227,16 +227,30 @@ void Minion::searchCorpse(Minion& other) {
 bool Minion::fightAndWin(Minion& other) {
     do {
         this->attack(other);
-        //other.reduceLife();
         if (!other.isAlive()) {
             this->searchCorpse(other);
             //delete other; //?
             return true;
         }
         other.attack(*this);
-        //this->reduceLife(other.attack());
     } while(this->isAlive());
 
     other.searchCorpse(*this);
     return false;
+}
+
+void Minion::attack(Minion& other) {
+    switch(this->rollDice()) {
+        case Result::CRITIC_SUCCESS:
+            this->specialAttack(other);
+            break;
+
+        case Result::SUCCESS:
+            this->normalAttack(other);
+            break;
+
+        case Result::CRITIC_FAILURE:
+            this->hurtItself();
+            break;
+    }
 }
