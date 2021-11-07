@@ -82,6 +82,21 @@ class Character {
      */
     void dropMsgList();
 
+    /**
+     * @brief Return true if msgList is not empty or false otherwise
+     */
+    bool gotMsg();
+
+    /**
+     * @brief Return true if msgList lenght equals 1 or false otherwise
+     */
+    bool gotOneMsg();
+
+    /**
+     * @brief Return true if msgList lenght is greater than 1 or false otherwise
+     */
+    [[maybe_unused]] bool gotLotOfMsgs();
+
   private:
     /**
      * @brief List of messages to deal with

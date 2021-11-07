@@ -11,32 +11,54 @@ Minion::Minion(Map &map, Point point, Direction direction, Faction faction, Mast
 void Minion::move() {
     int range = unirand::getValue(this->rangeMin, this->rangeMax); //todo : modulate with dice throw ?
 
-    bool kindCond = this->energy - range > this->lowEnergy; //todo : add msg conds at least
-    DirectionalPath path = kindCond ? this->explorate(range) : this->findMaster(range);
+    bool enoughEnergy = this->energy - range * this->energyCost > this->energyLow;
+    DirectionalPath path = enoughEnergy && this->gotOneMsg() ? this->explorate(range) : this->findMaster(range);
 
     if (path.empty()) {
         this->interactsWithSurroundings();
         return;
     }
 
+    Faction const currentFaction = this->faction;
+    Faction const allyFaction = Minion::alliance.at(currentFaction);
     for (pair<Point, Direction> step: path) {
-        if (this->checkPosition(step.first) == ThingAtPoint::Nothing) {
-            this->map.jump(this->point, step.first, this);
-            this->point = step.first;
-            this->currentDirection = step.second;
-            this->energy--; // todo : this->energy += this->tile.safeFor() == this->faction ? 100 : - this->loss;
-
-            if (interactsWithSurroundings()) {
-                return;
-            }
-
-            if (!this->energy) {
-                //cout << "exhausted";
-                return;
-            }
-        }
-        else {
+        if (this->checkPosition(step.first) != ThingAtPoint::Nothing) {
             interactsWithSurroundings();
+            if (!this->isAlive()) {
+                //delete this; //?
+            }
+            return;
+        }
+
+        //tile change
+        this->map.jump(this->point, step.first, this);
+        this->point = step.first;
+        this->currentDirection = step.second;
+
+        //energy fluctuation
+        Faction owner = this->map.getTile(this->point).getOwner();
+        if (owner == Faction::NoFaction) {
+            this->reduceEnergy(this->energyCost); //most common - loss a bit of energy
+        }
+        else if (owner == currentFaction) {
+            this->energy = this->energyMax; //recover all energy
+        }
+        else if (owner == allyFaction) {
+            this->restoreEnergy(this->energyCost); //recover a bit of energy
+        }
+        else {//ennemy zone
+            this->reduceEnergy(this->energyEnnemyCost); //loss more energy
+        }
+
+        if (!this->energy) {
+            //delete this; //?
+            return;
+        }
+
+        if (interactsWithSurroundings()) {
+            if (!this->isAlive()) {
+                //delete this; //?
+            }
             return;
         }
     }
@@ -111,8 +133,8 @@ ThingAtPoint Minion::checkPosition(const Point& point) {
     ThingAtPoint thing = this->map.getThingAtPoint(point);
     if (thing != ThingAtPoint::Character) return thing;
 
-    set<Faction>& allies = Minion::alliances.at(this->faction);
-    return allies.find(this->map.getTile(point).getCharacter().getFaction()) == allies.end() ? ThingAtPoint::Ennemy : ThingAtPoint::Ally;
+    Faction other = this->map.getTile(point).getCharacter().getFaction();
+    return (other == this->faction || other == Minion::alliance.at(this->faction)) ? ThingAtPoint::Ally : ThingAtPoint::Ennemy;
 }
 
 pair<ThingAtPoint, Point> Minion::checkDirection(const Point& point, Direction& direction) {
@@ -139,21 +161,21 @@ Result Minion::rollDice() {
 void Minion::exchange(Minion& other) {
     switch(this->rollDice()) {
         case Result::CRITIC_SUCCESS:
-            if (!other.getMsgList().empty()) this->addMsg(other.getRandomMsg());
+            if (other.gotMsg()) this->addMsg(other.getRandomMsg());
             break;
 
         case Result::SUCCESS:
-            if (!other.getMsgList().empty()) this->addMsg(other.dropRandomMsg());
-            if (!this->getMsgList().empty()) other.addMsg(this->dropRandomMsg());
+            if (other.gotMsg()) this->addMsg(other.dropRandomMsg());
+            if (this->gotMsg()) other.addMsg(this->dropRandomMsg());
             break;
 
         case Result::FAILURE:
-            if (!this->getMsgList().empty()) this->dropRandomMsg();
+            if (this->gotMsg()) this->dropRandomMsg();
             break;
 
         case Result::CRITIC_FAILURE:
-            if (!this->getMsgList().empty()) this->dropRandomMsg();
-            if (!other.getMsgList().empty()) other.dropRandomMsg();
+            if (this->gotMsg()) this->dropRandomMsg();
+            if (other.gotMsg()) other.dropRandomMsg();
             break;
     }
 }
@@ -163,11 +185,23 @@ bool Minion::isAlive() {
 }
 
 void Minion::reduceLife(unsigned int damages) {
-    this->life -= damages;
+    if (this->life > damages) this->life -= damages;
+    else this->life = 0;
+}
+
+void Minion::restoreLife(unsigned int heal) {
+    if (this->life + heal < this->lifeMax) this->life += heal;
+    else this->life = this->lifeMax;
 }
 
 void Minion::reduceEnergy(unsigned int damages) {
-    this->energy -= damages;
+    if (this->energy > damages) this->energy -= damages;
+    else this->energy = 0;
+}
+
+void Minion::restoreEnergy(unsigned int heal) {
+    if (this->energy + heal < this->energyMax) this->energy += heal;
+    else this->energy = this->energyMax;
 }
 
 void Minion::searchCorpse(Minion& other) {
@@ -192,13 +226,15 @@ void Minion::searchCorpse(Minion& other) {
 
 bool Minion::fightAndWin(Minion& other) {
     do {
-        other.reduceLife(this->attack());
+        this->attack(other);
+        //other.reduceLife();
         if (!other.isAlive()) {
             this->searchCorpse(other);
-            //delete other; //risky
+            //delete other; //?
             return true;
         }
-        this->reduceLife(other.attack());
+        other.attack(*this);
+        //this->reduceLife(other.attack());
     } while(this->isAlive());
 
     other.searchCorpse(*this);

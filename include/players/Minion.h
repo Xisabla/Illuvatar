@@ -53,9 +53,15 @@ class Minion : public Character {
   protected:
     Master& master;
 
-    unsigned int life = 100;
-    unsigned int energy = 100;
-    const int lowEnergy = 20;
+    unsigned int lifeMax = 100;
+    unsigned int life = this->lifeMax;
+
+    unsigned int energyMax = 100;
+    unsigned int energyCost = 5;
+    unsigned int energyEnnemyCost = 2 * this->energyCost;
+    unsigned int energyLow = 20;
+    unsigned int energy = this->energyMax;
+
     const int rangeMax = 10;
     const int rangeMin = 6;
     Direction currentDirection;
@@ -74,19 +80,19 @@ class Minion : public Character {
     bool fightAndWin(Minion& other);
 
     /**
-     * @brief The computation of the damages : specific to each race
+     * @brief Inflict life or energy damages to other Minion - specific to each race
      */
-    virtual int attack() { std::cout << "error at Minion::attack() - forbidden usage of base definition" << std::endl; exit(1); return 0; };
+    virtual void attack(Minion& other) { std::cout << "error at Minion::attack(...) - forbidden usage of base definition" << std::endl; exit(1); };
 
   private:
     /**
-     * @brief Transform the faction into a set of its allies
+     * @brief Transform the faction into ally faction
      */
-    std::map<Faction, std::set<Faction>> alliances = {
-        { Faction::Eldars, { Faction::Eldars, Faction::Valars } },
-        { Faction::Valars, { Faction::Eldars, Faction::Valars } },
-        { Faction::Dragons, { Faction::Dragons, Faction::Werewolves } },
-        { Faction::Werewolves, { Faction::Dragons, Faction::Werewolves } },
+    std::map<Faction, Faction> alliance = {
+        { Faction::Eldars, Faction::Valars },
+        { Faction::Valars, Faction::Eldars },
+        { Faction::Dragons, Faction::Werewolves },
+        { Faction::Werewolves, Faction::Dragons },
     };
 
     Result rollDice();
@@ -132,14 +138,24 @@ class Minion : public Character {
     std::vector<std::pair<ThingAtPoint, Point>> checkAround();
 
     /**
-     * @brief Setter for the lifepoint
-     */    
+     * @brief Setter for lifepoint
+     */
     void reduceLife(unsigned int damages);
 
     /**
-     * @brief Setter for the energy
-     */    
+     * @brief Setter for lifepoint
+     */
+    void restoreLife(unsigned int heal);
+
+    /**
+     * @brief Setter for energy
+     */
     void reduceEnergy(unsigned int damages);
+
+    /**
+     * @brief Setter for energy
+     */
+    void restoreEnergy(unsigned int heal);
 
     /**
      * @brief Message search onto dead ennemy minions
