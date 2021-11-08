@@ -69,6 +69,8 @@ class Minion : public Character {
      */
     void restoreEnergy(unsigned int heal);
 
+    Direction getDirection() { return this->currentDirection; }
+
   protected:
     Master& master;
 

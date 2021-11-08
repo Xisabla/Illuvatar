@@ -47,10 +47,10 @@ int main(int argc, char* argv[]) {
     map.GMap()->setTileSize(40);
 
     // Add masters
-    Master master_d(map, Point(14, 6), Faction::Dragons);
-    Master master_e(map, Point(6, 14), Faction::Eldars);
-    Master master_v(map, Point(14, 14), Faction::Valars);
-    Master master_w(map, Point(6, 6), Faction::Werewolves);
+    Master master_d(map, Point(14, 6), Faction::Dragons, { "Da", "Db", "Dc", "Dd", "De" });
+    Master master_e(map, Point(6, 14), Faction::Eldars, { "Ea", "Eb", "Ec", "Ed", "Ee" });
+    Master master_v(map, Point(14, 14), Faction::Valars, { "Va", "Vb", "Vc", "Vd", "Ve" });
+    Master master_w(map, Point(6, 6), Faction::Werewolves, { "Wa", "Wb", "Wc", "Wd", "We" });
     
     // map.getTile(master_d.getPoint()).setCharacter(dynamic_cast<Character*>(&master_d));
     // map.getTile(master_e.getPoint()).setCharacter(dynamic_cast<Character*>(&master_e));

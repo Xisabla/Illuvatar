@@ -4,8 +4,8 @@
 
 using namespace std;
 
-Master::Master(Map &map, Point point, Faction faction, vector<string> &listOfBaseMessage)
-: Character(map, point, faction) {
+Master::Master(Map &map, Point point, Faction faction, vector<string> listOfBaseMessage)
+: Character(map, point, faction, true) {
     listOfMessage = {};
     MessageToGive = listOfBaseMessage;
 }
