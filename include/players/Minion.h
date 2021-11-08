@@ -36,7 +36,6 @@ class Minion : public Character {
   public:
     Minion(Map& map,
            Point point,
-           Direction direction,
            Faction faction,
            Master& master);
 
@@ -87,19 +86,26 @@ class Minion : public Character {
     Direction currentDirection;
 
     /**
+     * @brief virtual attribute access specific to each race
+     * @return damages caused to other for classical or critical successful move
+     */
+    virtual int getDamages() = 0;
+
+    /**
+     * @brief virtual attribute access specific to each race
+     * @return damages caused to self for critical failure move
+     */
+    virtual int getSelfDamages() = 0;
+
+    /**
      * @brief Alliance or Horde skill
      */
-    virtual void specialAttack(Minion& other) { std::cout << "error at Minion::specialAttack(...) - forbidden usage of base definition" << std::endl; exit(1); };
+    virtual void specialAttack(Minion& other) = 0;
 
     /**
-     * Specific to each Race
+     * Inflict life damages to other Minion
      */
-    virtual void normalAttack(Minion& other) { std::cout << "error at Minion::normalAttack(...) - forbidden usage of base definition" << std::endl; exit(1); };
-
-    /**
-     * Specific to each Race
-     */
-    virtual void hurtItself() { std::cout << "error at Minion::hurtItself() - forbidden usage of base definition" << std::endl; exit(1); };
+    void normalAttack(Minion& other);
 
   private:
     /**
@@ -177,6 +183,11 @@ class Minion : public Character {
      * @param other The passive dead Minion
      */
     void searchCorpse(Minion& other);
+    
+    /**
+     * @brief Inflict life damages to itself
+     */
+    void hurtItself();
 };
 
 #endif // ILLUVATAR_MINION_H

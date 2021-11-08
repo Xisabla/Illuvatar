@@ -11,7 +11,7 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 using namespace std;
 
-Horde::Horde(Map &map, Point point, Direction direction, Faction faction, Master &master): Minion(map, point, direction, faction, master) {}
+Horde::Horde(Map &map, Point point, Faction faction, Master &master): Minion(map, point, faction, master) {}
 
 void Horde::specialAttack(Minion& other) {
     this->normalAttack(other);

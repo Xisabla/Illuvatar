@@ -23,7 +23,6 @@ class Horde : public Minion {
     public:
     Horde(Map& map,
            Point point,
-           Direction direction,
            Faction faction,
            Master& master);
 

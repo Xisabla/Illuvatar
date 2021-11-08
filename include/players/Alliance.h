@@ -23,7 +23,6 @@ class Alliance : public Minion {
     public:
         Alliance(Map& map,
             Point point,
-            Direction direction,
             Faction faction,
             Master& master);
 

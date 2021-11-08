@@ -6,7 +6,9 @@ using namespace superTypes;
 using namespace pathfinder;
 
 
-Minion::Minion(Map &map, Point point, Direction direction, Faction faction, Master &master): Character(map, point, faction), currentDirection(direction), master(master) {}
+Minion::Minion(Map &map, Point point, Faction faction, Master &master): Character(map, point, faction), master(master) {
+    this->currentDirection = randDirection();
+}
 
 void Minion::move() {
     int range = unirand::getValue(this->rangeMin, this->rangeMax); //todo : modulate with dice throw ?
@@ -69,12 +71,12 @@ bool Minion::interactsWithSurroundings() {
     for (pair<ThingAtPoint, Point> thing: this->checkAround()) {
         switch(thing.first) {
             case ThingAtPoint::Ally:
-                this->exchange(static_cast<Minion&>(this->map.getTile(this->point).getCharacter()));
+                this->exchange(dynamic_cast<Minion&>(this->map.getTile(this->point).getCharacter()));
                 interactFlag = true;
                 break;
 
             case ThingAtPoint::Ennemy:
-                if (!this->fightAndWin(static_cast<Minion&>(this->map.getTile(this->point).getCharacter()))) return true; // dead
+                if (!this->fightAndWin(dynamic_cast<Minion&>(this->map.getTile(this->point).getCharacter()))) return true; // dead
                 interactFlag = true;
                 break;
 
@@ -253,4 +255,14 @@ void Minion::attack(Minion& other) {
             this->hurtItself();
             break;
     }
+}
+
+void Minion::normalAttack(Minion& other) {
+    // TODO : bool to know if life or energy ?
+    other.reduceLife(unirand::getValueAround(this->getDamages(), 2));
+}
+
+void Minion::hurtItself() {
+    // TODO : bool to know if life or energy ?
+    this->reduceLife(unirand::getValueAround(this->getSelfDamages()));
 }

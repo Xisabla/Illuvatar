@@ -13,34 +13,24 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 #include "players/Alliance.h"
 #include "players/Master.h"
-#include "players/Minion.h"
 #include "enums/Faction.h"
 #include "enums/Direction.h"
 #include "geometry/Point.h"
 #include "map/Map.h"
-#include "unirand.h"
 
 class Eldar: public Alliance {
     public:
     Eldar(Map& map,
            Point point,
-           Direction direction,
-           Faction faction,
            Master& master);
 
     protected:
     unsigned int damages = 5;
     unsigned int selfDamages = 2;
 
-    /**
-     * @brief Inflict life or energy damages to other Minion
-     */
-    virtual void normalAttack(Minion& other);
-    
-    /**
-     * @brief Inflict life or energy damages to itself
-     */
-    virtual void hurtItself();
+    virtual int getDamages() { return this->damages; };
+
+    virtual int getSelfDamages() { return this->selfDamages; };
 };
 
 #endif // ILLUVATAR_ELDAR_H

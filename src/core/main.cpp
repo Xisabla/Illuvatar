@@ -11,7 +11,12 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #include "map/Generators.h"
 #include "map/PathFinder.h"
 #include "players/Minion.h"
+#include "players/Dragon.h"
+#include "players/Eldar.h"
+#include "players/Vala.h"
+#include "players/Werewolf.h"
 #include "superTypes.h"
+#include "unirand.h"
 
 #include <QApplication>
 
@@ -46,23 +51,32 @@ int main(int argc, char* argv[]) {
     Master master_e(map, Point(6, 14), Faction::Eldars);
     Master master_v(map, Point(14, 14), Faction::Valars);
     Master master_w(map, Point(6, 6), Faction::Werewolves);
+    
+    // map.getTile(master_d.getPoint()).setCharacter(dynamic_cast<Character*>(&master_d));
+    // map.getTile(master_e.getPoint()).setCharacter(dynamic_cast<Character*>(&master_e));
+    // map.getTile(master_v.getPoint()).setCharacter(dynamic_cast<Character*>(&master_v));
+    // map.getTile(master_w.getPoint()).setCharacter(dynamic_cast<Character*>(&master_w));
 
     // Add random minions on the map, just testing
-    std::vector<Minion> minions;
+    std::vector<Minion*> minions;
 
     for (auto& t: tiles) {
-        if(t.isOccupied()) continue;
+        if (t.isOccupied()) continue;
 
-        if (rand() % 10 == 0)
-            minions.emplace_back(
-            map, Point(t.X(), t.Y()), Direction::N, Faction::Dragons, master_d);
-        if (rand() % 10 == 1)
-            minions.emplace_back(map, Point(t.X(), t.Y()), Direction::N, Faction::Eldars, master_e);
-        if (rand() % 10 == 2)
-            minions.emplace_back(map, Point(t.X(), t.Y()), Direction::N, Faction::Valars, master_v);
-        if (rand() % 10 == 3)
-            minions.emplace_back(
-            map, Point(t.X(), t.Y()), Direction::N, Faction::Werewolves, master_w);
+        switch(rand() % 8) {
+            case 0:
+                minions.emplace_back(new Dragon(map, t.getPoint(), master_d));
+                break;
+            case 1:
+                minions.emplace_back(new Eldar(map, t.getPoint(), master_e));
+                break;
+            case 2:
+                minions.emplace_back(new Vala(map, t.getPoint(), master_v));
+                break;
+            case 3:
+                minions.emplace_back(new Werewolf(map, t.getPoint(), master_w));
+                break;
+        }
     }
 
     // minions[0].move();
