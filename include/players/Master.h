@@ -11,9 +11,9 @@
 #ifndef ILLUVATAR_MASTER_H
 #define ILLUVATAR_MASTER_H
 
+#include "players/Character.h"
 #include "players/Minion.h"
 #include "map/Map.h"
-#include "players/Character.h"
 
 class Minion;
 

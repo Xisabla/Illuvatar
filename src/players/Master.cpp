@@ -13,10 +13,10 @@ Master::Master(Map &map, Point point, Faction faction, vector<string> &listOfBas
 /// Méthode à appeler en cas de rencontre en minion et master de même faction.
 void Master::getMessage(Minion& minion) {
     /// On récupère les messages des minions avec des messages.
-    if (!minion.getMsgList().empty()){
-        listOfMessage.insert(minion.getMsgList().begin(),minion.getMsgList().end());
-    }
-    this->giveMessage(minion);
+    if (!minion.gotMsg()) return;
+
+    listOfMessage.insert(minion.getMsgList().begin(),minion.getMsgList().end());
+    minion.dropMsgList();
 }
 
 void Master::giveMessage(Minion& minion) {
