@@ -9,6 +9,11 @@
 =========================================================================*/
 #include "qt/QGameMap.h"
 
+#include "players/Character.h"
+#include "players/Master.h"
+
+#include <enums/Faction.h>
+
 //  --------------------------------------------------------------------------------------
 //  QGameMap
 //  --------------------------------------------------------------------------------------
@@ -83,6 +88,48 @@ void QGameMap::paintTile(QPainter& p, int x, int y, const QColor& fill, const QC
     }
 }
 
+void QGameMap::paintImage(QPainter& p, int x, int y, const QImage& image) {
+    auto [px, py] = this->toPaintCoordinates(Point(x, y));
+    int size = static_cast<int>(this->tileSize);
+
+    p.drawImage(px, py, image.scaled(size, size));
+}
+
+void QGameMap::paintCharacter(QPainter& p, int x, int y, Character& character) {
+    auto faction = character.getFaction();
+    bool isMaster = dynamic_cast<Master*>(&character) != nullptr;
+
+    // Big switch case just to figure out which image to use (faction, master/minion)
+    switch (faction) {
+        case Faction::Dragons:
+            if (isMaster) this->paintImage(p, x, y, QImage("../assets/master_dragon.png"));
+            else
+                this->paintImage(p, x, y, QImage("../assets/minion_dragon.png"));
+            break;
+        case Faction::Eldars:
+            if (isMaster) this->paintImage(p, x, y, QImage("../assets/master_eldar.png"));
+            else
+                this->paintImage(p, x, y, QImage("../assets/minion_eldar.png"));
+            break;
+        case Faction::Valars:
+            if (isMaster) this->paintImage(p, x, y, QImage("../assets/master_vala.png"));
+            else
+                this->paintImage(p, x, y, QImage("../assets/minion_vala.png"));
+            break;
+        case Faction::Werewolves:
+            if (isMaster) this->paintImage(p, x, y, QImage("../assets/master_werewolf.png"));
+            else
+                this->paintImage(p, x, y, QImage("../assets/minion_werewolf.png"));
+            break;
+        case Faction::NoFaction:
+        default:
+            if (isMaster) this->paintImage(p, x, y, QImage("../assets/master_blank.png"));
+            else
+                this->paintImage(p, x, y, QImage("../assets/minion_blank.png"));
+            break;
+    }
+}
+
 void QGameMap::paintMap(QPainter& p) {
     // Defaults
     p.setPen(Qt::black);
@@ -115,6 +162,8 @@ void QGameMap::paintMap(QPainter& p) {
                         this->paintTile(p, x, y, Qt::white);
                         break;
                 }
+
+                if (t.isOccupied()) this->paintCharacter(p, x, y, t.getCharacter());
             } else {
                 this->paintTile(p, x, y);
             }

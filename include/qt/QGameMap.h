@@ -98,6 +98,24 @@ class QGameMap : public QWidget {
                    const QColor& border = Qt::black);
 
     /**
+     * Paint an Image on the given Tile
+     * @param p Qt Painter object
+     * @param x X component of the Tile to paint on
+     * @param y Y component of the Tile to paint on
+     * @param image Qt Image object to paint on the Tile
+     */
+    void paintImage(QPainter& p, int x, int y, const QImage& image);
+
+    /**
+     * Paint a Character on the given Tile
+     * @param p Qt Painter object
+     * @param x X component of the Tile to paint on
+     * @param y Y component of the Tile to paint on
+     * @param character Character to paint
+     */
+    void paintCharacter(QPainter& p, int x, int y, Character& character);
+
+    /**
      * Paint the map of the widget
      * @param p Qt Painter object
      */

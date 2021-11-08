@@ -47,3 +47,15 @@ string Character::dropRandomMsg() {
 void Character::dropMsgList() {
     this->msgList.clear();
 }
+
+bool Character::gotMsg() {
+    return !this->msgList.empty();
+}
+
+bool Character::gotOneMsg() {
+    return this->msgList.size() == 1;
+}
+
+bool Character::gotLotOfMsgs() {
+    return this->msgList.size() > 1;
+}

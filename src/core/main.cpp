@@ -11,7 +11,12 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #include "map/Generators.h"
 #include "map/PathFinder.h"
 #include "players/Minion.h"
+#include "players/Dragon.h"
+#include "players/Eldar.h"
+#include "players/Vala.h"
+#include "players/Werewolf.h"
 #include "superTypes.h"
+#include "unirand.h"
 
 #include <QApplication>
 
@@ -38,6 +43,43 @@ int main(int argc, char* argv[]) {
 
     // Instantiate map
     Map map(tiles);
+    // Fix size for smaller screens (can remove/change if needed)
+    map.GMap()->setTileSize(40);
+
+    // Add masters
+    Master master_d(map, Point(14, 6), Faction::Dragons);
+    Master master_e(map, Point(6, 14), Faction::Eldars);
+    Master master_v(map, Point(14, 14), Faction::Valars);
+    Master master_w(map, Point(6, 6), Faction::Werewolves);
+    
+    // map.getTile(master_d.getPoint()).setCharacter(dynamic_cast<Character*>(&master_d));
+    // map.getTile(master_e.getPoint()).setCharacter(dynamic_cast<Character*>(&master_e));
+    // map.getTile(master_v.getPoint()).setCharacter(dynamic_cast<Character*>(&master_v));
+    // map.getTile(master_w.getPoint()).setCharacter(dynamic_cast<Character*>(&master_w));
+
+    // Add random minions on the map, just testing
+    std::vector<Minion*> minions;
+
+    for (auto& t: tiles) {
+        if (t.isOccupied()) continue;
+
+        switch(rand() % 8) {
+            case 0:
+                minions.emplace_back(new Dragon(map, t.getPoint(), master_d));
+                break;
+            case 1:
+                minions.emplace_back(new Eldar(map, t.getPoint(), master_e));
+                break;
+            case 2:
+                minions.emplace_back(new Vala(map, t.getPoint(), master_v));
+                break;
+            case 3:
+                minions.emplace_back(new Werewolf(map, t.getPoint(), master_w));
+                break;
+        }
+    }
+
+    // minions[0].move();
 
     // add loop to test moves
     // pathfinding(position maitre) => rendre message ou plus d'énergie

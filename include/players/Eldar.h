@@ -22,9 +22,15 @@ class Eldar: public Alliance {
     public:
     Eldar(Map& map,
            Point point,
-           Direction direction,
-           Faction faction,
            Master& master);
+
+    protected:
+    unsigned int damages = 5;
+    unsigned int selfDamages = 2;
+
+    virtual int getDamages() { return this->damages; };
+
+    virtual int getSelfDamages() { return this->selfDamages; };
 };
 
 #endif // ILLUVATAR_ELDAR_H

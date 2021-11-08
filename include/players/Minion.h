@@ -36,7 +36,6 @@ class Minion : public Character {
   public:
     Minion(Map& map,
            Point point,
-           Direction direction,
            Faction faction,
            Master& master);
 
@@ -50,15 +49,76 @@ class Minion : public Character {
      */
     bool isAlive();
 
+    /**
+     * @brief Setter for lifepoint
+     */
+    void reduceLife(unsigned int damages);
+
+    /**
+     * @brief Setter for lifepoint
+     */
+    void restoreLife(unsigned int heal);
+
+    /**
+     * @brief Setter for energy
+     */
+    void reduceEnergy(unsigned int damages);
+
+    /**
+     * @brief Setter for energy
+     */
+    void restoreEnergy(unsigned int heal);
+
   protected:
     Master& master;
 
-    unsigned int life = 100;
-    unsigned int energy = 100;
-    const int lowEnergy = 20;
+    unsigned int lifeMax = 100;
+    unsigned int life = this->lifeMax;
+
+    unsigned int energyMax = 100;
+    unsigned int energyCost = 5;
+    unsigned int energyEnnemyCost = 2 * this->energyCost;
+    unsigned int energyLow = 20;
+    unsigned int energy = this->energyMax;
+
     const int rangeMax = 10;
     const int rangeMin = 6;
     Direction currentDirection;
+
+    /**
+     * @brief virtual attribute access specific to each race
+     * @return damages caused to other for classical or critical successful move
+     */
+    virtual int getDamages() = 0;
+
+    /**
+     * @brief virtual attribute access specific to each race
+     * @return damages caused to self for critical failure move
+     */
+    virtual int getSelfDamages() = 0;
+
+    /**
+     * @brief Alliance or Horde skill
+     */
+    virtual void specialAttack(Minion& other) = 0;
+
+    /**
+     * Inflict life damages to other Minion
+     */
+    void normalAttack(Minion& other);
+
+  private:
+    /**
+     * @brief Transform the faction into ally faction
+     */
+    std::map<Faction, Faction> alliance = {
+        { Faction::Eldars, Faction::Valars },
+        { Faction::Valars, Faction::Eldars },
+        { Faction::Dragons, Faction::Werewolves },
+        { Faction::Werewolves, Faction::Dragons },
+    };
+
+    Result rollDice();
 
     /**
      * @brief Message exchange between two allied Minions
@@ -72,24 +132,11 @@ class Minion : public Character {
      * @return True if alive at the end of the fight
      */
     bool fightAndWin(Minion& other);
-
+    
     /**
-     * @brief The computation of the damages : specific to each race
+     * @brief Inflict life or energy damages to other Minion - specific to each race
      */
-    virtual int attack() { std::cout << "error at Minion::attack() - forbidden usage of base definition" << std::endl; exit(1); return 0; };
-
-  private:
-    /**
-     * @brief Transform the faction into a set of its allies
-     */
-    std::map<Faction, std::set<Faction>> alliances = {
-        { Faction::Eldars, { Faction::Eldars, Faction::Valars } },
-        { Faction::Valars, { Faction::Eldars, Faction::Valars } },
-        { Faction::Dragons, { Faction::Dragons, Faction::Werewolves } },
-        { Faction::Werewolves, { Faction::Dragons, Faction::Werewolves } },
-    };
-
-    Result rollDice();
+    void attack(Minion& other);
 
     /**
      * @brief Generate a path into a free direction without change of direction, until meeting obstacle or void (ignore characters)
@@ -132,20 +179,15 @@ class Minion : public Character {
     std::vector<std::pair<ThingAtPoint, Point>> checkAround();
 
     /**
-     * @brief Setter for the lifepoint
-     */    
-    void reduceLife(unsigned int damages);
-
-    /**
-     * @brief Setter for the energy
-     */    
-    void reduceEnergy(unsigned int damages);
-
-    /**
      * @brief Message search onto dead ennemy minions
      * @param other The passive dead Minion
      */
     void searchCorpse(Minion& other);
+    
+    /**
+     * @brief Inflict life damages to itself
+     */
+    void hurtItself();
 };
 
 #endif // ILLUVATAR_MINION_H

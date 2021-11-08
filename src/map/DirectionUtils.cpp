@@ -17,3 +17,8 @@ Direction directionutils::computeDirection(const Point& last, const Point& curre
 Point directionutils::computeLastJump(const Direction& direction) {
     return nextDirection.at(oppositeDirection.at(direction));
 }
+
+Direction directionutils::randDirection() {
+    int index = unirand::getValue(static_cast<int>(Direction::DIRECTION_FIRST), static_cast<int>(Direction::DIRECTION_LAST));
+    return static_cast<Direction>(index);
+}

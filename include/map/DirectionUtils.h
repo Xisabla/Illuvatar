@@ -13,6 +13,7 @@
 
 #include "enums/Direction.h"
 #include "geometry/Point.h"
+#include "unirand.h"
 
 #include <iostream>
 #include <map>
@@ -90,6 +91,11 @@ Direction computeDirection(const Point& last, const Point& current);
  * @return The variation to the origin of the vector
  */
 Point computeLastJump(const Direction& direction);
+
+/**
+ * @return An uniform random based Direction
+ */
+Direction randDirection();
 } // namespace directionutils
 
 #endif // ILLUVATAR_DirectionUtils_H

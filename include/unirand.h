@@ -23,6 +23,14 @@ namespace unirand {
      * @return A value between specified bounds
      */
     int getValue(int min, int max);
+
+    /**
+     * @brief Get more or less of the value with uniform random choice
+     * @param value The reference value
+     * @param range The maximum potential of more or less
+     * @return A value around given
+     */
+    int getValueAround(int value, int range=1);
 }
 
 #endif // ILLUVATAR_UNIRAN_H

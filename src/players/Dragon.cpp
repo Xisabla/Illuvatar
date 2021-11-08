@@ -9,6 +9,4 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 =========================================================================*/
 #include "players/Dragon.h"
 
-using namespace std;
-
-Dragon::Dragon(Map &map, Point point, Direction direction, Faction faction, Master &master): Horde(map, point, direction, faction, master) {}
+Dragon::Dragon(Map &map, Point point, Master &master): Horde(map, point, Faction::Dragons, master) {}
