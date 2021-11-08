@@ -1,11 +1,30 @@
 #include "players/Master.h"
 
+#include <utility>
+
 using namespace std;
 
-Master::Master(Map &map, Point point, Faction faction): Character(map, point, faction) {}
-
-string Master::getMessage(Minion& minion) {
-    return "";
+Master::Master(Map &map, Point point, Faction faction, vector<string> &listOfBaseMessage)
+: Character(map, point, faction) {
+    listOfMessage = {};
+    MessageToGive = listOfBaseMessage;
 }
 
-void Master::giveMessage(Minion& minion) { }
+/// Méthode à appeler en cas de rencontre en minion et master de même faction.
+void Master::getMessage(Minion& minion) {
+    /// On récupère les messages des minions avec des messages.
+    if (!minion.getMsgList().empty()){
+        listOfMessage.insert(minion.getMsgList().begin(),minion.getMsgList().end());
+    }
+    this->giveMessage(minion);
+}
+
+void Master::giveMessage(Minion& minion) {
+    /// On set les messages du minions avec ceux que le master veut transmettre.
+    minion.setMsgList(MessageToGive);
+}
+
+/// retourne le master qui possède le plus de message
+Master Master::compareSize(Master& masterOne, Master& masterTwo) {
+    return masterOne.listOfMessage.size() > masterTwo.listOfMessage.size() ? masterOne : masterTwo;
+}

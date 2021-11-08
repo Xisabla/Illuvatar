@@ -19,10 +19,14 @@ class Minion;
 
 class Master : public Character {
   public:
-    Master(Map& map, Point point, Faction faction);
-
-    std::string getMessage(Minion& minion);
+    Master(Map& map, Point point, Faction faction, std::vector<std::string> &listOfBaseMessage);
+    void getMessage(Minion& minion);
     void giveMessage(Minion& minion);
+    Master static compareSize(Master& masterOne, Master& masterTwo);
+
+  private:
+    std::set<std::string> listOfMessage;
+    std::vector<std::string> MessageToGive;
 };
 
 
