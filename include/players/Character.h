@@ -65,6 +65,10 @@ class Character {
      */
     bool gotMsg();
 
+    virtual std::string getAsset() {
+      return strFaction.at(this->faction) + "/";
+    }
+
   protected:
     Map& map;
     Point point;

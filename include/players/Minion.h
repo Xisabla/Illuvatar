@@ -29,6 +29,7 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #include <map>
 #include <set>
 #include <vector>
+#include <string>
 
 class Master;
 
@@ -108,6 +109,10 @@ class Minion : public Character {
      * Inflict life damages to other Minion
      */
     void normalAttack(Minion& other);
+
+    virtual std::string getAsset() {
+      return Character::getAsset() + strDirection.at(this->currentDirection) + ".png";
+    }
 
   private:
     /**

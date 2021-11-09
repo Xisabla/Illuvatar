@@ -24,6 +24,10 @@ class Master : public Character {
     void giveMessage(Minion& minion);
     Master static compareSize(Master& masterOne, Master& masterTwo);
 
+    virtual std::string getAsset() {
+      return Character::getAsset() + "Master.png";
+    }
+
   private:
     std::set<std::string> listOfMessage;
     std::vector<std::string> MessageToGive;

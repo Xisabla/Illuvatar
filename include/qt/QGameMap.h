@@ -19,8 +19,6 @@
 #include <QPainter>
 #include <QWidget>
 #include <iostream>
-#include <magic_enum.hpp>
-#include <string>
 
 #ifdef DEBUG
 #define DEFAULT_QGAMEMAP_SHOW_COORDINATES true

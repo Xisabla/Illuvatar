@@ -14,6 +14,7 @@
 #include "players/Minion.h"
 
 #include <enums/Faction.h>
+#include <string>
 
 //  --------------------------------------------------------------------------------------
 //  QGameMap
@@ -97,40 +98,7 @@ void QGameMap::paintImage(QPainter& p, int x, int y, const QImage& image) {
 }
 
 void QGameMap::paintCharacter(QPainter& p, int x, int y, Character& character) {
-    auto faction = character.getFaction();
-    bool isMaster = dynamic_cast<Master*>(&character) != nullptr;
-
-    // Big switch case just to figure out which image to use (faction, master/minion)
-    switch (faction) {
-        case Faction::Dragons:
-            if (isMaster) this->paintImage(p, x, y, QImage("../assets/master_dragon.png"));
-            else {
-                std::string str = magic_enum::enum_name(dynamic_cast<Minion&>(character).getDirection());
-                this->paintImage(p, x, y, QImage("../assets/dragon_N.png"));
-            }
-            break;
-        case Faction::Eldars:
-            if (isMaster) this->paintImage(p, x, y, QImage("../assets/master_eldar.png"));
-            else
-                this->paintImage(p, x, y, QImage("../assets/minion_eldar.png"));
-            break;
-        case Faction::Valars:
-            if (isMaster) this->paintImage(p, x, y, QImage("../assets/master_vala.png"));
-            else
-                this->paintImage(p, x, y, QImage("../assets/minion_vala.png"));
-            break;
-        case Faction::Werewolves:
-            if (isMaster) this->paintImage(p, x, y, QImage("../assets/master_werewolf.png"));
-            else
-                this->paintImage(p, x, y, QImage("../assets/minion_werewolf.png"));
-            break;
-        case Faction::NoFaction:
-        default:
-            if (isMaster) this->paintImage(p, x, y, QImage("../assets/master_blank.png"));
-            else
-                this->paintImage(p, x, y, QImage("../assets/minion_blank.png"));
-            break;
-    }
+    this->paintImage(p, x, y, QImage(("../assets/" + character.getAsset()).c_str()));
 }
 
 void QGameMap::paintMap(QPainter& p) {
