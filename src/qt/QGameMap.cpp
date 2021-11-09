@@ -11,6 +11,7 @@
 
 #include "players/Character.h"
 #include "players/Master.h"
+#include "players/Minion.h"
 
 #include <enums/Faction.h>
 
@@ -103,8 +104,10 @@ void QGameMap::paintCharacter(QPainter& p, int x, int y, Character& character) {
     switch (faction) {
         case Faction::Dragons:
             if (isMaster) this->paintImage(p, x, y, QImage("../assets/master_dragon.png"));
-            else
-                this->paintImage(p, x, y, QImage("../assets/minion_dragon.png"));
+            else {
+                std::string str = magic_enum::enum_name(dynamic_cast<Minion&>(character).getDirection());
+                this->paintImage(p, x, y, QImage("../assets/dragon_N.png"));
+            }
             break;
         case Faction::Eldars:
             if (isMaster) this->paintImage(p, x, y, QImage("../assets/master_eldar.png"));
