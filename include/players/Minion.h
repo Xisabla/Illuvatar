@@ -8,7 +8,6 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 =========================================================================*/
 #pragma once
-#pragma once
 #ifndef ILLUVATAR_MINION_H
 #define ILLUVATAR_MINION_H
 
