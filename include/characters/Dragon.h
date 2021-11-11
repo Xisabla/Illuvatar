@@ -20,7 +20,19 @@
 class Dragon : public BadMinion {
   public:
     Dragon(unsigned int x, unsigned int y): BadMinion(x, y, Faction::Dragons) { }
-};
 
+    protected:
+    virtual int getDamages() { return 5; };
+
+    virtual int getSelfDamages() { return 2; };
+
+    virtual int getDiceMaxValue() { return 100; };
+
+    virtual int getDiceCriticFailureValue() { return 5; };
+
+    virtual int getDiceFailureValue() { return 50; };
+
+    virtual int getDiceSuccessValue() { return 96; };
+};
 
 #endif // ILLUVATAR_DRAGON_H

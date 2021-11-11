@@ -11,10 +11,7 @@
 #ifndef ILLUVATAR_BADMINION_H
 #define ILLUVATAR_BADMINION_H
 
-#include "characters/GoodMinion.h"
 #include "characters/Minion.h"
-
-class GoodMinion;
 
 /**
  * @class BadMinion
@@ -25,8 +22,14 @@ class BadMinion : public Minion {
     BadMinion(unsigned int x, unsigned int y, Faction faction /*, Direction direction = DEFAULT */);
 
     // - Methods -----------------------------------------------------------------------------
-    void meet(BadMinion* minion);
-    void meet(GoodMinion* minion);
+
+  protected:
+    unsigned int lifeHeal = this->_lifeMax / 15;
+
+    /**
+     * @brief Horde skill : drain life to ennemy after attacking him
+     */
+    virtual void specialAttack(Minion& other);
 };
 
 

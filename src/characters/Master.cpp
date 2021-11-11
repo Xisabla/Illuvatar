@@ -22,3 +22,5 @@ Master::Master(unsigned int x, unsigned int y, Faction faction): Character(x, y,
 //  --------------------------------------------------------------------------------------
 
 std::string Master::generateMessage() { return "hello world :D"; }
+
+std::string Master::getAsset() { return Character::getAsset() + "Master.png"; }

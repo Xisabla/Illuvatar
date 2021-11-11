@@ -8,6 +8,7 @@
 
 =========================================================================*/
 #include "characters/BadMinion.h"
+#include "unirand.h"
 
 //  --------------------------------------------------------------------------------------
 //  BadMinion
@@ -19,6 +20,7 @@ BadMinion::BadMinion(unsigned int x, unsigned int y, Faction faction): Minion(x,
 //  BadMinion > PUBLIC METHODS
 //  --------------------------------------------------------------------------------------
 
-void BadMinion::meet(BadMinion* minion) { }
-
-void BadMinion::meet(GoodMinion* minion) { }
+void BadMinion::specialAttack(Minion& other) {
+    this->normalAttack(other);
+    this->restoreLife(unirand::getValueAround(this->lifeHeal, 2));
+}

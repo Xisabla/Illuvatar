@@ -14,6 +14,8 @@
 #include "characters/Character.h"
 #include "characters/Master.h"
 #include "enums/RollResult.h"
+#include "enums/Direction.h"
+#include "enums/Faction.h"
 
 /**
  * @class Minion
@@ -21,7 +23,7 @@
  */
 class Minion : public Character {
   public:
-    Minion(unsigned int x, unsigned int y, Faction faction /*, Direction direction = DEFAULT */);
+    Minion(unsigned int x, unsigned int y, Faction faction);
 
     // - Getters -----------------------------------------------------------------------------
     Master* master() const;
@@ -29,6 +31,11 @@ class Minion : public Character {
     // - Methods -----------------------------------------------------------------------------
     bool isAlive() const;
     void move();
+    void reduceEnergy(unsigned int _energy);
+    void reduceLife(unsigned int life);
+    void restoreLife(unsigned int heal);
+    void restoreEnergy(unsigned int heal);
+    Direction getDirection() { return this->currentDirection; }
 
   protected:
     // - Methods -----------------------------------------------------------------------------
@@ -39,17 +46,35 @@ class Minion : public Character {
     // - Attributes --------------------------------------------------------------------------
     Master* _master;
 
-    unsigned int _life = 100;
-    unsigned int _energy = 100;
+    unsigned int _lifeMax = 100;
+    unsigned int _life = this->_lifeMax;
 
+    unsigned int _energyMax = 100;
+    unsigned int _energy = this->_energyMax;
+    unsigned int energyCost = 5;
+    // unsigned int energyEnnemyCost = 2 * this->energyCost;
+    // unsigned int energyLow = 20;
     static const int lowEnergy = 20;
+
     constexpr static const std::pair<int, int> range { 6, 10 };
-    // TODO: Direction direction;
+
+    virtual int getDamages() = 0;
+    virtual int getSelfDamages() = 0;
+    virtual void specialAttack(Minion& other) = 0;
+    void normalAttack(Minion& other);
+
+    virtual int getDiceMaxValue() = 0;
+
+    virtual int getDiceCriticFailureValue() = 0;
+
+    virtual int getDiceFailureValue() = 0;
+
+    virtual int getDiceSuccessValue() = 0;
+
+    virtual std::string getAsset();
 
   private:
     // - Methods -----------------------------------------------------------------------------
-    void reduceEnergy(unsigned int energy);
-    void reduceLife(unsigned int life);
 
     RollResult roll();
 
@@ -64,6 +89,7 @@ class Minion : public Character {
     // TODO ? std::vector<std::pair<ThingAtPoint, Point>> checkAround();
 
     // - Attributes --------------------------------------------------------------------------
+    Direction currentDirection;
 };
 
 

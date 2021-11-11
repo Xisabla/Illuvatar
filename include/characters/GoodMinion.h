@@ -12,9 +12,6 @@
 #define ILLUVATAR_GOODMINION_H
 
 #include "characters/Minion.h"
-#include "characters/BadMinion.h"
-
-class BadMinion;
 
 /**
  * @class GoodMinion
@@ -22,12 +19,17 @@ class BadMinion;
  */
 class GoodMinion : public Minion {
   public:
-    GoodMinion(unsigned int x, unsigned int y, Faction faction /*, Direction direction = DEFAULT */);
+    GoodMinion(unsigned int x, unsigned int y, Faction faction);
 
     // - Methods -----------------------------------------------------------------------------
-    // TODO ? Set method as virtual is Minion.h
-    void meet(BadMinion* minion);
-    void meet(GoodMinion* minion);
+
+  protected:
+    unsigned int energyReduction = this->energyCost * 2 / 3;
+
+    /**
+     * @brief Alliance skill : remove _energy to ennemy and attack him
+     */
+    virtual void specialAttack(Minion& other);
 };
 
 

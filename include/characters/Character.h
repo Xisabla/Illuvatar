@@ -13,6 +13,7 @@
 
 #include "enums/Faction.h"
 
+#include <string>
 #include <vector>
 #include <set>
 
@@ -29,14 +30,17 @@ class Character {
     [[nodiscard]] unsigned int x() const;
     [[nodiscard]] unsigned int y() const;
     [[nodiscard]] Faction faction() const;
-    [[nodiscard]] std::vector<std::string> messages() const;
+    [[nodiscard]] std::vector<std::string> messages() const;//std::vector<std::string>& getMsgList();
 
     // - Setters -----------------------------------------------------------------------------
-    void setMessages(std::vector<std::string> messages);
+    void setMessages(std::vector<std::string> messages);//void setMsgList(std::vector<std::string>& msgList);
 
     // - Methods -----------------------------------------------------------------------------
     bool isAllied(Character* character);
     bool isMaster();
+    void dropMessages();
+    bool gotMsg();
+    virtual std::string getAsset();
 
   protected:
     // - Methods -----------------------------------------------------------------------------
@@ -44,7 +48,8 @@ class Character {
     void addMessages(std::vector<std::string> messages);
     std::string getRandomMessage();
     std::string dropRandomMessage();
-    void dropMessages();
+    bool gotOneMsg();
+    [[maybe_unused]] bool gotLotOfMsgs();
 
     // - Attributes -------------------------------------------------------------------------
     unsigned int _x;

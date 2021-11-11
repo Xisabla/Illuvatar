@@ -8,6 +8,7 @@
 
 =========================================================================*/
 #include "characters/GoodMinion.h"
+#include "unirand.h"
 
 //  --------------------------------------------------------------------------------------
 //  GoodMinion
@@ -19,6 +20,7 @@ GoodMinion::GoodMinion(unsigned int x, unsigned int y, Faction faction): Minion(
 //  GoodMinion > PUBLIC METHODS
 //  --------------------------------------------------------------------------------------
 
-void GoodMinion::meet(BadMinion* minion) { }
-
-void GoodMinion::meet(GoodMinion* minion) { }
+void GoodMinion::specialAttack(Minion& other) {
+    other.reduceEnergy(unirand::getValueAround(this->energyReduction, 2));
+    this->normalAttack(other);
+}

@@ -61,6 +61,12 @@ bool Character::isAllied(Character* character) {
 
 bool Character::isMaster() { return dynamic_cast<Master*>(this) != nullptr; }
 
+void Character::dropMessages() { _messages.clear(); }
+
+bool Character::gotMsg() { return !this->_messages.empty(); }
+
+std::string Character::getAsset() { return strFaction.at(this->_faction) + "/"; }
+
 //  --------------------------------------------------------------------------------------
 //  Character > PROTECTED METHODS
 //  --------------------------------------------------------------------------------------
@@ -88,4 +94,7 @@ std::string Character::dropRandomMessage() {
     return msg;
 }
 
-void Character::dropMessages() { _messages.clear(); }
+bool Character::gotOneMsg() { return this->_messages.size() == 1; }
+
+bool Character::gotLotOfMsgs() { return this->_messages.size() > 1; }
+

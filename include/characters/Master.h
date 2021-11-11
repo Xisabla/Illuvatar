@@ -12,6 +12,9 @@
 #define ILLUVATAR_MASTER_H
 
 #include "characters/Character.h"
+#include "enums/Faction.h"
+
+#include <string>
 
 /**
  * @class Master
@@ -24,6 +27,8 @@ class Master : public Character {
     // - Methods -----------------------------------------------------------------------------
     std::string generateMessage();
     // TODO: void giveMessage(Mignon* minion);
+
+    virtual std::string getAsset();
 };
 
 
