@@ -13,7 +13,7 @@
 
 #include "characters/Character.h"
 #include "characters/Master.h"
-#include "core/Roll.h"
+#include "enums/RollResult.h"
 
 /**
  * @class Minion

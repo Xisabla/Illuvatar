@@ -33,18 +33,20 @@ set(CMAKE_CXX_STANDARD 20)
 # -----------------------------------------------------------------------------
 # Source files
 set(SOURCES
+        include/enums/Direction.h src/enums/Direction.cpp
+        include/enums/Faction.h src/enums/Faction.cpp
+        include/enums/RollResult.h src/enums/RollResult.cpp
+        include/enums/ThingAtPoint.h src/enums/ThingAtPoint.cpp
         include/characters/BadMinion.h src/characters/BadMinion.cpp
         include/characters/Character.h src/characters/Character.cpp
         include/characters/Dragon.h
         include/characters/Eldar.h
-        include/characters/Faction.h
         include/characters/GoodMinion.h src/characters/GoodMinion.cpp
         include/characters/Master.h src/characters/Master.cpp
         include/characters/Minion.h src/characters/Minion.cpp
         include/characters/Vala.h
         include/characters/Werewolf.h
         include/core/Game.h src/core/Game.cpp
-        include/core/Roll.h
         include/gui/MainWindow.h src/gui/MainWindow.cpp
         include/gui/QGameMap.h src/gui/QGameMap.cpp
         include/gui/QGameSidebar.h src/gui/QGameSidebar.cpp

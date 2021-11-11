@@ -19,17 +19,17 @@
 //  --------------------------------------------------------------------------------------
 
 std::map<Faction, QImage> QGameMap::masterAssets = {
-    { Dragons, QImage("../assets/master_dragon.png") },
-    { Eldars, QImage("../assets/master_eldar.png") },
-    { Valars, QImage("../assets/master_vala.png") },
-    { Werewolves, QImage("../assets/master_werewolf.png") }
+    { Faction::Dragons, QImage("../assets/master_dragon.png") },
+    { Faction::Eldars, QImage("../assets/master_eldar.png") },
+    { Faction::Valars, QImage("../assets/master_vala.png") },
+    { Faction::Werewolves, QImage("../assets/master_werewolf.png") }
 };
 
 std::map<Faction, QImage> QGameMap::minionAssets = {
-    { Dragons, QImage("../assets/minion_dragon.png") },
-    { Eldars, QImage("../assets/minion_eldar.png") },
-    { Valars, QImage("../assets/minion_vala.png") },
-    { Werewolves, QImage("../assets/minion_werewolf.png") }
+    { Faction::Dragons, QImage("../assets/minion_dragon.png") },
+    { Faction::Eldars, QImage("../assets/minion_eldar.png") },
+    { Faction::Valars, QImage("../assets/minion_vala.png") },
+    { Faction::Werewolves, QImage("../assets/minion_werewolf.png") }
 };
 
 QGameMap::QGameMap(QWidget* parent): QWidget(parent) { }
@@ -78,10 +78,10 @@ void QGameMap::paintEvent(QPaintEvent*) {
                 auto t = Tile::get(x, y);
 
                 // todo : map owner - color
-                if (t->isOwnedBy(Dragons)) p.setBrush(Qt::red);
-                if (t->isOwnedBy(Eldars)) p.setBrush(Qt::green);
-                if (t->isOwnedBy(Valars)) p.setBrush(Qt::cyan);
-                if (t->isOwnedBy(Werewolves)) p.setBrush(Qt::darkGray);
+                if (t->isOwnedBy(Faction::Dragons)) p.setBrush(Qt::red);
+                if (t->isOwnedBy(Faction::Eldars)) p.setBrush(Qt::green);
+                if (t->isOwnedBy(Faction::Valars)) p.setBrush(Qt::cyan);
+                if (t->isOwnedBy(Faction::Werewolves)) p.setBrush(Qt::darkGray);
 
                 p.drawRect(x * size, y * size, size, size);
 

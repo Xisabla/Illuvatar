@@ -37,14 +37,14 @@ bool Minion::isAlive() const { return _life > 0 && _energy > 0; }
 void Minion::exchange(Minion* minion) {
     RollResult result = roll();
 
-    if (result == CriticalSuccess && !minion->messages().empty())
+    if (result == RollResult::CriticalSuccess && !minion->messages().empty())
         addMessage(minion->getRandomMessage());
-    if (result == Success) {
+    if (result == RollResult::Success) {
         if (!minion->messages().empty()) addMessage(minion->dropRandomMessage());
         if (!messages().empty()) minion->addMessage(dropRandomMessage());
     }
-    if (result == Failure && !minion->messages().empty()) dropRandomMessage();
-    if (result == CriticalFailure) {
+    if (result == RollResult::Failure && !minion->messages().empty()) dropRandomMessage();
+    if (result == RollResult::CriticalFailure) {
         if (!minion->messages().empty()) minion->dropRandomMessage();
         if (!messages().empty()) dropRandomMessage();
     }
@@ -81,14 +81,14 @@ void Minion::reduceLife(unsigned int life) {
 
 RollResult Minion::roll() {
     // TODO: Dice objects
-    return Success;
+    return RollResult::Success;
 }
 
 void Minion::searchCorpse(Minion* minion) {
     RollResult result = roll();
 
-    if(result == CriticalSuccess) addMessages(minion->messages());
-    if(result == Success && !minion->messages().empty()) addMessage(minion->dropRandomMessage());
-    if(result == Failure && !messages().empty()) dropRandomMessage();
-    if(result == CriticalFailure) dropMessages();
+    if(result == RollResult::CriticalSuccess) addMessages(minion->messages());
+    if(result == RollResult::Success && !minion->messages().empty()) addMessage(minion->dropRandomMessage());
+    if(result == RollResult::Failure && !messages().empty()) dropRandomMessage();
+    if(result == RollResult::CriticalFailure) dropMessages();
 }

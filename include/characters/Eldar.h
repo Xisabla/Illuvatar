@@ -19,7 +19,7 @@
  */
 class Eldar : public GoodMinion {
   public:
-    Eldar(unsigned int x, unsigned int y): GoodMinion(x, y, Eldars) { }
+    Eldar(unsigned int x, unsigned int y): GoodMinion(x, y, Faction::Eldars) { }
 };
 
 

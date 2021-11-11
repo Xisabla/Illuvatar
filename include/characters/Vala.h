@@ -19,7 +19,7 @@
  */
 class Vala : public GoodMinion {
   public:
-    Vala(unsigned int x, unsigned int y): GoodMinion(x, y, Valars) { }
+    Vala(unsigned int x, unsigned int y): GoodMinion(x, y, Faction::Valars) { }
 };
 
 

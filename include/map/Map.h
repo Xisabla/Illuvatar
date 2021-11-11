@@ -16,6 +16,7 @@
 #include "map/Domain.h"
 #include "map/Tile.h"
 #include "templates/Singleton.h"
+#include "enums/Faction.h"
 
 /**
  * @enum Preset
@@ -57,12 +58,12 @@ SINGLETON(Map) {
   private:
     // - Methods -----------------------------------------------------------------------------
     static void generateDisk(
-    double radius, unsigned int centerX, unsigned int centerY, Faction owner = NoFaction);
+    double radius, unsigned int centerX, unsigned int centerY, Faction owner = Faction::NoFaction);
     static void generateSquare(unsigned int topX,
                                unsigned int topY,
                                unsigned int bottomX,
                                unsigned int bottomY,
-                               Faction owner = NoFaction);
+                               Faction owner = Faction::NoFaction);
 
     // - Attributes --------------------------------------------------------------------------
     Domain _domain;

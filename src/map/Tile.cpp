@@ -82,7 +82,7 @@ std::vector<Tile*> Tile::getNeighbours(const unsigned int x, const unsigned int 
 
 void Tile::setOwnership(Faction owner) { _owner = owner; }
 
-void Tile::removeOwnership() { _owner = NoFaction; }
+void Tile::removeOwnership() { _owner = Faction::NoFaction; }
 
 //  --------------------------------------------------------------------------------------
 //  Tile > PUBLIC METHODS

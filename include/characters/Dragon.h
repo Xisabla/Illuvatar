@@ -19,7 +19,7 @@
  */
 class Dragon : public BadMinion {
   public:
-    Dragon(unsigned int x, unsigned int y): BadMinion(x, y, Dragons) { }
+    Dragon(unsigned int x, unsigned int y): BadMinion(x, y, Faction::Dragons) { }
 };
 
 

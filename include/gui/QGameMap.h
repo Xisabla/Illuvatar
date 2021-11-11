@@ -11,7 +11,7 @@
 #ifndef ILLUVATAR_QGAMEMAP_H
 #define ILLUVATAR_QGAMEMAP_H
 
-#include "characters/Faction.h"
+#include "enums/Faction.h"
 
 #include <QWidget>
 

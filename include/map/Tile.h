@@ -11,7 +11,7 @@
 #ifndef ILLUVATAR_TILE_H
 #define ILLUVATAR_TILE_H
 
-#include "characters/Faction.h"
+#include "enums/Faction.h"
 
 #include <iostream>
 #include <vector>
@@ -23,7 +23,7 @@
  */
 class Tile {
   public:
-    Tile(unsigned int x, unsigned int y, Faction owner = NoFaction);
+    Tile(unsigned int x, unsigned int y, Faction owner = Faction::NoFaction);
     ~Tile();
 
     // - Getters -----------------------------------------------------------------------------
@@ -58,7 +58,7 @@ class Tile {
     static void removeAll();
 
     static Tile*
-    safeCreate(unsigned int x, unsigned int y, Faction owner = NoFaction, bool overwrite = true);
+    safeCreate(unsigned int x, unsigned int y, Faction owner = Faction::NoFaction, bool overwrite = true);
 
     // - Operators ---------------------------------------------------------------------------
     inline bool operator==(const Tile& t) const { return _id == t.id(); }

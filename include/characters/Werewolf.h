@@ -19,7 +19,7 @@
  */
 class Werewolf : public BadMinion {
   public:
-    Werewolf(unsigned int x, unsigned int y): BadMinion(x, y, Werewolves) { }
+    Werewolf(unsigned int x, unsigned int y): BadMinion(x, y, Faction::Werewolves) { }
 };
 
 

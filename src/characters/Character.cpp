@@ -20,10 +20,10 @@
 //  --------------------------------------------------------------------------------------
 
 std::map<Faction, std::set<Faction>> Character::alliances = {
-    { Eldars, { Eldars, Valars } },
-    { Valars, { Eldars, Valars } },
-    { Werewolves, { Dragons, Werewolves } },
-    { Dragons, { Dragons, Werewolves } }
+    { Faction::Eldars, { Faction::Eldars, Faction::Valars } },
+    { Faction::Valars, { Faction::Eldars, Faction::Valars } },
+    { Faction::Werewolves, { Faction::Dragons, Faction::Werewolves } },
+    { Faction::Dragons, { Faction::Dragons, Faction::Werewolves } }
 };
 
 Character::Character(unsigned int x, unsigned int y, Faction faction)

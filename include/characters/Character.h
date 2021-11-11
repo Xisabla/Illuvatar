@@ -11,9 +11,10 @@
 #ifndef ILLUVATAR_CHARACTER_H
 #define ILLUVATAR_CHARACTER_H
 
-#include "characters/Faction.h"
+#include "enums/Faction.h"
 
 #include <vector>
+#include <set>
 
 /**
  * @class Character

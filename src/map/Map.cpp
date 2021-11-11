@@ -51,7 +51,7 @@ Character* Map::getMaster(Faction faction) {
                  });
 
     if (found == std::end(_characters))
-        throw std::runtime_error("No master found for faction " + std::to_string(faction));
+        throw std::runtime_error("No master found for faction " + strFaction.at(faction));
 
     return found->second;
 }
@@ -74,12 +74,12 @@ void Map::generate() {
 
         generateDisk(7.5, 10, 10);
 
-        generateDisk(2.8, 16, 16, Dragons);
-        generateDisk(2.8, 16, 4, Eldars);
-        generateDisk(2.8, 4, 16, Valars);
-        generateDisk(2.8, 4, 4, Werewolves);
+        generateDisk(2.8, 16, 16, Faction::Dragons);
+        generateDisk(2.8, 16, 4, Faction::Eldars);
+        generateDisk(2.8, 4, 16, Faction::Valars);
+        generateDisk(2.8, 4, 4, Faction::Werewolves);
 
-        new Master(16, 16, Dragons);
+        new Master(16, 16, Faction::Dragons);
         new Dragon(15, 14);
         new Dragon(16, 14);
         new Dragon(17, 14);
@@ -87,7 +87,7 @@ void Map::generate() {
         new Dragon(14, 16);
         new Dragon(14, 17);
 
-        new Master(16, 4, Eldars);
+        new Master(16, 4, Faction::Eldars);
         new Eldar(15, 6);
         new Eldar(16, 6);
         new Eldar(17, 6);
@@ -96,7 +96,7 @@ void Map::generate() {
         new Eldar(14, 5);
 
 
-        new Master(4, 16, Valars);
+        new Master(4, 16, Faction::Valars);
         new Vala(3, 14);
         new Vala(4, 14);
         new Vala(5, 14);
@@ -105,7 +105,7 @@ void Map::generate() {
         new Vala(6, 17);
 
 
-        new Master(4, 4, Werewolves);
+        new Master(4, 4, Faction::Werewolves);
         new Werewolf(6, 3);
         new Werewolf(6, 4);
         new Werewolf(6, 5);
@@ -119,15 +119,15 @@ void Map::generate() {
 
         generateSquare(0, 0, 21, 21);
 
-        generateSquare(0, 0, 5, 5, Dragons);
-        generateSquare(0, 15, 5, 20, Eldars);
-        generateSquare(15, 0, 20, 5, Valars);
-        generateSquare(15, 15, 20, 20, Werewolves);
+        generateSquare(0, 0, 5, 5, Faction::Dragons);
+        generateSquare(0, 15, 5, 20, Faction::Eldars);
+        generateSquare(15, 0, 20, 5, Faction::Valars);
+        generateSquare(15, 15, 20, 20, Faction::Werewolves);
 
-        new Master(3, 3, Dragons);
-        new Master(3, 18, Eldars);
-        new Master(18, 3, Valars);
-        new Master(18, 18, Werewolves);
+        new Master(3, 3, Faction::Dragons);
+        new Master(3, 18, Faction::Eldars);
+        new Master(18, 3, Faction::Valars);
+        new Master(18, 18, Faction::Werewolves);
         // TODO: Generate minions
     }
 
