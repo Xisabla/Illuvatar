@@ -157,7 +157,23 @@ vector<pair<ThingAtPoint, Point>> Minion::checkAround() {
 }
 
 Result Minion::rollDice() {
-    return Result::SUCCESS; //todo : voir avec charles
+    int diceResult = unirand::getValue(1, this->getDiceMaxValue());
+
+    if (diceResult < this->getDiceCriticFailureValue()){
+        return Result::CRITIC_FAILURE;
+    }
+
+    else if (diceResult <= this->getDiceFailureValue()){
+        return Result::FAILURE;
+    }
+
+    else if (diceResult <= this->getDiceSuccessValue()){
+        return Result::SUCCESS;
+    }
+
+    else{
+        return Result::CRITIC_SUCCESS;
+    }
 }
 
 void Minion::exchange(Minion& other) {

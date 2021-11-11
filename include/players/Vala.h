@@ -31,6 +31,14 @@ class Vala : public Alliance {
     virtual int getDamages() { return this->damages; };
 
     virtual int getSelfDamages() { return this->selfDamages; };
+
+    virtual int getDiceMaxValue() { return 100; };
+
+    virtual int getDiceCriticFailureValue() { return 5; };
+
+    virtual int getDiceFailureValue() { return 50; };
+
+    virtual int getDiceSuccessValue() { return 96; };
 };
 
 #endif // ILLUVATAR_VALA_H

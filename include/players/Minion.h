@@ -107,6 +107,14 @@ class Minion : public Character {
      */
     void normalAttack(Minion& other);
 
+    virtual int getDiceMaxValue() = 0;
+
+    virtual int getDiceCriticFailureValue() = 0;
+
+    virtual int getDiceFailureValue() = 0;
+
+    virtual int getDiceSuccessValue() = 0;
+
   private:
     /**
      * @brief Transform the faction into ally faction
