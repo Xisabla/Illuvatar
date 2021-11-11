@@ -77,6 +77,7 @@ void QGameMap::paintEvent(QPaintEvent*) {
 
                 auto t = Tile::get(x, y);
 
+                // todo : map owner - color
                 if (t->isOwnedBy(Dragons)) p.setBrush(Qt::red);
                 if (t->isOwnedBy(Eldars)) p.setBrush(Qt::green);
                 if (t->isOwnedBy(Valars)) p.setBrush(Qt::cyan);
