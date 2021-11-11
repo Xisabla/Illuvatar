@@ -1,18 +1,16 @@
 /*=========================================================================
 
   Project:   Illuvatar
-  File:      unirand.h
+  File:      Roll.h
 
   Copyright (c) 2021 - All rights reserved
   Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 =========================================================================*/
 #pragma once
-#ifndef ILLUVATAR_UNIRAND_H
-#define ILLUVATAR_UNIRAND_H
+#ifndef ILLUVATAR_ROLL_H
+#define ILLUVATAR_ROLL_H
 
-namespace unirand {
-int getValue(int min, int max);
-}
+enum RollResult { CriticalSuccess, Success, Failure, CriticalFailure };
 
-#endif // ILLUVATAR_UNIRAND_H
+#endif // ILLUVATAR_ROLL_H

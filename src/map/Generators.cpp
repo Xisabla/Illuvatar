@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Project:   Illuvatar
-  File:      MapGenerators.cpp
+  File:      Generators.cpp
 
   Copyright (c) 2021 - All rights reserved
   Distributed under the MIT License (https://opensource.org/licenses/MIT)
@@ -9,39 +9,19 @@
 =========================================================================*/
 #include "map/Generators.h"
 
-TileSet generators::disk(double radius, const Point& center, Faction faction) {
-    TileSet set;
-
-    int cx = center.X();
-    int cy = center.Y();
+std::vector<Tile*> generators::disk(const double radius,
+                                    const unsigned int centerX,
+                                    const unsigned int centerY,
+                                    const Faction owner) {
+    std::vector<Tile*> tiles;
 
     for (int x = static_cast<int>(-radius); x <= radius; x++) {
         for (int y = static_cast<int>(-radius); y <= radius; y++) {
-            if (x * x + y * y <= (static_cast<double>(radius * radius))) {
-                set.emplace(x + cx, y + cy, faction);
+            if (x * x + y * y <= static_cast<double>(radius * radius)) {
+                tiles.push_back(Tile::safeCreate(x + centerX, y + centerY, owner));
             }
         }
     }
 
-    return set;
-}
-
-[[maybe_unused]] TileSet
-generators::disk(double radius,
-                 const Point& center,
-                 const std::function<Faction([[maybe_unused]] Point p)>& predicate) {
-    TileSet set;
-
-    int cx = center.X();
-    int cy = center.Y();
-
-    for (int x = static_cast<int>(-radius); x <= radius; x++) {
-        for (int y = static_cast<int>(-radius); y <= radius; y++) {
-            if (x * x + y * y <= (static_cast<double>(radius * radius))) {
-                set.emplace(x + cx, y + cy, predicate(Point(x, y)));
-            }
-        }
-    }
-
-    return set;
+    return tiles;
 }

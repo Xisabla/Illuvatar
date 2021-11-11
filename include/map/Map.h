@@ -11,143 +11,68 @@
 #ifndef ILLUVATAR_MAP_H
 #define ILLUVATAR_MAP_H
 
-#include "enums/Faction.h"
-#include "enums/Direction.h"
-#include "enums/ThingAtPoint.h"
-#include "geometry/Rectangle.h"
-#include "map/DirectionUtils.h"
+#include "characters/Character.h"
+#include "gui/QGameMap.h"
+#include "map/Domain.h"
 #include "map/Tile.h"
-#include "map/TileSet.h"
-#include "qt/QGameMap.h"
+#include "templates/Singleton.h"
 
-#include <set>
-#include <utility>
-#include <vector>
-
-class Character;
-class Master;
+/**
+ * @enum Preset
+ * @brief Map preset generators, used a templates to generate the map
+ */
+enum Preset { Turtle, Square, Random, Default = Turtle };
 
 /**
  * @class Map
- * @brief Game map representation
+ * @brief Short description of the class
  */
-class Map {
+SINGLETON(Map) {
   public:
-    /**
-     * @param tiles Available Tiles on the map
-     */
-    explicit Map(TileSet tiles);
-
-    /**
-     * @param surface Map rectangular shape
-     * @param tiles Available Tiles on the map
-     */
-    explicit Map(Rectangle surface, TileSet tiles = TileSet());
-
-    /**
-     * @param width Map width
-     * @param height Map height
-     * @param tiles Available Tiles on the map
-     */
-    [[maybe_unused]] Map(unsigned int width, unsigned int height, TileSet tiles = TileSet());
+    explicit Map(_token t);
 
     // - Getters -----------------------------------------------------------------------------
-    /**
-     * Check if a Tile exists in the Map TileSet
-     * @param p Position of the Tile
-     * @return True if the Tile exists
-     */
-    [[nodiscard]] bool exists(const Point& p) const;
+    [[nodiscard]] unsigned int width() const;
+    [[nodiscard]] unsigned int height() const;
+    [[nodiscard]] QGameMap* qgmap() const;
 
-    /**
-     * Get a Tile on the map
-     * @param p Position of the Tile
-     * @return The Tile
-     */
-    Tile& getTile(const Point& p);
-
-    /**
-     * Get the neighbours of a Tile on the map
-     * @param p Position of the Tile
-     * @return A TileSet of neighbours
-     */
-    [[maybe_unused]] TileSet getNeighbours(const Point& p);
-
-    /**
-     * @return The Qt graphical map object linked to the map
-     */
-    QGameMap* GMap();
-
-    /**
-     * @param p Position to check for entity
-     * @param allies List of Factions that are considered as allies
-     * @return What kind of entity is at the position
-     */
-    ThingAtPoint getThingAtPoint(const Point& p);
-
-    /**
-     * Apply a Character move from one point to another to the map
-     * @param from The current position of the Character
-     * @param to The next position of the Character
-     * @param character A pointer of the moving Character
-     */
-    void jump(Point& from, Point& to, Character* character);
-
-    /**
-     * Compute the initial position from a destination and a direction
-     * @param point The current position
-     * @param direction The direction of the vector
-     * @return The origin of the vector
-     */
-    Tile& computeLastPosition(const Point& point, const Direction& direction);
+    Character* getCharacter(unsigned int x, unsigned int y);
+    Character* getMaster(Faction faction);
 
     // - Setters -----------------------------------------------------------------------------
-    /**
-     * Set the faction of a Tile (or add it if it doesn't exist)
-     * @param p Position of the Tile
-     * @param faction Faction that owns the Tile
-     */
-    [[maybe_unused]] void setTile(const Point& p, Faction faction = Faction::NoFaction);
+    void setPreset(Preset preset);
+
+    static void setDefaultPreset(Preset preset);
 
     // - Methods -----------------------------------------------------------------------------
-    /**
-     * Change the Map surface
-     * @param surface New surface of the Map
-     */
-    [[maybe_unused]] void resize(Rectangle surface);
-
-    /**
-     * Remove a Tile from the Map
-     * @param p Position of the Tile
-     */
-    [[maybe_unused]] void removeTile(const Point& p);
-
-    /**
-     * Synchronize the Qt graphical map and redraw it
-     */
+    void generate();
     void sync();
 
-    /**
-     * @return True if the two points are neighbours on the map
-     */
-    static bool areNeighbours(const Point& first, const Point& second);
+    void linkCharacter(unsigned int x, unsigned int y, Character* character);
+    void unlinkCharacter(Character* character);
+    bool containsCharacter(unsigned int x, unsigned int y);
 
-    /**
-     * @brief Helper method to sum the components of two Points
-     */
-    static Point project(const Point& from, const Point& jump);
+    // - Friends -----------------------------------------------------------------------------
 
   private:
-    // - Attributes --------------------------------------------------------------------------
-    /**
-     * @brief Qt graphical map linked to the map
-     */
-    QGameMap* gmap;
+    // - Methods -----------------------------------------------------------------------------
+    static void generateDisk(
+    double radius, unsigned int centerX, unsigned int centerY, Faction owner = NoFaction);
+    static void generateSquare(unsigned int topX,
+                               unsigned int topY,
+                               unsigned int bottomX,
+                               unsigned int bottomY,
+                               Faction owner = NoFaction);
 
-    /**
-     * @brief Available Tiles on the map
-     */
-    TileSet tiles;
+    // - Attributes --------------------------------------------------------------------------
+    Domain _domain;
+    Preset _preset;
+    QGameMap* _qgmap;
+
+    std::map<std::pair<unsigned int, unsigned int>, Character*> _characters;
+
+    static Preset defaultPreset;
 };
+
 
 #endif // ILLUVATAR_MAP_H

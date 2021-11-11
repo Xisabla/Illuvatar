@@ -9,97 +9,179 @@
 =========================================================================*/
 #include "map/Map.h"
 
+#include "characters/Dragon.h"
+#include "characters/Eldar.h"
+#include "characters/Master.h"
+#include "characters/Vala.h"
+#include "characters/Werewolf.h"
 
 //  --------------------------------------------------------------------------------------
 //  Map
 //  --------------------------------------------------------------------------------------
 
-Map::Map(TileSet tiles): tiles(std::move(tiles)) {
-    this->gmap = new QGameMap(this->tiles.getRectAuto(), this->tiles);
+Preset Map::defaultPreset = Default;
+
+Map::Map(_token t)
+: Singleton(t), _domain(1, 1), _qgmap(new QGameMap), _preset(Map::defaultPreset) { }
+
+//  --------------------------------------------------------------------------------------
+//  Map > GETTERS
+//  --------------------------------------------------------------------------------------
+
+unsigned int Map::width() const { return _domain.width(); }
+
+unsigned int Map::height() const { return _domain.height(); }
+
+QGameMap* Map::qgmap() const { return _qgmap; }
+
+Character* Map::getCharacter(unsigned int x, unsigned int y) {
+    if (!containsCharacter(x, y))
+        throw std::runtime_error("No character at position (" + std::to_string(x) + ", " +
+                                 std::to_string(y) + ")");
+
+    return _characters[{ x, y }];
 }
 
-[[maybe_unused]] Map::Map(unsigned int width, unsigned int height, TileSet tiles)
-: Map(Rectangle(width, height), std::move(tiles)) { }
+Character* Map::getMaster(Faction faction) {
+    auto found =
+    std::find_if(_characters.begin(),
+                 _characters.end(),
+                 [faction](std::pair<std::pair<unsigned int, unsigned int>, Character*> e) {
+                     return e.second->isMaster() && e.second->faction() == faction;
+                 });
 
-Map::Map(Rectangle surface, TileSet tiles): tiles(std::move(tiles)) {
-    this->gmap = new QGameMap(surface, this->tiles);
+    if (found == std::end(_characters))
+        throw std::runtime_error("No master found for faction " + std::to_string(faction));
+
+    return found->second;
 }
 
 //  --------------------------------------------------------------------------------------
 //  Map > SETTERS
 //  --------------------------------------------------------------------------------------
 
-[[maybe_unused]] void Map::setTile(const Point& p, Faction faction) {
-    this->tiles.push(Tile(p, faction));
-}
+void Map::setPreset(Preset preset) { _preset = preset; }
 
-//  --------------------------------------------------------------------------------------
-//  Map > GETTERS
-//  --------------------------------------------------------------------------------------
-
-bool Map::exists(const Point& p) const { return this->tiles.exists(p); }
-
-Tile& Map::getTile(const Point& p) { return this->tiles.get(p); }
-
-[[maybe_unused]] TileSet Map::getNeighbours(const Point& p) {
-    return this->tiles.getNeighbours(p.X(), p.Y());
-}
-
-QGameMap* Map::GMap() { return this->gmap; }
+void Map::setDefaultPreset(Preset preset) { Map::defaultPreset = preset; }
 
 //  --------------------------------------------------------------------------------------
 //  Map > PUBLIC METHODS
 //  --------------------------------------------------------------------------------------
 
-[[maybe_unused]] void Map::resize(Rectangle surface) {
-    // TODO: Use reference while manipulate tiles, surface, ... in QGameMap (+ constructor) to avoid
-    //  this:
-    this->gmap->setSurface(surface);
-    // this->gmap->setTiles(this->tiles);
-}
+void Map::generate() {
+    if (_preset == Turtle) {
+        _domain = Domain(21, 21);
 
-[[maybe_unused]] void Map::removeTile(const Point& p) {
-    this->tiles.remove(p);
-    this->sync();
-}
+        generateDisk(7.5, 10, 10);
 
-void Map::sync() {
-    this->gmap->setTiles(this->tiles);
-    this->gmap->repaint();
-}
+        generateDisk(2.8, 16, 16, Dragons);
+        generateDisk(2.8, 16, 4, Eldars);
+        generateDisk(2.8, 4, 16, Valars);
+        generateDisk(2.8, 4, 4, Werewolves);
 
-ThingAtPoint Map::getThingAtPoint(const Point& p) {
-    if (!this->exists(p)) return ThingAtPoint::Void;
+        new Master(16, 16, Dragons);
+        new Dragon(15, 14);
+        new Dragon(16, 14);
+        new Dragon(17, 14);
+        new Dragon(14, 15);
+        new Dragon(14, 16);
+        new Dragon(14, 17);
 
-    Tile& t = this->getTile(p);
+        new Master(16, 4, Eldars);
+        new Eldar(15, 6);
+        new Eldar(16, 6);
+        new Eldar(17, 6);
+        new Eldar(14, 3);
+        new Eldar(14, 4);
+        new Eldar(14, 5);
 
-    if (t.isObstacle()) return ThingAtPoint::Obstacle;
-    if (t.isOccupied()) return ThingAtPoint::Character;
-    return ThingAtPoint::Nothing;
-}
 
-Point Map::project(const Point& from, const Point& jump) {
-    return { from.X() + jump.X(), from.Y() + jump.Y() };
-}
+        new Master(4, 16, Valars);
+        new Vala(3, 14);
+        new Vala(4, 14);
+        new Vala(5, 14);
+        new Vala(6, 15);
+        new Vala(6, 16);
+        new Vala(6, 17);
 
-void Map::jump(Point& from, Point& to, Character* character) {
-    // todo : verify if from & to are really neighbors ?
-    this->getTile(from).unsetCharacter();
-    this->getTile(to).setCharacter(character);
-}
 
-Tile& Map::computeLastPosition(const Point& point, const Direction& direction) {
-    Point lastCoords = Map::project(point, directionutils::computeLastJump(direction));
-
-    // TODO: Throw exception
-    if (!this->exists(lastCoords)) {
-        std::cout << "error at Map::computeLastPosition(" << point << ", ...)" << std::endl;
-        exit(1);
+        new Master(4, 4, Werewolves);
+        new Werewolf(6, 3);
+        new Werewolf(6, 4);
+        new Werewolf(6, 5);
+        new Werewolf(3, 6);
+        new Werewolf(4, 6);
+        new Werewolf(5, 6);
     }
 
-    return this->getTile(lastCoords);
+    if (_preset == Square) {
+        _domain = Domain(21, 21);
+
+        generateSquare(0, 0, 21, 21);
+
+        generateSquare(0, 0, 5, 5, Dragons);
+        generateSquare(0, 15, 5, 20, Eldars);
+        generateSquare(15, 0, 20, 5, Valars);
+        generateSquare(15, 15, 20, 20, Werewolves);
+
+        new Master(3, 3, Dragons);
+        new Master(3, 18, Eldars);
+        new Master(18, 3, Valars);
+        new Master(18, 18, Werewolves);
+        // TODO: Generate minions
+    }
+
+    sync();
 }
 
-bool Map::areNeighbours(const Point& first, const Point& second) {
-    return abs(first.X() - second.X()) == 1 && abs(first.Y() - second.Y()) == 1;
+void Map::sync() { _qgmap->repaint(); }
+
+void Map::linkCharacter(unsigned int x, unsigned int y, Character* character) {
+    _characters.insert_or_assign({ x, y }, character);
+}
+
+void Map::unlinkCharacter(Character* character) {
+    auto found =
+    std::find_if(_characters.begin(),
+                 _characters.end(),
+                 [character](std::pair<std::pair<unsigned int, unsigned int>, Character*> e) {
+                     return e.second == character;
+                 });
+
+    if (found != std::end(_characters)) {
+        _characters.erase(found->first);
+    }
+}
+
+bool Map::containsCharacter(unsigned int x, unsigned int y) {
+    return _characters.contains({ x, y });
+}
+
+//  --------------------------------------------------------------------------------------
+//  Map > PRIVATE METHODS
+//  --------------------------------------------------------------------------------------
+
+void Map::generateDisk(const double radius,
+                       const unsigned int centerX,
+                       const unsigned int centerY,
+                       const Faction owner) {
+    for (int x = static_cast<int>(-radius); x <= radius; x++) {
+        for (int y = static_cast<int>(-radius); y <= radius; y++) {
+            if (x * x + y * y <= static_cast<double>(radius * radius)) {
+                Tile::safeCreate(x + centerX, y + centerY, owner);
+            }
+        }
+    }
+}
+
+void Map::generateSquare(const unsigned int topX,
+                         const unsigned int topY,
+                         const unsigned int bottomX,
+                         const unsigned int bottomY,
+                         const Faction owner) {
+    for (unsigned x = topX; x <= bottomX; x++) {
+        for (unsigned y = topY; y <= bottomY; y++) {
+            Tile::safeCreate(x, y, owner);
+        }
+    }
 }

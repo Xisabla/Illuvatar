@@ -11,116 +11,83 @@
 #ifndef ILLUVATAR_TILE_H
 #define ILLUVATAR_TILE_H
 
-#include "geometry/Point.h"
-#include "enums/Faction.h"
+#include "characters/Faction.h"
 
-#include <utility>
-
-class Character;
+#include <iostream>
+#include <vector>
 
 /**
  * @class Tile
- * @brief Representation of a tile on the map. Stores ownership and characters
+ * @brief Representation of a Tile on the map. Stores all instances, does not allow multiple
+ *  instances with the same attributes x and y.
  */
-class Tile : public Point {
+class Tile {
   public:
-    /**
-     * @param x X position of the Tile
-     * @param y Y position of the Tile
-     * @param faction Faction that owns the Tile
-     */
-    Tile(int x, int y, Faction faction = Faction::NoFaction);
-
-    /**
-     * @param p Position of the Tile
-     * @param faction Faction that owns the Tile
-     */
-    explicit Tile(Point p, Faction faction = Faction::NoFaction);
+    Tile(unsigned int x, unsigned int y, Faction owner = NoFaction);
+    ~Tile();
 
     // - Getters -----------------------------------------------------------------------------
-    /**
-     * @return The faction owning the Tile : safe for her
-     */
-    Faction getOwner();
+    [[nodiscard]] unsigned int id() const;
+    [[nodiscard]] unsigned int x() const;
+    [[nodiscard]] unsigned int y() const;
+    [[nodiscard]] Faction getOwner() const;
+    // TODO: Character* getCharacter()
 
-    /**
-     * @return A reference to the Character on the Tile if occupied
-     */
-    Character& getCharacter();
+    // NOTE: Should have another name than "rectangle", like
+    //  - Area, Box, Domain, Zone
+    // TODO: move following ones to map:
+    //  - Rectangle getRect(padding_right, padding_bottom) const;
+    //  - Rectangle getRectAuto() const;
 
-    /**
-     * @param character Character to place on the Tile
-     */
-    void setCharacter(Character* character);
-
-    /**
-     * @brief Frees the tile from its character
-     */
-    void unsetCharacter();
-
-    /**
-     * @param f Faction to test
-     * @return True if the faction is owning the Tile
-     */
-    bool safeFor(Faction f);
-
-    /**
-     * @return True if the Tile is an obstacle
-     */
-    bool isObstacle() const;
-
-    /**
-     * @return True if there is a character on the Tile
-     */
-    bool isOccupied();
+    static unsigned int count();
+    static Tile* get(unsigned int x, unsigned int y);
+    static std::vector<Tile*> getAll();
+    static std::vector<Tile*> getNeighbours(unsigned int x, unsigned int y);
 
     // - Setters -----------------------------------------------------------------------------
-    /**
-     * Sets the faction owning the Tile
-     * @param f Faction to set ownership to
-     */
-    void setOwner(Faction f);
-
-    /**
-     * @brief Set the Tile as an obstacle
-     */
-    void setObstacle();
-
-    /**
-     * @brief Unset the Tile as an obstacle
-     */
-    void unsetObstacle();
-
-    /**
-     * Remove current faction ownership (set to NoFaction)
-     */
+    void setOwnership(Faction owner);
     void removeOwnership();
 
+    // - Methods -----------------------------------------------------------------------------
+    [[nodiscard]] bool isOwnedBy(Faction f) const;
+    // TODO: bool containsObstacle() const;
+    // TODO: bool containsCharacter() const;
+
+    static bool exists(unsigned int x, unsigned int y);
+    static void remove(unsigned int x, unsigned int y);
+    static void removeAll();
+
+    static Tile*
+    safeCreate(unsigned int x, unsigned int y, Faction owner = NoFaction, bool overwrite = true);
+
     // - Operators ---------------------------------------------------------------------------
-    inline bool operator==(const Tile& t) const { return Point::operator==(t); }
-
-    inline bool operator<(const Tile& t) const { return Point::operator<(t); }
-
-    inline friend std::ostream& operator<<(std::ostream& out, Tile& t) {
-        return out << t.getPoint() << " safe for " << t.getOwner() << " occupied by " << (t.isObstacle()? "obstacle" : (t.isOccupied()? "some character" : "nothing"));
-    }
+    inline bool operator==(const Tile& t) const { return _id == t.id(); }
+    inline bool operator<(const Tile& t) const { return _id < t.id(); }
 
   private:
     // - Attributes --------------------------------------------------------------------------
+    unsigned int _id;
     /**
-     * @brief Faction that owns the Tile, can be set to NoFaction for unowned Tile
+     * @brief X component of the Tile
      */
-    Faction owner;
+    const unsigned int _x;
+    /**
+     * @brief Y component of the Tile
+     */
+    const unsigned int _y;
+    /**
+     * @brief Faction that owns the Tile, set to "NoFaction" if not a SafeZone
+     */
+    Faction _owner;
 
     /**
-     * @brief Is the Tile an obstacle ?
+     * @brief ID counter
      */
-    bool obstacle = false;
-
+    static unsigned int _i;
     /**
-     * @brief Character that occupies the Tile, can be set to nullPtr if none
+     * @brief All instances of the Class
      */
-    Character* character = nullptr;
+    static std::vector<Tile*> _instances;
 };
 
 #endif // ILLUVATAR_TILE_H

@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Project:   Illuvatar
-  File:      MapGenerators.h
+  File:      Generators.h
 
   Copyright (c) 2021 - All rights reserved
   Distributed under the MIT License (https://opensource.org/licenses/MIT)
@@ -11,34 +11,19 @@
 #ifndef ILLUVATAR_GENERATORS_H
 #define ILLUVATAR_GENERATORS_H
 
-#include "enums/Faction.h"
-#include "geometry/Point.h"
-#include "map/TileSet.h"
+#include "map/Tile.h"
 
-#include <cmath>
-#include <iostream>
+#include <vector>
+
+// TODO: Move to map
+//  Map::generateDisk(...)
+//  as commented in main:
+//  Map::setPreset(...)       Map::setDefaultPreset(...)
+//  map.regenerate()    OR    Map::instance()
 
 namespace generators {
-
-/**
- * Generates a set of Tiles shaping a filled Disk
- * @param radius Radius of the disk
- * @param center Center of the disk
- * @param faction Faction that owns the Tiles
- * @return A set of tiles
- */
-TileSet disk(double radius, const Point& center, Faction faction = Faction::NoFaction);
-
-/**
- * Generates a set of Tiles shaping a filled Disk
- * @param radius Radius of the disk
- * @param center Center of the disk
- * @param predicate Predicate to determine the faction that owns the Tiles
- * @return A set of tiles
- */
-[[maybe_unused]] TileSet
-disk(double radius, const Point& center, const std::function<Faction(Point p)>& predicate);
-
-} // namespace generators
+std::vector<Tile*>
+disk(double radius, unsigned int centerX, unsigned int centerY, Faction owner = NoFaction);
+}
 
 #endif // ILLUVATAR_GENERATORS_H
