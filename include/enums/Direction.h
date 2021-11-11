@@ -13,6 +13,8 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 
 #include <iostream>
+#include <string>
+#include <map>
 
 #define DIRECTION_FIRST N
 #define DIRECTION_LAST NW
@@ -24,5 +26,19 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 enum class Direction { DIRECTION_FIRST, NE, E, SE, S, SW, W, DIRECTION_LAST };
 
 std::ostream& operator<<(std::ostream& out, Direction value);
+
+/**
+ * @brief Transform a Direction into a string
+ */
+const std::map<Direction, std::string> strDirection = {
+    { Direction::N, "N" },
+    { Direction::NE, "NE" },
+    { Direction::E, "E" },
+    { Direction::SE, "SE" },
+    { Direction::S, "S" },
+    { Direction::SW, "SW" },
+    { Direction::W, "W" },
+    { Direction::NW, "NW" }
+};
 
 #endif // ILLUVATAR_DIRECTION_H

@@ -29,6 +29,7 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #include <map>
 #include <set>
 #include <vector>
+#include <string>
 
 class Master;
 
@@ -68,6 +69,8 @@ class Minion : public Character {
      * @brief Setter for energy
      */
     void restoreEnergy(unsigned int heal);
+
+    Direction getDirection() { return this->currentDirection; }
 
   protected:
     Master& master;
@@ -114,6 +117,10 @@ class Minion : public Character {
     virtual int getDiceFailureValue() = 0;
 
     virtual int getDiceSuccessValue() = 0;
+
+    virtual std::string getAsset() {
+      return Character::getAsset() + strDirection.at(this->currentDirection) + ".png";
+    }
 
   private:
     /**

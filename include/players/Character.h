@@ -23,7 +23,7 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 
 class Character {
   public:
-    Character(Map& map, Point point, Faction faction);
+    Character(Map& map, Point point, Faction faction, bool isMaster);
 
     /**
      * @brief Heritable destructor who removes the character from his tile (disappears from the map)
@@ -50,10 +50,30 @@ class Character {
      */
     Faction getFaction() { return this->faction; }
 
+    /**
+     * @return True if character is a master
+     */
+    bool isMaster() { return this->master; }
+
+    /**
+     * @brief Remove all messages of the list
+     */
+    void dropMsgList();
+
+    /**
+     * @brief Return true if msgList is not empty or false otherwise
+     */
+    bool gotMsg();
+
+    virtual std::string getAsset() {
+      return strFaction.at(this->faction) + "/";
+    }
+
   protected:
     Map& map;
     Point point;
     Faction faction;
+    bool master;
 
     /**
      * @brief Add one message to the list
@@ -76,16 +96,6 @@ class Character {
      * @brief Extract one message from the list
      */
     std::string dropRandomMsg();
-
-    /**
-     * @brief Remove all messages of the list
-     */
-    void dropMsgList();
-
-    /**
-     * @brief Return true if msgList is not empty or false otherwise
-     */
-    bool gotMsg();
 
     /**
      * @brief Return true if msgList lenght equals 1 or false otherwise

@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Character::Character(Map& map, Point point, Faction faction): map(map), point(point), faction(faction) {
+Character::Character(Map& map, Point point, Faction faction, bool isMaster): map(map), point(point), faction(faction), master(isMaster) {
     this->map.getTile(this->point).setCharacter(this);
 }
 

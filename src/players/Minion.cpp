@@ -6,7 +6,7 @@ using namespace superTypes;
 using namespace pathfinder;
 
 
-Minion::Minion(Map &map, Point point, Faction faction, Master &master): Character(map, point, faction), master(master) {
+Minion::Minion(Map &map, Point point, Faction faction, Master &master): Character(map, point, faction, false), master(master) {
     this->currentDirection = randDirection();
 }
 
@@ -71,7 +71,13 @@ bool Minion::interactsWithSurroundings() {
     for (pair<ThingAtPoint, Point> thing: this->checkAround()) {
         switch(thing.first) {
             case ThingAtPoint::Ally:
-                this->exchange(dynamic_cast<Minion&>(this->map.getTile(this->point).getCharacter()));
+                if (!this->map.getTile(point).getCharacter().isMaster()) {
+                    this->exchange(dynamic_cast<Minion&>(this->map.getTile(point).getCharacter()));
+                }
+                else if (this->map.getTile(point).getCharacter().getFaction() == this->faction) {
+                    dynamic_cast<Master&>(this->map.getTile(point).getCharacter()).getMessage(*this);
+                    dynamic_cast<Master&>(this->map.getTile(point).getCharacter()).giveMessage(*this);
+                }
                 interactFlag = true;
                 break;
 
@@ -79,10 +85,6 @@ bool Minion::interactsWithSurroundings() {
                 if (!this->fightAndWin(dynamic_cast<Minion&>(this->map.getTile(this->point).getCharacter()))) return true; // dead
                 interactFlag = true;
                 break;
-
-            //case ThingAtPoint::Master:
-                //can interact with him - check if personnal master ?
-                //break;
         }
     }
     return interactFlag;
