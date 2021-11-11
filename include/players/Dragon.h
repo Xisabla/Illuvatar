@@ -22,7 +22,7 @@ class Dragon: public Horde {
     public:
     Dragon(Map& map,
            Point point,
-           Master& master);
+           Master& master): Horde(map, point, Faction::Dragons, master) {}
 
     protected:
     unsigned int damages = 5;

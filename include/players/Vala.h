@@ -22,7 +22,7 @@ class Vala : public Alliance {
     public:
     Vala(Map& map,
            Point point,
-           Master& master);
+           Master& master): Alliance(map, point, Faction::Valars, master) {}
 
     protected:
     unsigned int damages = 5;

@@ -22,7 +22,7 @@ class Werewolf: public Horde {
     public:
     Werewolf(Map& map,
            Point point,
-           Master& master);
+           Master& master): Horde(map, point, Faction::Werewolves, master) {}
 
     protected:
     unsigned int damages = 5;

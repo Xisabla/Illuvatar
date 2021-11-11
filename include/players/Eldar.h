@@ -22,7 +22,7 @@ class Eldar: public Alliance {
     public:
     Eldar(Map& map,
            Point point,
-           Master& master);
+           Master& master): Alliance(map, point, Faction::Eldars, master) {}
 
     protected:
     unsigned int damages = 5;
