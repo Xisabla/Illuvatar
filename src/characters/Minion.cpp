@@ -10,6 +10,7 @@
 #include "characters/Minion.h"
 
 #include "map/Map.h"
+#include "enums/DirectionUtils.h"
 #include "unirand.h"
 
 //  --------------------------------------------------------------------------------------
@@ -17,7 +18,9 @@
 //  --------------------------------------------------------------------------------------
 
 Minion::Minion(unsigned int x, unsigned int y, Faction faction)
-: Character(x, y, faction), _master(dynamic_cast<Master*>(Map::instance().getMaster(faction))) { }
+: Character(x, y, faction), _master(dynamic_cast<Master*>(Map::instance().getMaster(faction))) {
+    this->currentDirection = directionutils::randDirection();
+}
 
 //  --------------------------------------------------------------------------------------
 //  Minion > GETTERS

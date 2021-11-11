@@ -31,9 +31,6 @@ class QGameMap : public QWidget {
     // - Methods -----------------------------------------------------------------------------
     void paintEvent(QPaintEvent*) override;
 
-    // - Attributes --------------------------------------------------------------------------
-    static std::map<Faction, QImage> masterAssets;
-    static std::map<Faction, QImage> minionAssets;
 };
 
 #endif // ILLUVATAR_QGAMEMAP_H

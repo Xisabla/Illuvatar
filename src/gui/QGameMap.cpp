@@ -18,20 +18,6 @@
 //  QGameMap
 //  --------------------------------------------------------------------------------------
 
-std::map<Faction, QImage> QGameMap::masterAssets = {
-    { Faction::Dragons, QImage("../assets/master_dragon.png") },
-    { Faction::Eldars, QImage("../assets/master_eldar.png") },
-    { Faction::Valars, QImage("../assets/master_vala.png") },
-    { Faction::Werewolves, QImage("../assets/master_werewolf.png") }
-};
-
-std::map<Faction, QImage> QGameMap::minionAssets = {
-    { Faction::Dragons, QImage("../assets/minion_dragon.png") },
-    { Faction::Eldars, QImage("../assets/minion_eldar.png") },
-    { Faction::Valars, QImage("../assets/minion_vala.png") },
-    { Faction::Werewolves, QImage("../assets/minion_werewolf.png") }
-};
-
 QGameMap::QGameMap(QWidget* parent): QWidget(parent) { }
 
 //  --------------------------------------------------------------------------------------
@@ -86,9 +72,7 @@ void QGameMap::paintEvent(QPaintEvent*) {
                 p.drawRect(x * size, y * size, size, size);
 
                 if (map.containsCharacter(x, y)) {
-                    Character* character = map.getCharacter(x, y);
-                    QImage asset = character->isMaster() ? masterAssets[character->faction()] :
-                                                           minionAssets[character->faction()];
+                    QImage asset = QImage(("../assets/"+map.getCharacter(x, y)->getAsset()).c_str());
 
                     p.drawImage(x * size, y * size, asset.scaled(size, size));
                 }

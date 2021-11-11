@@ -34,6 +34,7 @@ set(CMAKE_CXX_STANDARD 20)
 # Source files
 set(SOURCES
         include/enums/Direction.h src/enums/Direction.cpp
+        include/enums/DirectionUtils.h src/enums/DirectionUtils.cpp
         include/enums/Faction.h src/enums/Faction.cpp
         include/enums/RollResult.h src/enums/RollResult.cpp
         include/enums/ThingAtPoint.h src/enums/ThingAtPoint.cpp
