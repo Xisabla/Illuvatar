@@ -28,7 +28,7 @@ class Master : public Character {
     std::string generateMessage();
     // TODO: void giveMessage(Mignon* minion);
 
-    virtual std::string getAsset();
+    virtual std::string getAssetPath();
 };
 
 

@@ -40,7 +40,7 @@ class Character {
     bool isMaster();
     void dropMessages();
     bool gotMsg();
-    virtual std::string getAsset();
+    virtual std::string getAssetPath();
 
   protected:
     // - Methods -----------------------------------------------------------------------------

@@ -71,7 +71,7 @@ class Minion : public Character {
 
     virtual int getDiceSuccessValue() = 0;
 
-    virtual std::string getAsset();
+    virtual std::string getAssetPath();
 
   private:
     // - Methods -----------------------------------------------------------------------------

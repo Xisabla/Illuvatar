@@ -113,6 +113,6 @@ void Minion::normalAttack(Minion& other) {
 }
 
 
-std::string Minion::getAsset() {
-    return Character::getAsset() + strDirection.at(this->currentDirection) + ".png";
+std::string Minion::getAssetPath() {
+    return Character::getAssetPath() + strDirection.at(this->currentDirection) + ".png";
 }

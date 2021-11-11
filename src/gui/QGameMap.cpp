@@ -72,7 +72,7 @@ void QGameMap::paintEvent(QPaintEvent*) {
                 p.drawRect(x * size, y * size, size, size);
 
                 if (map.containsCharacter(x, y)) {
-                    QImage asset = QImage(("../assets/"+map.getCharacter(x, y)->getAsset()).c_str());
+                    QImage asset = QImage(("../assets/"+map.getCharacter(x, y)->getAssetPath()).c_str());
 
                     p.drawImage(x * size, y * size, asset.scaled(size, size));
                 }
