@@ -12,7 +12,7 @@
 #define ILLUVATAR_DirectionUtils_H
 
 #include "enums/Direction.h"
-// #include "geometry/Point.h"
+#include "superTypes.h"
 #include "unirand.h"
 
 #include <iostream>
@@ -61,12 +61,12 @@ const std::map<Direction, Direction> oppositeDirection = {
 /**
  * @brief Transform a direction into a variation of coordinates
  */
-// const std::map<Direction, Point> nextDirection = {
-//     { Direction::N, Point(0, -1) }, { Direction::NE, Point(1, -1) },
-//     { Direction::E, Point(1, 0) },  { Direction::SE, Point(1, 1) },
-//     { Direction::S, Point(0, 1) },  { Direction::SW, Point(-1, 1) },
-//     { Direction::W, Point(-1, 0) }, { Direction::NW, Point(-1, -1) }
-// };
+const std::map<Direction, superTypes::Point> nextDirection = {
+    { Direction::N, {0, -1} }, { Direction::NE, {1, -1} },
+    { Direction::E, {1, 0} },  { Direction::SE, {1, 1} },
+    { Direction::S, {0, 1} },  { Direction::SW, {-1, 1} },
+    { Direction::W, {-1, 0} }, { Direction::NW, {-1, -1} }
+};
 
 /**
  * @brief Transform a variation of coordinates into a direction
@@ -83,14 +83,14 @@ const std::map<std::pair<int, int>, Direction> deltaDirection = {
  * @param current the arrival of the vector
  * @return The direction of the vector
  */
-// Direction computeDirection(const Point& last, const Point& current);
+Direction computeDirection(const superTypes::Point& last, const superTypes::Point& current);
 
 /**
  * Compute the reverse variation of coordinates corresponding to the direction
  * @param direction The direction of the vector
  * @return The variation to the origin of the vector
  */
-// Point computeLastJump(const Direction& direction);
+superTypes::Point computeLastJump(const Direction& direction);
 
 /**
  * @return An uniform random based Direction

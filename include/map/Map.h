@@ -17,6 +17,11 @@
 #include "map/Tile.h"
 #include "templates/Singleton.h"
 #include "enums/Faction.h"
+#include "enums/Direction.h"
+#include "enums/DirectionUtils.h"
+#include "enums/ThingAtPoint.h"
+
+#include "superTypes.h"
 
 /**
  * @enum Preset
@@ -52,6 +57,11 @@ SINGLETON(Map) {
     void linkCharacter(unsigned int x, unsigned int y, Character* character);
     void unlinkCharacter(Character* character);
     bool containsCharacter(unsigned int x, unsigned int y);
+    
+    bool exists(const superTypes::Point& p) const;
+    ThingAtPoint getThingAtPoint(const superTypes::Point& p);
+    superTypes::Point computeLastPosition(const superTypes::Point& point, const Direction& direction);
+    static superTypes::Point project(const superTypes::Point& from, const superTypes::Point& jump);
 
     // - Friends -----------------------------------------------------------------------------
 

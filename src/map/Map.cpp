@@ -157,6 +157,36 @@ bool Map::containsCharacter(unsigned int x, unsigned int y) {
     return _characters.contains({ x, y });
 }
 
+bool Map::exists(const superTypes::Point& p) const {
+    return Tile::exists(p.first, p.second);
+}
+
+ThingAtPoint Map::getThingAtPoint(const superTypes::Point& p) {
+    if (!this->exists(p)) return ThingAtPoint::Void;
+
+    Tile* t = Tile::get(p.first, p.second);
+
+    // if (t->isObstacle()) return ThingAtPoint::Obstacle; //todo
+    if (this->getCharacter(p.first, p.second) != nullptr) return ThingAtPoint::Character;
+    return ThingAtPoint::Nothing;
+}
+
+superTypes::Point Map::computeLastPosition(const superTypes::Point& point, const Direction& direction) {
+    superTypes::Point lastCoords = Map::project(point, directionutils::computeLastJump(direction));
+
+    // TODO: Throw exception
+    if (!this->exists(lastCoords)) {
+        std::cout << "error at Map::computeLastPosition(" << point.first << " " << point.second << ", ...)" << std::endl;
+        exit(1);
+    }
+    Tile* t = Tile::get(lastCoords.first, lastCoords.second);
+    return { t->x(), t->y() };
+}
+
+superTypes::Point Map::project(const superTypes::Point& from, const superTypes::Point& jump) {
+    return { from.first + jump.first, from.second + jump.second };
+}
+
 //  --------------------------------------------------------------------------------------
 //  Map > PRIVATE METHODS
 //  --------------------------------------------------------------------------------------
