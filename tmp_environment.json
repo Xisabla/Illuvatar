@@ -1,0 +1,47 @@
+{
+    "Dragon" : {
+        "master": {
+            "messages": ["Da", "Db", "Dc", "Dd", "De"],
+            "position": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        "minion": {
+            "LifeMax": 100,
+
+            "EnergyMax": 100,
+            "EnergyLow":  20,
+            "EnergyCost":  5,
+            "EnergyEnnemyCost":  10,
+            "Range":  { 
+                "Min": 6,
+                "Max":10
+            },
+
+            "AttackNature":  "Physical/Energetic",
+            "Damages":  5,
+            "SelfDamages":  2,
+
+            "DiceMaxValue":  100,
+            "DiceCriticFailureValue":  5,
+            "DiceFailureValue":  50,
+            "DiceSuccessValue":  96,
+
+            "positions": [
+                {
+                    "x": 1,
+                    "y": 1
+                },
+                {
+                    "x": 2,
+                    "y": 2
+                },
+                {
+                    "x": 3,
+                    "y": 3
+                }
+            ]
+        }
+    }
+}
