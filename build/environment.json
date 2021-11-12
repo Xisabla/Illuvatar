@@ -44,11 +44,12 @@
     },
     "characters": {
         "Dragon" : {
+            "faction": "Dragon",
             "master": {
                 "messages": ["Da", "Db", "Dc", "Dd", "De"],
                 "position": {
-                    "x": 0,
-                    "y": 0
+                    "x": 16,
+                    "y": 16
                 }
             },
             "minion": {
@@ -74,27 +75,24 @@
 
                 "positions": [
                     {
-                        "x": 1,
-                        "y": 1
+                        "x": 15,
+                        "y": 14
                     },
                     {
-                        "x": 2,
-                        "y": 2
-                    },
-                    {
-                        "x": 3,
-                        "y": 3
+                        "x": 16,
+                        "y": 14
                     }
                 ]
             }
         },
 
         "Werewolf" : {
+            "faction": "Werewolf",
             "master": {
                 "messages": ["Wa", "Wb", "Wc", "Wd", "We"],
                 "position": {
-                    "x": 0,
-                    "y": 0
+                    "x": 4,
+                    "y": 4
                 }
             },
             "minion": {
@@ -120,27 +118,24 @@
 
                 "positions": [
                     {
-                        "x": 1,
-                        "y": 1
-                    },
-                    {
-                        "x": 2,
-                        "y": 2
-                    },
-                    {
-                        "x": 3,
+                        "x": 6,
                         "y": 3
+                    },
+                    {
+                        "x": 6,
+                        "y": 4
                     }
                 ]
             }
         },
 
         "Eldar" : {
+            "faction": "Eldar",
             "master": {
                 "messages": ["Ea", "Eb", "Ec", "Ed", "Ee"],
                 "position": {
-                    "x": 0,
-                    "y": 0
+                    "x": 16,
+                    "y": 4
                 }
             },
             "minion": {
@@ -166,27 +161,24 @@
 
                 "positions": [
                     {
-                        "x": 1,
-                        "y": 1
+                        "x": 15,
+                        "y": 6
                     },
                     {
-                        "x": 2,
-                        "y": 2
-                    },
-                    {
-                        "x": 3,
-                        "y": 3
+                        "x": 16,
+                        "y": 6
                     }
                 ]
             }
         },
 
         "Vala" : {
+            "faction": "Vala",
             "master": {
                 "messages": ["Va", "Vb", "Vc", "Vd", "Ve"],
                 "position": {
-                    "x": 0,
-                    "y": 0
+                    "x": 4,
+                    "y": 16
                 }
             },
             "minion": {
@@ -212,16 +204,12 @@
 
                 "positions": [
                     {
-                        "x": 1,
-                        "y": 1
-                    },
-                    {
-                        "x": 2,
-                        "y": 2
-                    },
-                    {
                         "x": 3,
-                        "y": 3
+                        "y": 14
+                    },
+                    {
+                        "x": 4,
+                        "y": 14
                     }
                 ]
             }
