@@ -81,39 +81,28 @@ void Map::generate() {
             generateDisk(safeZone["radius"], safeZone["center"]["x"], safeZone["center"]["y"], strToFaction.at(safeZone["faction"]));
         }
 
-        new Master(16, 16, Faction::Dragons);
-        (new Dragon(15, 14))->virtualInits();
-        (new Dragon(16, 14))->virtualInits();
-        (new Dragon(17, 14))->virtualInits();
-        (new Dragon(14, 15))->virtualInits();
-        (new Dragon(14, 16))->virtualInits();
-        (new Dragon(14, 17))->virtualInits();
+        for (auto race : env["characters"]) {
+            Faction faction = strToFaction.at(race["faction"]);
+            new Master(race["master"]["position"]["x"], race["master"]["position"]["y"], faction);
 
-        new Master(16, 4, Faction::Eldars);
-        (new Eldar(15, 6))->virtualInits();
-        (new Eldar(16, 6))->virtualInits();
-        (new Eldar(17, 6))->virtualInits();
-        (new Eldar(14, 3))->virtualInits();
-        (new Eldar(14, 4))->virtualInits();
-        (new Eldar(14, 5))->virtualInits();
+            switch (faction){
+                case Faction::Dragons:
+                    for (auto pos : race["minion"]["positions"]) (new Dragon(pos["x"], pos["y"]))->virtualInits();
+                    break;
 
+                case Faction::Eldars:
+                    for (auto pos : race["minion"]["positions"]) (new Eldar(pos["x"], pos["y"]))->virtualInits();
+                    break;
 
-        new Master(4, 16, Faction::Valars);
-        (new Vala(3, 14))->virtualInits();
-        (new Vala(4, 14))->virtualInits();
-        (new Vala(5, 14))->virtualInits();
-        (new Vala(6, 15))->virtualInits();
-        (new Vala(6, 16))->virtualInits();
-        (new Vala(6, 17))->virtualInits();
+                case Faction::Valars:
+                    for (auto pos : race["minion"]["positions"]) (new Vala(pos["x"], pos["y"]))->virtualInits();
+                    break;
 
-
-        new Master(4, 4, Faction::Werewolves);
-        (new Werewolf(6, 3))->virtualInits();
-        (new Werewolf(6, 4))->virtualInits();
-        (new Werewolf(6, 5))->virtualInits();
-        (new Werewolf(3, 6))->virtualInits();
-        (new Werewolf(4, 6))->virtualInits();
-        (new Werewolf(5, 6))->virtualInits();
+                case Faction::Werewolves:
+                    for (auto pos : race["minion"]["positions"]) (new Werewolf(pos["x"], pos["y"]))->virtualInits();
+                    break;
+            }
+        }
     }
 
     if (_preset == Square) {
