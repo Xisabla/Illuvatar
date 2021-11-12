@@ -14,6 +14,7 @@
 // TODO: Link QGameSidebar to it's parent (QGameWrapper) to send actions
 //  process: QGameSidebar slot -> QGameWrapper method -> QGameMap method
 
+#include <QPushButton>
 #include <QWidget>
 
 /**
@@ -26,11 +27,17 @@ class QGameSidebar : public QWidget {
 
   public:
     explicit QGameSidebar(QWidget* parent = nullptr);
+    void enableButtons();
+    void disableButtons();
 
   public slots:
     void handleStepButton();
     void handleRunButton();
     void handleExitButton();
+
+  private:
+    QPushButton* _stepButton;
+    QPushButton* _runButton;
 };
 
 #endif // ILLUVATAR_QGAMESIDEBAR_H

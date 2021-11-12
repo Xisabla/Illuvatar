@@ -11,6 +11,7 @@
 #ifndef ILLUVATAR_GAME_H
 #define ILLUVATAR_GAME_H
 
+#include "gui/QGameSidebar.h"
 #include "templates/Singleton.h"
 
 #include <QApplication>
@@ -35,8 +36,8 @@ SINGLETON(Game) {
     }
 
     // - Methods -----------------------------------------------------------------------------
-    void step();
-    void run(int maxSteps = 50);
+    void step(QGameSidebar* qgsidebar, bool doesEnable = true);
+    void run(QGameSidebar* qgsidebar, int maxSteps = 50);
     bool end();
 
     static int exec();
