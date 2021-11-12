@@ -36,7 +36,7 @@ class Character {
     void setMessages(std::vector<std::string> messages);//void setMsgList(std::vector<std::string>& msgList);
 
     // - Methods -----------------------------------------------------------------------------
-    bool isAllied(Character* character);
+    // bool isAllied(Character* character);
     bool isMaster();
     void dropMessages();
     bool gotMsg();
@@ -55,12 +55,11 @@ class Character {
     unsigned int _x;
     unsigned int _y;
     Faction _faction;
+    static std::map<Faction, Faction> alliance;
 
   private:
     // - Attributes --------------------------------------------------------------------------
     std::vector<std::string> _messages;
-
-    static std::map<Faction, std::set<Faction>> alliances;
 };
 
 

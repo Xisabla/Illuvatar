@@ -19,11 +19,11 @@
 //  Character
 //  --------------------------------------------------------------------------------------
 
-std::map<Faction, std::set<Faction>> Character::alliances = {
-    { Faction::Eldars, { Faction::Eldars, Faction::Valars } },
-    { Faction::Valars, { Faction::Eldars, Faction::Valars } },
-    { Faction::Werewolves, { Faction::Dragons, Faction::Werewolves } },
-    { Faction::Dragons, { Faction::Dragons, Faction::Werewolves } }
+std::map<Faction, Faction> Character::alliance = {
+    { Faction::Eldars, Faction::Valars },
+    { Faction::Valars, Faction::Eldars },
+    { Faction::Dragons, Faction::Werewolves },
+    { Faction::Werewolves, Faction::Dragons },
 };
 
 Character::Character(unsigned int x, unsigned int y, Faction faction)
@@ -55,9 +55,9 @@ void Character::setMessages(std::vector<std::string> messages) { _messages = mes
 //  Character > PUBLIC METHODS
 //  --------------------------------------------------------------------------------------
 
-bool Character::isAllied(Character* character) {
-    return alliances[_faction].contains(character->faction());
-}
+// bool Character::isAllied(Character* character) {
+//     return alliances[_faction].contains(character->faction());
+// }
 
 bool Character::isMaster() { return dynamic_cast<Master*>(this) != nullptr; }
 

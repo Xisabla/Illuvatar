@@ -157,3 +157,29 @@ superTypes::DirectionalPath Minion::findMaster(unsigned int range) {
     superTypes::Point target = {this->master()->x(), this->master()->y()};
     return pathfinder::shortest({this->x(), this->y()}, target, range);
 }
+
+ThingAtPoint Minion::checkPosition(const superTypes::Point& point) {
+    ThingAtPoint thing = Map::instance().getThingAtPoint(point);
+    if (thing != ThingAtPoint::Character) return thing;
+
+    Faction other = Map::instance().getCharacter(point.first, point.second)->faction();
+    return (other == this->faction() || other == Character::alliance.at(this->faction())) ? ThingAtPoint::Ally : ThingAtPoint::Ennemy;
+}
+
+std::pair<ThingAtPoint, superTypes::Point> Minion::checkDirection(const superTypes::Point& point, Direction& direction) {
+    superTypes::Point p = Map::instance().project(point, directionutils::nextDirection.at(direction));
+    return { this->checkPosition(p), p };
+}
+
+std::vector<std::pair<ThingAtPoint, superTypes::Point>> Minion::checkAround() {
+    std::vector<std::pair<ThingAtPoint, superTypes::Point>> things = {};
+
+    superTypes::Point p = { this->x(), this->y() };
+    for (Direction d = Direction::DIRECTION_FIRST; d <= Direction::DIRECTION_LAST;
+         d = Direction(static_cast<int>(d) + 1)) { // get all enum values
+        std::pair<ThingAtPoint, superTypes::Point> thing = this->checkDirection(p, d);
+        if (thing.first == ThingAtPoint::Ally || thing.first == ThingAtPoint::Ennemy) things.push_back(thing);
+    }
+
+    return things;
+}
