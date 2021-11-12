@@ -15,8 +15,8 @@
 #include "characters/Minion.h"
 #include "enums/Faction.h"
 #include "core/Environment.h"
+#include "unirand.h"
 
-#include <set>
 #include <vector>
 #include <string>
 
@@ -31,17 +31,18 @@ class Master : public Character {
     Master(unsigned int x, unsigned int y, Faction faction);
 
     // - Methods -----------------------------------------------------------------------------
-    std::string generateMessage();
-    // TODO: void giveMessage(Mignon* minion);
 
     virtual std::string getAssetPath();
 
-    void getMessage(Minion* minion);
-    void giveMessage(Minion* minion);
+    void collectAndSendBack(Minion* minion);
+    // void getMessage(Minion* minion);
+    // void giveMessage(Minion* minion);
 
   private:
-    std::set<std::string> listOfMessage;
-    std::vector<std::string> MessageToGive;
+    virtual void addMessages(std::vector<std::string> messages);
+    virtual std::string getRandomMessage();
+
+    std::vector<std::string> messagesFaction;
 };
 
 

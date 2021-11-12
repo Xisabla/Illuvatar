@@ -41,12 +41,12 @@ class Character {
     void dropMessages();
     bool gotMsg();
     virtual std::string getAssetPath();
+    void addMessage(const std::string& message);
 
   protected:
     // - Methods -----------------------------------------------------------------------------
-    void addMessage(const std::string& message);
-    void addMessages(std::vector<std::string> messages);
-    std::string getRandomMessage();
+    virtual void addMessages(std::vector<std::string> messages);
+    virtual std::string getRandomMessage();
     std::string dropRandomMessage();
     bool gotOneMsg();
     [[maybe_unused]] bool gotLotOfMsgs();

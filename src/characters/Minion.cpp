@@ -255,8 +255,7 @@ bool Minion::interactsWithSurroundings() {
                     this->exchange(dynamic_cast<Minion*>(c));
                 }
                 else if (c->faction() == this->faction()) {
-                    dynamic_cast<Master*>(c)->getMessage(this);
-                    dynamic_cast<Master*>(c)->giveMessage(this);
+                    dynamic_cast<Master*>(c)->collectAndSendBack(this);
                 }
                 interactFlag = true;
                 break;
