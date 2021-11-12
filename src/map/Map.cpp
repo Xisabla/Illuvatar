@@ -191,6 +191,13 @@ bool Map::areNeighbours(const superTypes::Point& first, const superTypes::Point&
     return abs((int) first.first - (int) second.first) == 1 && abs((int) first.second - (int) second.second) == 1;
 }
 
+void Map::jump(superTypes::Point from, superTypes::Point to, Character* character) {
+    // todo : verify if from & to are really neighbors ?
+    // TODO
+    // this->getTile(from).unsetCharacter();
+    // this->getTile(to).setCharacter(character);
+}
+
 //  --------------------------------------------------------------------------------------
 //  Map > PRIVATE METHODS
 //  --------------------------------------------------------------------------------------

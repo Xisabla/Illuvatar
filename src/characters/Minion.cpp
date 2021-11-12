@@ -249,3 +249,60 @@ bool Minion::interactsWithSurroundings() {
     }
     return interactFlag;
 }
+
+void Minion::move() {
+    int range = unirand::getValue(this->range.first, this->range.second); //todo : modulate with dice throw ?
+
+    bool enoughEnergy = this->_energy - range * this->energyCost > this->energyLow;
+    superTypes::DirectionalPath path = enoughEnergy && this->gotOneMsg() ? this->explore(range) : this->findMaster(range);
+
+    if (path.empty()) {
+        this->interactsWithSurroundings();
+        return;
+    }
+
+    Faction const currentFaction = this->faction();
+    Faction const allyFaction = Minion::alliance.at(currentFaction);
+    for (std::pair<superTypes::Point, Direction> step: path) {
+        if (this->checkPosition(step.first) != ThingAtPoint::Nothing) {
+            interactsWithSurroundings();
+            if (!this->isAlive()) {
+                //delete this; //?
+            }
+            return;
+        }
+
+        //tile change
+        Map::instance().jump({ this->x(), this->y() }, step.first, this);
+        this->_x = step.first.first;
+        this->_y = step.first.second;
+        this->direction = step.second;
+
+        //energy fluctuation
+        Faction owner = Tile::get(this->x(), this->y())->getOwner();
+        if (owner == Faction::NoFaction) {
+            this->reduceEnergy(this->energyCost); //most common - loss a bit of energy
+        }
+        else if (owner == currentFaction) {
+            this->_energy = this->_energyMax; //recover all energy
+        }
+        else if (owner == allyFaction) {
+            this->restoreEnergy(this->energyCost); //recover a bit of energy
+        }
+        else {//ennemy zone
+            this->reduceEnergy(this->energyEnnemyCost); //loss more energy
+        }
+
+        if (!this->_energy) {
+            //delete this; //?
+            return;
+        }
+
+        if (interactsWithSurroundings()) {
+            if (!this->isAlive()) {
+                //delete this; //?
+            }
+            return;
+        }
+    }
+}
