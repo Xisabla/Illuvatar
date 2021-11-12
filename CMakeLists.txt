@@ -38,6 +38,7 @@ set(SOURCES
         include/enums/Faction.h src/enums/Faction.cpp
         include/enums/RollResult.h src/enums/RollResult.cpp
         include/enums/ThingAtPoint.h src/enums/ThingAtPoint.cpp
+        include/enums/AttackNature.h
         include/characters/BadMinion.h src/characters/BadMinion.cpp
         include/characters/Character.h src/characters/Character.cpp
         include/characters/Dragon.h

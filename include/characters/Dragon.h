@@ -12,6 +12,7 @@
 #define ILLUVATAR_DRAGON_H
 
 #include "characters/BadMinion.h"
+#include "enums/AttackNature.h"
 
 /**
  * @class Dragon
@@ -30,6 +31,7 @@ class Dragon : public BadMinion {
     virtual int getEnergyEnnemyCost() { return 10; };
     virtual std::pair<int, int> getRange() { return { 6, 10 }; };
 
+    virtual AttackNature getAttackNature() { return AttackNature::Physical; };
     virtual int getDamages() { return 5; };
     virtual int getSelfDamages() { return 2; };
 

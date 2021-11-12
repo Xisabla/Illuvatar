@@ -146,13 +146,27 @@ void Minion::searchCorpse(Minion* minion) {
 }
 
 void Minion::normalAttack(Minion* minion) {
-    // TODO : bool to know if life or _energy ?
-    minion->reduceLife(unirand::getValueAround(this->getDamages(), 2));
+    int damages = unirand::getValueAround(this->getDamages(), 2);
+    switch(this->getAttackNature()) {
+        case AttackNature::Physical:
+            minion->reduceLife(damages);
+            break;
+        case AttackNature::Energetic:
+            minion->reduceEnergy(damages);
+            break;
+    }
 }
 
 void Minion::hurtItself() {
-    // TODO : bool to know if life or energy ?
-    this->reduceLife(unirand::getValueAround(this->getSelfDamages()));
+    int damages = unirand::getValueAround(this->getSelfDamages(), 2);
+    switch(this->getAttackNature()) {
+        case AttackNature::Physical:
+            this->reduceLife(damages);
+            break;
+        case AttackNature::Energetic:
+            this->reduceEnergy(damages);
+            break;
+    }
 }
 
 std::string Minion::getAssetPath() {

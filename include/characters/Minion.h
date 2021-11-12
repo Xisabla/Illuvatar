@@ -13,6 +13,7 @@
 
 #include "characters/Character.h"
 #include "characters/Master.h"
+#include "enums/AttackNature.h"
 #include "enums/ThingAtPoint.h"
 #include "enums/RollResult.h"
 #include "enums/Direction.h"
@@ -63,6 +64,7 @@ class Minion : public Character {
     virtual int getEnergyEnnemyCost() = 0;
     virtual std::pair<int, int> getRange() = 0;
 
+    virtual AttackNature getAttackNature() = 0;
     virtual int getDamages() = 0;
     virtual int getSelfDamages() = 0;
     virtual void specialAttack(Minion* minion) = 0;
