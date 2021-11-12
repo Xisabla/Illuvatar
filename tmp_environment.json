@@ -8,25 +8,25 @@
             }
         },
         "minion": {
-            "LifeMax": 100,
+            "lifeMax": 100,
 
-            "EnergyMax": 100,
-            "EnergyLow":  20,
-            "EnergyCost":  5,
-            "EnergyEnnemyCost":  10,
-            "Range":  { 
-                "Min": 6,
-                "Max":10
+            "energyMax": 100,
+            "energyLow":  20,
+            "energyCost":  5,
+            "energyEnnemyCost":  10,
+            "range":  { 
+                "min": 6,
+                "max":10
             },
 
-            "AttackNature":  "Physical/Energetic",
-            "Damages":  10,
-            "SelfDamages":  2,
+            "attackNature":  "Physical/Energetic",
+            "damages":  10,
+            "selfDamages":  2,
 
-            "DiceMaxValue":  100,
-            "DiceCriticFailureValue":  10,
-            "DiceFailureValue":  75,
-            "DiceSuccessValue":  98,
+            "diceMaxValue":  100,
+            "diceCriticFailureValue":  10,
+            "diceFailureValue":  75,
+            "diceSuccessValue":  98,
 
             "positions": [
                 {
@@ -54,25 +54,25 @@
             }
         },
         "minion": {
-            "LifeMax": 100,
+            "lifeMax": 100,
 
-            "EnergyMax": 100,
-            "EnergyLow":  20,
-            "EnergyCost":  5,
-            "EnergyEnnemyCost":  10,
-            "Range":  {
-                "Min": 6,
-                "Max":10
+            "energyMax": 100,
+            "energyLow":  20,
+            "energyCost":  5,
+            "energyEnnemyCost":  10,
+            "range":  {
+                "min": 6,
+                "max":10
             },
 
-            "AttackNature":  "Physical/Energetic",
-            "Damages":  3,
-            "SelfDamages":  2,
+            "attackNature":  "Physical/Energetic",
+            "damages":  3,
+            "selfDamages":  2,
 
-            "DiceMaxValue":  100,
-            "DiceCriticFailureValue":  3,
-            "DiceFailureValue":  25,
-            "DiceSuccessValue":  91,
+            "diceMaxValue":  100,
+            "diceCriticFailureValue":  3,
+            "diceFailureValue":  25,
+            "diceSuccessValue":  91,
 
             "positions": [
                 {
@@ -100,25 +100,25 @@
             }
         },
         "minion": {
-            "LifeMax": 100,
+            "lifeMax": 100,
 
-            "EnergyMax": 100,
-            "EnergyLow":  20,
-            "EnergyCost":  5,
-            "EnergyEnnemyCost":  10,
-            "Range":  {
-                "Min": 6,
-                "Max":10
+            "energyMax": 100,
+            "energyLow":  20,
+            "energyCost":  5,
+            "energyEnnemyCost":  10,
+            "range":  {
+                "min": 6,
+                "max":10
             },
 
-            "AttackNature":  "Physical/Energetic",
-            "Damages":  3,
-            "SelfDamages":  2,
+            "attackNature":  "Physical/Energetic",
+            "damages":  3,
+            "selfDamages":  2,
 
-            "DiceMaxValue":  100,
-            "DiceCriticFailureValue":  3,
-            "DiceFailureValue":  25,
-            "DiceSuccessValue":  91,
+            "diceMaxValue":  100,
+            "diceCriticFailureValue":  3,
+            "diceFailureValue":  25,
+            "diceSuccessValue":  91,
 
             "positions": [
                 {
@@ -146,25 +146,25 @@
             }
         },
         "minion": {
-            "LifeMax": 100,
+            "lifeMax": 100,
 
-            "EnergyMax": 100,
-            "EnergyLow":  20,
-            "EnergyCost":  5,
-            "EnergyEnnemyCost":  10,
-            "Range":  {
-                "Min": 6,
-                "Max":10
+            "energyMax": 100,
+            "energyLow":  20,
+            "energyCost":  5,
+            "energyEnnemyCost":  10,
+            "range":  {
+                "min": 6,
+                "max":10
             },
 
-            "AttackNature":  "Physical/Energetic",
-            "Damages":  10,
-            "SelfDamages":  2,
+            "attackNature":  "Physical/Energetic",
+            "damages":  10,
+            "selfDamages":  2,
 
-            "DiceMaxValue":  100,
-            "DiceCriticFailureValue":  10,
-            "DiceFailureValue":  75,
-            "DiceSuccessValue":  98,
+            "diceMaxValue":  100,
+            "diceCriticFailureValue":  10,
+            "diceFailureValue":  75,
+            "diceSuccessValue":  98,
 
             "positions": [
                 {
