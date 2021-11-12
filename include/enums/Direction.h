@@ -29,7 +29,7 @@ std::ostream& operator<<(std::ostream& out, Direction value);
 /**
  * @brief Transform a Direction into a string
  */
-const std::map<Direction, std::string> strDirection = {
+const std::map<Direction, std::string> strFromDirection = {
     { Direction::N, "N" },
     { Direction::NE, "NE" },
     { Direction::E, "E" },

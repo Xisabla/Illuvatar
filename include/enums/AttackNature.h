@@ -11,12 +11,18 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #ifndef ILLUVATAR_ATTACKNATURE_H
 #define ILLUVATAR_ATTACKNATURE_H
 
-#include <iostream>
+#include <string>
+#include <map>
 
 /**
  * @enum AttackNature
  * @brief physical or energical damages
  */
 enum class AttackNature { Physical, Energetic };
+
+const std::map<std::string, AttackNature> strToAttackNature = {
+    {"Physical", AttackNature::Physical},
+    {"Energetic", AttackNature::Energetic}
+};
 
 #endif // ILLUVATAR_ATTACKNATURE_H

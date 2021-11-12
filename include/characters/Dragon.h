@@ -13,6 +13,8 @@
 
 #include "characters/BadMinion.h"
 #include "enums/AttackNature.h"
+#include "core/Environment.h"
+#include "libs/json.h"
 
 /**
  * @class Dragon
@@ -20,25 +22,55 @@
  */
 class Dragon : public BadMinion {
   public:
-    Dragon(unsigned int x, unsigned int y): BadMinion(x, y, Faction::Dragons) { }
+    Dragon(unsigned int x, unsigned int y): BadMinion(x, y, Faction::Dragons) {
+      nlohmann::json& env = Environment::instance()->env();
 
-    protected:
-    virtual int getLifeMax() { return 100; };
+      lifeMax = env["Dragon"]["minion"]["lifeMax"];
+      energyMax = env["Dragon"]["minion"]["energyMax"];
+      energyLow = env["Dragon"]["minion"]["energyLow"];
+      energyCost = env["Dragon"]["minion"]["energyCost"];
+      energyEnnemyCost = env["Dragon"]["minion"]["energyEnnemyCost"];
+      range = {env["Dragon"]["minion"]["range"]["min"], env["Dragon"]["minion"]["range"]["max"]};
+      attackNature = strToAttackNature.at(env["Dragon"]["minion"]["attackNature"]);
+      damages = env["Dragon"]["minion"]["damages"];
+      selfDamages = env["Dragon"]["minion"]["selfDamages"];
+      diceMaxValue = env["Dragon"]["minion"]["diceMaxValue"];
+      diceCriticFailureValue = env["Dragon"]["minion"]["diceCriticFailureValue"];
+      diceFailureValue = env["Dragon"]["minion"]["diceFailureValue"];
+      diceSuccessValue = env["Dragon"]["minion"]["diceSuccessValue"];
+    }
 
-    virtual int getEnergyMax() { return 100; };
-    virtual int getEnergyLow() { return 20; };
-    virtual int getEnergyCost() { return 5; };
-    virtual int getEnergyEnnemyCost() { return 10; };
-    virtual std::pair<int, int> getRange() { return { 6, 10 }; };
+  protected:
+    int lifeMax;
+    int energyMax;
+    int energyLow;
+    int energyCost;
+    int energyEnnemyCost;
+    std::pair<int, int> range;
+    AttackNature attackNature;
+    int damages;
+    int selfDamages;
+    int diceMaxValue;
+    int diceCriticFailureValue;
+    int diceFailureValue;
+    int diceSuccessValue;
 
-    virtual AttackNature getAttackNature() { return AttackNature::Physical; };
-    virtual int getDamages() { return 5; };
-    virtual int getSelfDamages() { return 2; };
+    virtual int getLifeMax() { return lifeMax; };
 
-    virtual int getDiceMaxValue() { return 100; };
-    virtual int getDiceCriticFailureValue() { return 5; };
-    virtual int getDiceFailureValue() { return 50; };
-    virtual int getDiceSuccessValue() { return 96; };
+    virtual int getEnergyMax() { return energyMax; };
+    virtual int getEnergyLow() { return energyLow; };
+    virtual int getEnergyCost() { return energyCost; };
+    virtual int getEnergyEnnemyCost() { return energyEnnemyCost; };
+    virtual std::pair<int, int> getRange() { return range; };
+
+    virtual AttackNature getAttackNature() { return attackNature; };
+    virtual int getDamages() { return damages; };
+    virtual int getSelfDamages() { return selfDamages; };
+
+    virtual int getDiceMaxValue() { return diceMaxValue; };
+    virtual int getDiceCriticFailureValue() { return diceCriticFailureValue; };
+    virtual int getDiceFailureValue() { return diceFailureValue; };
+    virtual int getDiceSuccessValue() { return diceSuccessValue; };
 };
 
 #endif // ILLUVATAR_DRAGON_H

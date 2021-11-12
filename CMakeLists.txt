@@ -33,6 +33,7 @@ set(CMAKE_CXX_STANDARD 20)
 # -----------------------------------------------------------------------------
 # Source files
 set(SOURCES
+        include/libs/Json.h
         include/enums/Direction.h src/enums/Direction.cpp
         include/enums/DirectionUtils.h src/enums/DirectionUtils.cpp
         include/enums/Faction.h src/enums/Faction.cpp
@@ -49,6 +50,7 @@ set(SOURCES
         include/characters/Vala.h
         include/characters/Werewolf.h
         include/core/Game.h src/core/Game.cpp
+        include/core/Environment.h src/core/Environment.cpp
         include/gui/MainWindow.h src/gui/MainWindow.cpp
         include/gui/QGameMap.h src/gui/QGameMap.cpp
         include/gui/QGameSidebar.h src/gui/QGameSidebar.cpp

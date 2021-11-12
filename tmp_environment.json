@@ -1,0 +1,185 @@
+{
+    "Dragon" : {
+        "master": {
+            "messages": ["Da", "Db", "Dc", "Dd", "De"],
+            "position": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        "minion": {
+            "LifeMax": 150,
+
+            "EnergyMax": 104,
+            "EnergyLow":  32,
+            "EnergyCost":  8,
+            "EnergyEnnemyCost":  12,
+            "Range":  {
+                "Min": 6,
+                "Max":10
+            },
+
+            "attackNature":  "Physical/Energetic",
+            "damages":  10,
+            "selfDamages":  3,
+
+            "diceMaxValue":  100,
+            "diceCriticFailureValue":  10,
+            "diceFailureValue":  75,
+            "diceSuccessValue":  98,
+
+            "positions": [
+                {
+                    "x": 1,
+                    "y": 1
+                },
+                {
+                    "x": 2,
+                    "y": 2
+                },
+                {
+                    "x": 3,
+                    "y": 3
+                }
+            ]
+        }
+    },
+
+    "Werewolf" : {
+        "master": {
+            "messages": ["Da", "Db", "Dc", "Dd", "De"],
+            "position": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        "minion": {
+            "lifeMax": 80,
+
+            "energyMax": 120,
+            "energyLow":  20,
+            "energyCost":  5,
+            "energyEnnemyCost":  8,
+            "range":  {
+                "min": 6,
+                "max":10
+            },
+
+            "attackNature":  "Physical/Energetic",
+            "damages":  3,
+            "selfDamages":  2,
+
+            "diceMaxValue":  100,
+            "diceCriticFailureValue":  3,
+            "diceFailureValue":  25,
+            "diceSuccessValue":  91,
+
+            "positions": [
+                {
+                    "x": 1,
+                    "y": 1
+                },
+                {
+                    "x": 2,
+                    "y": 2
+                },
+                {
+                    "x": 3,
+                    "y": 3
+                }
+            ]
+        }
+    },
+
+    "Eldar" : {
+        "master": {
+            "messages": ["Da", "Db", "Dc", "Dd", "De"],
+            "position": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        "minion": {
+            "lifeMax": 90,
+
+            "energyMax": 110,
+            "energyLow":  20,
+            "energyCost":  5,
+            "energyEnnemyCost":  9,
+            "range":  {
+                "min": 6,
+                "max":10
+            },
+
+            "attackNature":  "Physical/Energetic",
+            "damages":  3,
+            "selfDamages":  2,
+
+            "diceMaxValue":  100,
+            "diceCriticFailureValue":  3,
+            "diceFailureValue":  25,
+            "diceSuccessValue":  91,
+
+            "positions": [
+                {
+                    "x": 1,
+                    "y": 1
+                },
+                {
+                    "x": 2,
+                    "y": 2
+                },
+                {
+                    "x": 3,
+                    "y": 3
+                }
+            ]
+        }
+    },
+
+    "Vala" : {
+        "master": {
+            "messages": ["Da", "Db", "Dc", "Dd", "De"],
+            "position": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        "minion": {
+            "LifeMax": 125,
+
+            "EnergyMax": 90,
+            "EnergyLow":  24,
+            "EnergyCost":  6,
+            "EnergyEnnemyCost":  12,
+            "Range":  {
+                "Min": 6,
+                "Max":10
+            },
+
+            "attackNature":  "Physical/Energetic",
+            "damages":  10,
+            "selfDamages":  3,
+
+            "diceMaxValue":  100,
+            "diceCriticFailureValue":  10,
+            "diceFailureValue":  75,
+            "diceSuccessValue":  98,
+
+            "positions": [
+                {
+                    "x": 1,
+                    "y": 1
+                },
+                {
+                    "x": 2,
+                    "y": 2
+                },
+                {
+                    "x": 3,
+                    "y": 3
+                }
+            ]
+        }
+    }
+}

@@ -65,7 +65,7 @@ void Character::dropMessages() { _messages.clear(); }
 
 bool Character::gotMsg() { return !this->_messages.empty(); }
 
-std::string Character::getAssetPath() { return strFaction.at(this->_faction) + "/"; }
+std::string Character::getAssetPath() { return strFromFaction.at(this->_faction) + "/"; }
 
 //  --------------------------------------------------------------------------------------
 //  Character > PROTECTED METHODS

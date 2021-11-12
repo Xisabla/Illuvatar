@@ -8,6 +8,7 @@
 
 =========================================================================*/
 #include "core/Game.h"
+#include "core/Environment.h"
 #include "gui/MainWindow.h"
 
 #include <QApplication>

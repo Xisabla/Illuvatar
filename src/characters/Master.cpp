@@ -9,12 +9,14 @@
 =========================================================================*/
 #include "characters/Master.h"
 
+
 //  --------------------------------------------------------------------------------------
 //  Master
 //  --------------------------------------------------------------------------------------
 
-Master::Master(unsigned int x, unsigned int y, Faction faction, std::vector<std::string> listOfBaseMessage): Character(x, y, faction), MessageToGive(listOfBaseMessage), listOfMessage({}) {
+Master::Master(unsigned int x, unsigned int y, Faction faction): Character(x, y, faction), listOfMessage({}) {
     // TODO: Unsure that not other master exists
+    MessageToGive = Environment::instance()->env()[strFromFaction.at(faction)]["master"]["messages"].get<std::vector<std::string>>();
 }
 
 //  --------------------------------------------------------------------------------------
@@ -25,7 +27,7 @@ std::string Master::generateMessage() { return "hello world :D"; }
 
 std::string Master::getAssetPath() { return Character::getAssetPath() + "Master.png"; }
 
-void Master::getMessage(Minion* minion) {
+void Master::getMessage(Minion* minion) { // override la méthode du character en vérifiant que message pas déjà dans la liste ? faux set mais compatible
     /// On récupère les messages des minions avec des messages.
     if (!minion->gotMsg()) return;
 
