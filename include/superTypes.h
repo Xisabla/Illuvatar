@@ -12,11 +12,18 @@
 #define ILLUVATAR_SUPERTYPES_H
 
 #include "enums/Direction.h"
-#include "geometry/Point.h"
 
 #include <vector>
 
 namespace superTypes {
+
+// typedef struct Point { //better for us but lot more changes, isn't it
+//   unsigned int x;
+//   unsigned int y;
+// } Point;
+
+typedef std::pair<unsigned int, unsigned int> Point;
+
 /**
  * @brief A vector of Point
  */

@@ -11,7 +11,6 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #ifndef ILLUVATAR_DIRECTION_H
 #define ILLUVATAR_DIRECTION_H
 
-
 #include <iostream>
 #include <string>
 #include <map>

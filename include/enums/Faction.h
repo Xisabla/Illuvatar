@@ -19,7 +19,7 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
  * @enum Faction
  * @brief Available Factions in the simulation
  */
-enum class Faction { Eldars, Valars, Dragons, Werewolves, NoFaction };
+enum class Faction { NoFaction, Eldars, Valars, Dragons, Werewolves };
 
 std::ostream& operator<<(std::ostream& out, Faction value);
 

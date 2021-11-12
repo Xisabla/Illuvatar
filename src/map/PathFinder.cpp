@@ -7,10 +7,10 @@ using namespace pathfinder;
 
 
 DirectionalPath
-pathfinder::shortest(Map& map, Point current, Point& target, unsigned int maxDistance) {
+pathfinder::shortest(Point current, Point& target, unsigned int maxDistance) {
     // TODO: Throw exception
-    if (!map.exists(current) || !map.exists(target)) {
-        cout << "error at pathfinder::shortest(...," << current << ", " << target << ", ...);"
+    if (!Map::instance().exists(current) || !Map::instance().exists(target)) {
+        cout << "error at pathfinder::shortest((" << current.first << ", " << current.second << "), (" << target.first << ", " << target.second << "), ...);"
              << endl;
         exit(1);
     }
@@ -18,18 +18,20 @@ pathfinder::shortest(Map& map, Point current, Point& target, unsigned int maxDis
     Path generated = {};
     Path explored = {};
     Path unexplored = {};
-    Path res = AStar(map, generated, current, target, explored, unexplored);
+    Path res = AStar(generated, current, target, explored, unexplored);
 
     Path unlooped = {};
-    res = unlooper(map, res, unlooped);
+    res = unlooper(res, unlooped);
 
     DirectionalPath straightened = {};
-    return straightenerAndCutter(
-    map, res, straightened, computeDirection(current, unlooped[0]), maxDistance);
+    return straightenerAndCutter(res, straightened, computeDirection(current, unlooped[0]), maxDistance);
 }
 
-Path pathfinder::AStar(Map& map,
-                       Path& path,
+double pathfinder::distanceTo(Point& p1, Point& p2) {
+    return sqrt(pow(p1.first - p2.first, 2) + pow(p1.second - p2.second, 2));
+}
+
+Path pathfinder::AStar(Path& path,
                        Point& current,
                        Point& target,
                        Path& explored,
@@ -48,7 +50,7 @@ Path pathfinder::AStar(Map& map,
     for (Direction d = Direction::DIRECTION_FIRST; d <= Direction::DIRECTION_LAST;
          d = Direction(static_cast<int>(d) + 1)) {
         Point neighbor = Map::project(current, nextDirection.at(d));
-        ThingAtPoint content = map.getThingAtPoint(neighbor);
+        ThingAtPoint content = Map::instance().getThingAtPoint(neighbor);
 
         if (content == ThingAtPoint::Void || content == ThingAtPoint::Obstacle || //ou si character et que ce character est master ?
             find(explored.begin(), explored.end(), neighbor) != explored.end())
@@ -61,7 +63,7 @@ Path pathfinder::AStar(Map& map,
 
     if (!neighbours.empty()) {
         sort(neighbours.begin(), neighbours.end(), [&target](Point& a, Point& b) {
-            return target.distanceTo(a) > target.distanceTo(b);
+            return distanceTo(target, a) > distanceTo(target, b);
         });
 
         next = neighbours.back();
@@ -82,10 +84,10 @@ Path pathfinder::AStar(Map& map,
 
     path.push_back(next);
 
-    return pathfinder::AStar(map, path, next, target, explored, unexplored);
+    return pathfinder::AStar(path, next, target, explored, unexplored);
 }
 
-Path pathfinder::unlooper(Map& map, Path& refPath, Path& path, unsigned int pos) {
+Path pathfinder::unlooper(Path& refPath, Path& path, unsigned int pos) {
     Point current = refPath[pos - 1];
     path.push_back(current);
 
@@ -122,11 +124,10 @@ Path pathfinder::unlooper(Map& map, Path& refPath, Path& path, unsigned int pos)
         }
     }
 
-    return pathfinder::unlooper(map, refPath, path, pos + 1);
+    return pathfinder::unlooper(refPath, path, pos + 1);
 }
 
-DirectionalPath pathfinder::straightenerAndCutter(Map& map,
-                                                  Path& ref,
+DirectionalPath pathfinder::straightenerAndCutter(Path& ref,
                                                   DirectionalPath& path,
                                                   Direction direction,
                                                   unsigned int maxDistance,
@@ -150,24 +151,23 @@ DirectionalPath pathfinder::straightenerAndCutter(Map& map,
 
     Point current = ref[pos];
     Point next = ref[pos + 4];
-    Point last = path.empty() ? map.computeLastPosition(current, direction) : path.back().first;
+    Point last = path.empty() ? Map::instance().computeLastPosition(current, direction) : path.back().first;
     Direction dir = computeDirection(last, current);
     path.push_back({ current, dir });
 
-    if (checkAllBridges(map, path, current, next))
-        return pathfinder::straightenerAndCutter(map, ref, path, direction, maxDistance, pos + 5);
+    if (checkAllBridges(path, current, next))
+        return pathfinder::straightenerAndCutter(ref, path, direction, maxDistance, pos + 5);
 
-    return pathfinder::straightenerAndCutter(map, ref, path, direction, maxDistance, pos + 1);
+    return pathfinder::straightenerAndCutter(ref, path, direction, maxDistance, pos + 1);
 }
 
-bool pathfinder::checkAllBridges(Map& map, DirectionalPath& path, Point current, Point next) {
-    bool xAxis = checkBothBridges(map, path, current.X() == next.X(), current, next, false, current.Y() - next.Y());
-    bool yAxis = checkBothBridges(map, path, current.Y() == next.Y(), current, next, true, current.X() - next.X());
+bool pathfinder::checkAllBridges(DirectionalPath& path, Point current, Point next) {
+    bool xAxis = checkBothBridges(path, current.first == next.first, current, next, false, current.second - next.second);
+    bool yAxis = checkBothBridges(path, current.second == next.second, current, next, true, current.first - next.first);
     return xAxis || yAxis;
 }
 
-bool pathfinder::checkBothBridges(Map& map,
-                                  DirectionalPath& path,
+bool pathfinder::checkBothBridges(DirectionalPath& path,
                                   bool alignTest,
                                   Point current,
                                   Point next,
@@ -175,20 +175,19 @@ bool pathfinder::checkBothBridges(Map& map,
                                   int deltaBridge) {
     if (!alignTest) return false;
 
-    bool firstCheck = checkBridge(map, path, Point(next.X() - first, next.Y() - !first), deltaBridge == -2, current, next);
-    bool secondCheck = checkBridge(map, path, Point(next.X() + first, next.Y() + !first), deltaBridge == 2, current, next);
+    bool firstCheck = checkBridge(path, {next.first - first, next.second - !first}, deltaBridge == -2, current, next);
+    bool secondCheck = checkBridge(path, {next.first + first, next.second + !first}, deltaBridge == 2, current, next);
     return firstCheck || secondCheck;
 }
 
-bool pathfinder::checkBridge(Map& map,
-                             DirectionalPath& path,
+bool pathfinder::checkBridge(DirectionalPath& path,
                              Point bridge,
                              bool alignTest,
                              Point current,
                              Point next) {
     if (!alignTest) return false;
 
-    ThingAtPoint content = map.getThingAtPoint(bridge);
+    ThingAtPoint content = Map::instance().getThingAtPoint(bridge);
     if (content == ThingAtPoint::Void || content == ThingAtPoint::Obstacle) return false; //ou si character et que ce character est master ?
 
     path.push_back({ bridge, computeDirection(current, bridge) });

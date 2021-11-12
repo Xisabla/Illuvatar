@@ -1,7 +1,7 @@
 /*=========================================================================
 
   Project:   Illuvatar
-  File:      uniformRandom.h
+  File:      unirand.h
 
   Copyright (c) 2021 - All rights reserved
   Distributed under the MIT License (https://opensource.org/licenses/MIT)
@@ -10,10 +10,6 @@
 #pragma once
 #ifndef ILLUVATAR_UNIRAND_H
 #define ILLUVATAR_UNIRAND_H
-
-#include <iterator>
-#include <random>
-#include <chrono>
 
 namespace unirand {
     /**
@@ -33,4 +29,4 @@ namespace unirand {
     int getValueAround(int value, int range=1);
 }
 
-#endif // ILLUVATAR_UNIRAN_H
+#endif // ILLUVATAR_UNIRAND_H

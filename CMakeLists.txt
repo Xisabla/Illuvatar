@@ -33,34 +33,33 @@ set(CMAKE_CXX_STANDARD 20)
 # -----------------------------------------------------------------------------
 # Source files
 set(SOURCES
-        include/core/MainWindow.h src/core/MainWindow.cpp
-        include/enums/Result.h
-        include/enums/Faction.h src/enums/Faction.cpp
         include/enums/Direction.h src/enums/Direction.cpp
+        include/enums/DirectionUtils.h src/enums/DirectionUtils.cpp
+        include/enums/Faction.h src/enums/Faction.cpp
+        include/enums/RollResult.h src/enums/RollResult.cpp
         include/enums/ThingAtPoint.h src/enums/ThingAtPoint.cpp
-        include/geometry/Point.h src/geometry/Point.cpp
-        include/geometry/Rectangle.h src/geometry/Rectangle.cpp
-        include/map/DirectionUtils.h src/map/DirectionUtils.cpp
-        include/map/Generators.h src/map/Generators.cpp
+        include/characters/BadMinion.h src/characters/BadMinion.cpp
+        include/characters/Character.h src/characters/Character.cpp
+        include/characters/Dragon.h
+        include/characters/Eldar.h
+        include/characters/GoodMinion.h src/characters/GoodMinion.cpp
+        include/characters/Master.h src/characters/Master.cpp
+        include/characters/Minion.h src/characters/Minion.cpp
+        include/characters/Vala.h
+        include/characters/Werewolf.h
+        include/core/Game.h src/core/Game.cpp
+        include/gui/MainWindow.h src/gui/MainWindow.cpp
+        include/gui/QGameMap.h src/gui/QGameMap.cpp
+        include/gui/QGameSidebar.h src/gui/QGameSidebar.cpp
+        include/gui/QGameWrapper.h src/gui/QGameWrapper.cpp
+        include/map/Domain.h src/map/Domain.cpp
         include/map/Map.h src/map/Map.cpp
-        include/map/PathFinder.h src/map/PathFinder.cpp
         include/map/Tile.h src/map/Tile.cpp
-        include/map/TileSet.h src/map/TileSet.cpp
-        include/players/Alliance.h src/players/Alliance.cpp
-        include/players/Character.h src/players/Character.cpp
-        include/players/Dragon.h src/players/Dragon.cpp
-        include/players/Eldar.h src/players/Eldar.cpp
-        include/players/Horde.h src/players/Horde.cpp
-        include/players/Master.h src/players/Master.cpp
-        include/players/Minion.h src/players/Minion.cpp
-        include/players/Vala.h src/players/Vala.cpp
-        include/players/Werewolf.h src/players/Werewolf.cpp
-        include/qt/QGameMap.h src/qt/QGameMap.cpp
+        include/map/pathFinder.h src/map/pathFinder.cpp
+        include/templates/Singleton.h
         include/unirand.h src/unirand.cpp
-        include/superTypes.h
-        include/wip.h
-        src/core/main.cpp
-        )
+        include/superTypes
+        src/core/main.cpp)
 
 # -----------------------------------------------------------------------------
 # Dependencies
@@ -68,10 +67,15 @@ set(SOURCES
 # Qt
 find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
 
+# Qt AutoMoc
+QT5_WRAP_CPP(MOC_FILES
+        include/gui/QGameSidebar.h)
+set(CMAKE AUTO_MOC ON)
+
 # -----------------------------------------------------------------------------
 # Build and linking instructions
 # -----------------------------------------------------------------------------
-add_executable(Illuvatar ${SOURCES})
+add_executable(Illuvatar ${SOURCES} ${MOC_FILES})
 
 include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}/include
