@@ -170,7 +170,7 @@ void Minion::hurtItself() {
 }
 
 std::string Minion::getAssetPath() {
-    return Character::getAssetPath() + strDirection.at(this->direction) + ".png";
+    return Character::getAssetPath() + strFromDirection.at(this->direction) + ".png";
 }
 
 superTypes::DirectionalPath Minion::findMaster(unsigned int range) {

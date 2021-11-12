@@ -19,25 +19,55 @@
  */
 class Vala : public GoodMinion {
   public:
-    Vala(unsigned int x, unsigned int y): GoodMinion(x, y, Faction::Valars) { }
+    Vala(unsigned int x, unsigned int y): GoodMinion(x, y, Faction::Valars) {
+      nlohmann::json& env = Environment::instance()->env();
+
+      lifeMax = env["Vala"]["minion"]["lifeMax"];
+      energyMax = env["Vala"]["minion"]["energyMax"];
+      energyLow = env["Vala"]["minion"]["energyLow"];
+      energyCost = env["Vala"]["minion"]["energyCost"];
+      energyEnnemyCost = env["Vala"]["minion"]["energyEnnemyCost"];
+      range = {env["Vala"]["minion"]["range"]["min"], env["Vala"]["minion"]["range"]["max"]};
+      attackNature = strToAttackNature.at(env["Vala"]["minion"]["attackNature"]);
+      damages = env["Vala"]["minion"]["damages"];
+      selfDamages = env["Vala"]["minion"]["selfDamages"];
+      diceMaxValue = env["Vala"]["minion"]["diceMaxValue"];
+      diceCriticFailureValue = env["Vala"]["minion"]["diceCriticFailureValue"];
+      diceFailureValue = env["Vala"]["minion"]["diceFailureValue"];
+      diceSuccessValue = env["Vala"]["minion"]["diceSuccessValue"];
+    }
     
-    protected:
-    virtual int getLifeMax() { return 100; };
+  protected:
+    int lifeMax;
+    int energyMax;
+    int energyLow;
+    int energyCost;
+    int energyEnnemyCost;
+    std::pair<int, int> range;
+    AttackNature attackNature;
+    int damages;
+    int selfDamages;
+    int diceMaxValue;
+    int diceCriticFailureValue;
+    int diceFailureValue;
+    int diceSuccessValue;
 
-    virtual int getEnergyMax() { return 100; };
-    virtual int getEnergyLow() { return 20; };
-    virtual int getEnergyCost() { return 5; };
-    virtual int getEnergyEnnemyCost() { return 10; };
-    virtual std::pair<int, int> getRange() { return { 6, 10 }; };
+    virtual int getLifeMax() { return lifeMax; };
 
-    virtual AttackNature getAttackNature() { return AttackNature::Physical; };
-    virtual int getDamages() { return 5; };
-    virtual int getSelfDamages() { return 2; };
+    virtual int getEnergyMax() { return energyMax; };
+    virtual int getEnergyLow() { return energyLow; };
+    virtual int getEnergyCost() { return energyCost; };
+    virtual int getEnergyEnnemyCost() { return energyEnnemyCost; };
+    virtual std::pair<int, int> getRange() { return range; };
 
-    virtual int getDiceMaxValue() { return 100; };
-    virtual int getDiceCriticFailureValue() { return 5; };
-    virtual int getDiceFailureValue() { return 50; };
-    virtual int getDiceSuccessValue() { return 96; };
+    virtual AttackNature getAttackNature() { return attackNature; };
+    virtual int getDamages() { return damages; };
+    virtual int getSelfDamages() { return selfDamages; };
+
+    virtual int getDiceMaxValue() { return diceMaxValue; };
+    virtual int getDiceCriticFailureValue() { return diceCriticFailureValue; };
+    virtual int getDiceFailureValue() { return diceFailureValue; };
+    virtual int getDiceSuccessValue() { return diceSuccessValue; };
 };
 
 

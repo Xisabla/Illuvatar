@@ -19,4 +19,9 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
  */
 enum class AttackNature { Physical, Energetic };
 
+const std::map<std::string, AttackNature> strToAttackNature = {
+    {"Physical", AttackNature::Physical},
+    {"Energetic", AttackNature::Energetic},
+};
+
 #endif // ILLUVATAR_ATTACKNATURE_H

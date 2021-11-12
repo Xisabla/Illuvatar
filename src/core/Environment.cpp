@@ -11,9 +11,6 @@
 
 #include <fstream>
 
-#include <iostream>
-
-
 Environment* Environment::_instance= nullptr;
 
 Environment::Environment(std::string filePath) {
@@ -26,7 +23,6 @@ Environment* Environment::instance() {
     if(Environment::_instance==nullptr){
         Environment::_instance = new Environment("environment.json");
     }
-    std::cout << Environment::_instance->_env["hello"] << std::endl;
     return _instance;
 }
 
