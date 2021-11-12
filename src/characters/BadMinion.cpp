@@ -22,5 +22,5 @@ BadMinion::BadMinion(unsigned int x, unsigned int y, Faction faction): Minion(x,
 
 void BadMinion::specialAttack(Minion* minion) {
     this->normalAttack(minion);
-    this->restoreLife(unirand::getValueAround(this->lifeHeal, 2));
+    this->restoreLife(unirand::getValueAround(this->getLifeHeal(), 2));
 }

@@ -22,16 +22,20 @@ class Werewolf : public BadMinion {
     Werewolf(unsigned int x, unsigned int y): BadMinion(x, y, Faction::Werewolves) { }
     
     protected:
-    virtual int getDamages() { return 5; };
+    virtual int getLifeMax() { return 100; };
 
+    virtual int getEnergyMax() { return 100; };
+    virtual int getEnergyLow() { return 20; };
+    virtual int getEnergyCost() { return 5; };
+    virtual int getEnergyEnnemyCost() { return 10; };
+    virtual std::pair<int, int> getRange() { return { 6, 10 }; };
+
+    virtual int getDamages() { return 5; };
     virtual int getSelfDamages() { return 2; };
 
     virtual int getDiceMaxValue() { return 100; };
-
     virtual int getDiceCriticFailureValue() { return 5; };
-
     virtual int getDiceFailureValue() { return 50; };
-
     virtual int getDiceSuccessValue() { return 96; };
 };
 

@@ -21,6 +21,6 @@ GoodMinion::GoodMinion(unsigned int x, unsigned int y, Faction faction): Minion(
 //  --------------------------------------------------------------------------------------
 
 void GoodMinion::specialAttack(Minion* minion) {
-    minion->reduceEnergy(unirand::getValueAround(this->energyReduction, 2));
+    minion->reduceEnergy(unirand::getValueAround(this->getEnergyReduction(), 2));
     this->normalAttack(minion);
 }

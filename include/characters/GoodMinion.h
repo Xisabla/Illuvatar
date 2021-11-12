@@ -24,7 +24,7 @@ class GoodMinion : public Minion {
     // - Methods -----------------------------------------------------------------------------
 
   protected:
-    unsigned int energyReduction = this->energyCost * 2 / 3;
+    unsigned int getEnergyReduction() { return this->getEnergyCost() * 2 / 3; };
 
     /**
      * @brief Alliance skill : remove _energy to ennemy and attack him

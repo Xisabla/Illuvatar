@@ -23,6 +23,12 @@ Minion::Minion(unsigned int x, unsigned int y, Faction faction)
     this->direction = directionutils::randDirection();
 }
 
+Minion* Minion::virtualInits() {
+    this->_life = this->getLifeMax();
+    this->_energy = this->getEnergyMax();
+    return this;
+}
+
 //  --------------------------------------------------------------------------------------
 //  Minion > GETTERS
 //  --------------------------------------------------------------------------------------
@@ -100,8 +106,8 @@ void Minion::attack(Minion* minion) {
 //  Minion > PRIVATE METHODS
 //  --------------------------------------------------------------------------------------
 
-void Minion::reduceEnergy(unsigned int _energy) {
-    _energy = std::max(static_cast<unsigned int> (0), _energy - _energy);
+void Minion::reduceEnergy(unsigned int energy) {
+    _energy = std::max(static_cast<unsigned int> (0), _energy - energy);
 }
 
 void Minion::reduceLife(unsigned int life) {
@@ -109,13 +115,13 @@ void Minion::reduceLife(unsigned int life) {
 }
 
 void Minion::restoreEnergy(unsigned int heal) {
-    if (this->_energy + heal < this->_energyMax) this->_energy += heal;
-    else this->_energy = this->_energyMax;
+    if (this->_energy + heal < this->getEnergyMax()) this->_energy += heal;
+    else this->_energy = this->getEnergyMax();
 }
 
 void Minion::restoreLife(unsigned int heal) {
-    if (this->_life + heal < this->_lifeMax) this->_life += heal;
-    else this->_life = this->_lifeMax;
+    if (this->_life + heal < this->getLifeMax()) this->_life += heal;
+    else this->_life = this->getLifeMax();
 }
 
 RollResult Minion::rollDice() {
@@ -251,9 +257,9 @@ bool Minion::interactsWithSurroundings() {
 }
 
 void Minion::move() {
-    int range = unirand::getValue(this->range.first, this->range.second); //todo : modulate with dice throw ?
+    int range = std::max(0, unirand::getValueAround(unirand::getValue(this->getRange().first, this->getRange().second), 2));
 
-    bool enoughEnergy = this->_energy - range * this->energyCost > this->energyLow;
+    bool enoughEnergy = this->_energy - range * this->getEnergyCost() > this->getEnergyLow();
     superTypes::DirectionalPath path = enoughEnergy && this->gotOneMsg() ? this->explore(range) : this->findMaster(range);
 
     if (path.empty()) {
@@ -281,16 +287,16 @@ void Minion::move() {
         //energy fluctuation
         Faction owner = Tile::get(this->x(), this->y())->getOwner();
         if (owner == Faction::NoFaction) {
-            this->reduceEnergy(this->energyCost); //most common - loss a bit of energy
+            this->reduceEnergy(this->getEnergyCost()); //most common - loss a bit of energy
         }
         else if (owner == currentFaction) {
-            this->_energy = this->_energyMax; //recover all energy
+            this->_energy = this->getEnergyMax(); //recover all energy
         }
         else if (owner == allyFaction) {
-            this->restoreEnergy(this->energyCost); //recover a bit of energy
+            this->restoreEnergy(this->getEnergyCost()); //recover a bit of energy
         }
         else {//ennemy zone
-            this->reduceEnergy(this->energyEnnemyCost); //loss more energy
+            this->reduceEnergy(this->getEnergyEnnemyCost()); //loss more energy
         }
 
         if (!this->_energy) {

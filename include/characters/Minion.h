@@ -28,6 +28,7 @@ class Master;
 class Minion : public Character {
   public:
     Minion(unsigned int x, unsigned int y, Faction faction);
+    Minion* virtualInits();
 
     // - Getters -----------------------------------------------------------------------------
     Master* master() const;
@@ -51,19 +52,16 @@ class Minion : public Character {
 
     // - Attributes --------------------------------------------------------------------------
     Master* _master;
+    unsigned int _life;
+    unsigned int _energy;
 
-    //passer tous les trucs fixes en getters virtuels
-    unsigned int _lifeMax = 100;
-    unsigned int _life = this->_lifeMax;
+    virtual int getLifeMax() = 0;
 
-    unsigned int _energyMax = 100;
-    unsigned int _energy = this->_energyMax;
-    unsigned int energyCost = 5;
-    unsigned int energyEnnemyCost = 2 * this->energyCost;
-    unsigned int energyLow = 20;
-    static const int lowEnergy = 20;
-
-    constexpr static const std::pair<int, int> range { 6, 10 };
+    virtual int getEnergyMax() = 0;
+    virtual int getEnergyLow() = 0;
+    virtual int getEnergyCost() = 0;
+    virtual int getEnergyEnnemyCost() = 0;
+    virtual std::pair<int, int> getRange() = 0;
 
     virtual int getDamages() = 0;
     virtual int getSelfDamages() = 0;

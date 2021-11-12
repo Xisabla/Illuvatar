@@ -80,38 +80,38 @@ void Map::generate() {
         generateDisk(2.8, 4, 4, Faction::Werewolves);
 
         new Master(16, 16, Faction::Dragons, { "Da", "Db", "Dc", "Dd", "De" });
-        new Dragon(15, 14);
-        new Dragon(16, 14);
-        new Dragon(17, 14);
-        new Dragon(14, 15);
-        new Dragon(14, 16);
-        new Dragon(14, 17);
+        (new Dragon(15, 14))->virtualInits();
+        (new Dragon(16, 14))->virtualInits();
+        (new Dragon(17, 14))->virtualInits();
+        (new Dragon(14, 15))->virtualInits();
+        (new Dragon(14, 16))->virtualInits();
+        (new Dragon(14, 17))->virtualInits();
 
         new Master(16, 4, Faction::Eldars, { "Ea", "Eb", "Ec", "Ed", "Ee" });
-        new Eldar(15, 6);
-        new Eldar(16, 6);
-        new Eldar(17, 6);
-        new Eldar(14, 3);
-        new Eldar(14, 4);
-        new Eldar(14, 5);
+        (new Eldar(15, 6))->virtualInits();
+        (new Eldar(16, 6))->virtualInits();
+        (new Eldar(17, 6))->virtualInits();
+        (new Eldar(14, 3))->virtualInits();
+        (new Eldar(14, 4))->virtualInits();
+        (new Eldar(14, 5))->virtualInits();
 
 
         new Master(4, 16, Faction::Valars, { "Va", "Vb", "Vc", "Vd", "Ve" });
-        new Vala(3, 14);
-        new Vala(4, 14);
-        new Vala(5, 14);
-        new Vala(6, 15);
-        new Vala(6, 16);
-        new Vala(6, 17);
+        (new Vala(3, 14))->virtualInits();
+        (new Vala(4, 14))->virtualInits();
+        (new Vala(5, 14))->virtualInits();
+        (new Vala(6, 15))->virtualInits();
+        (new Vala(6, 16))->virtualInits();
+        (new Vala(6, 17))->virtualInits();
 
 
         new Master(4, 4, Faction::Werewolves, { "Wa", "Wb", "Wc", "Wd", "We" });
-        new Werewolf(6, 3);
-        new Werewolf(6, 4);
-        new Werewolf(6, 5);
-        new Werewolf(3, 6);
-        new Werewolf(4, 6);
-        new Werewolf(5, 6);
+        (new Werewolf(6, 3))->virtualInits();
+        (new Werewolf(6, 4))->virtualInits();
+        (new Werewolf(6, 5))->virtualInits();
+        (new Werewolf(3, 6))->virtualInits();
+        (new Werewolf(4, 6))->virtualInits();
+        (new Werewolf(5, 6))->virtualInits();
     }
 
     if (_preset == Square) {
