@@ -8,20 +8,20 @@
             }
         },
         "minion": {
-            "lifeMax": 100,
+            "LifeMax": 150,
 
-            "energyMax": 100,
-            "energyLow":  20,
-            "energyCost":  5,
-            "energyEnnemyCost":  10,
-            "range":  { 
-                "min": 6,
-                "max":10
+            "EnergyMax": 104,
+            "EnergyLow":  32,
+            "EnergyCost":  8,
+            "EnergyEnnemyCost":  12,
+            "Range":  {
+                "Min": 6,
+                "Max":10
             },
 
             "attackNature":  "Physical/Energetic",
             "damages":  10,
-            "selfDamages":  2,
+            "selfDamages":  3,
 
             "diceMaxValue":  100,
             "diceCriticFailureValue":  10,
@@ -54,12 +54,12 @@
             }
         },
         "minion": {
-            "lifeMax": 100,
+            "lifeMax": 80,
 
-            "energyMax": 100,
+            "energyMax": 120,
             "energyLow":  20,
             "energyCost":  5,
-            "energyEnnemyCost":  10,
+            "energyEnnemyCost":  8,
             "range":  {
                 "min": 6,
                 "max":10
@@ -100,12 +100,12 @@
             }
         },
         "minion": {
-            "lifeMax": 100,
+            "lifeMax": 90,
 
-            "energyMax": 100,
+            "energyMax": 110,
             "energyLow":  20,
             "energyCost":  5,
-            "energyEnnemyCost":  10,
+            "energyEnnemyCost":  9,
             "range":  {
                 "min": 6,
                 "max":10
@@ -146,20 +146,20 @@
             }
         },
         "minion": {
-            "lifeMax": 100,
+            "LifeMax": 125,
 
-            "energyMax": 100,
-            "energyLow":  20,
-            "energyCost":  5,
-            "energyEnnemyCost":  10,
-            "range":  {
-                "min": 6,
-                "max":10
+            "EnergyMax": 90,
+            "EnergyLow":  24,
+            "EnergyCost":  6,
+            "EnergyEnnemyCost":  12,
+            "Range":  {
+                "Min": 6,
+                "Max":10
             },
 
             "attackNature":  "Physical/Energetic",
             "damages":  10,
-            "selfDamages":  2,
+            "selfDamages":  3,
 
             "diceMaxValue":  100,
             "diceCriticFailureValue":  10,
