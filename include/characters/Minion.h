@@ -19,6 +19,8 @@
 #include "enums/Faction.h"
 #include "superTypes.h"
 
+class Master;
+
 /**
  * @class Minion
  * @brief Short description of the class

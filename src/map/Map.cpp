@@ -79,7 +79,7 @@ void Map::generate() {
         generateDisk(2.8, 4, 16, Faction::Valars);
         generateDisk(2.8, 4, 4, Faction::Werewolves);
 
-        new Master(16, 16, Faction::Dragons);
+        new Master(16, 16, Faction::Dragons, { "Da", "Db", "Dc", "Dd", "De" });
         new Dragon(15, 14);
         new Dragon(16, 14);
         new Dragon(17, 14);
@@ -87,7 +87,7 @@ void Map::generate() {
         new Dragon(14, 16);
         new Dragon(14, 17);
 
-        new Master(16, 4, Faction::Eldars);
+        new Master(16, 4, Faction::Eldars, { "Ea", "Eb", "Ec", "Ed", "Ee" });
         new Eldar(15, 6);
         new Eldar(16, 6);
         new Eldar(17, 6);
@@ -96,7 +96,7 @@ void Map::generate() {
         new Eldar(14, 5);
 
 
-        new Master(4, 16, Faction::Valars);
+        new Master(4, 16, Faction::Valars, { "Va", "Vb", "Vc", "Vd", "Ve" });
         new Vala(3, 14);
         new Vala(4, 14);
         new Vala(5, 14);
@@ -105,7 +105,7 @@ void Map::generate() {
         new Vala(6, 17);
 
 
-        new Master(4, 4, Faction::Werewolves);
+        new Master(4, 4, Faction::Werewolves, { "Wa", "Wb", "Wc", "Wd", "We" });
         new Werewolf(6, 3);
         new Werewolf(6, 4);
         new Werewolf(6, 5);
@@ -124,10 +124,10 @@ void Map::generate() {
         generateSquare(15, 0, 20, 5, Faction::Valars);
         generateSquare(15, 15, 20, 20, Faction::Werewolves);
 
-        new Master(3, 3, Faction::Dragons);
-        new Master(3, 18, Faction::Eldars);
-        new Master(18, 3, Faction::Valars);
-        new Master(18, 18, Faction::Werewolves);
+        new Master(3, 3, Faction::Dragons, { "Da", "Db", "Dc", "Dd", "De" });
+        new Master(3, 18, Faction::Eldars, { "Ea", "Eb", "Ec", "Ed", "Ee" });
+        new Master(18, 3, Faction::Valars, { "Va", "Vb", "Vc", "Vd", "Ve" });
+        new Master(18, 18, Faction::Werewolves, { "Wa", "Wb", "Wc", "Wd", "We" });
         // TODO: Generate minions
     }
 

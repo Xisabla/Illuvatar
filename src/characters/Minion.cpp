@@ -223,3 +223,29 @@ superTypes::DirectionalPath Minion::explore(unsigned int range) {
 
     return path;
 }
+
+bool Minion::interactsWithSurroundings() {
+    bool interactFlag = false;
+    Character* c = nullptr;
+    for (std::pair<ThingAtPoint, superTypes::Point> thing: this->checkAround()) {
+        switch(thing.first) {
+            case ThingAtPoint::Ally:
+                c = Map::instance().getCharacter(thing.second.first, thing.second.second);
+                if (!c->isMaster()) {
+                    this->exchange(dynamic_cast<Minion*>(c));
+                }
+                else if (c->faction() == this->faction()) {
+                    dynamic_cast<Master*>(c)->getMessage(this);
+                    dynamic_cast<Master*>(c)->giveMessage(this);
+                }
+                interactFlag = true;
+                break;
+
+            case ThingAtPoint::Ennemy:
+                if (!this->fight(dynamic_cast<Minion*>(Map::instance().getCharacter(thing.second.first, thing.second.second)))) return true; // dead
+                interactFlag = true;
+                break;
+        }
+    }
+    return interactFlag;
+}
