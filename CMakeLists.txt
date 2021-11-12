@@ -33,7 +33,7 @@ set(CMAKE_CXX_STANDARD 20)
 # -----------------------------------------------------------------------------
 # Source files
 set(SOURCES
-        include/libs/Json.h
+        include/libs/json.h
         include/enums/Direction.h src/enums/Direction.cpp
         include/enums/DirectionUtils.h src/enums/DirectionUtils.cpp
         include/enums/Faction.h src/enums/Faction.cpp
@@ -58,7 +58,7 @@ set(SOURCES
         include/map/Domain.h src/map/Domain.cpp
         include/map/Map.h src/map/Map.cpp
         include/map/Tile.h src/map/Tile.cpp
-        include/map/pathFinder.h src/map/pathFinder.cpp
+        include/map/PathFinder.h src/map/PathFinder.cpp
         include/templates/Singleton.h
         include/unirand.h src/unirand.cpp
         include/superTypes

@@ -23,21 +23,21 @@
 class Werewolf : public BadMinion {
   public:
     Werewolf(unsigned int x, unsigned int y): BadMinion(x, y, Faction::Werewolves) {
-      nlohmann::json& env = Environment::instance()->env();
+      auto minions = Environment::instance()->env()["characters"]["Werewolf"]["minion"];
 
-      lifeMax = env["Werewolf"]["minion"]["lifeMax"];
-      energyMax = env["Werewolf"]["minion"]["energyMax"];
-      energyLow = env["Werewolf"]["minion"]["energyLow"];
-      energyCost = env["Werewolf"]["minion"]["energyCost"];
-      energyEnnemyCost = env["Werewolf"]["minion"]["energyEnnemyCost"];
-      range = {env["Werewolf"]["minion"]["range"]["min"], env["Werewolf"]["minion"]["range"]["max"]};
-      attackNature = strToAttackNature.at(env["Werewolf"]["minion"]["attackNature"]);
-      damages = env["Werewolf"]["minion"]["damages"];
-      selfDamages = env["Werewolf"]["minion"]["selfDamages"];
-      diceMaxValue = env["Werewolf"]["minion"]["diceMaxValue"];
-      diceCriticFailureValue = env["Werewolf"]["minion"]["diceCriticFailureValue"];
-      diceFailureValue = env["Werewolf"]["minion"]["diceFailureValue"];
-      diceSuccessValue = env["Werewolf"]["minion"]["diceSuccessValue"];
+      lifeMax = minions["lifeMax"];
+      energyMax = minions["energyMax"];
+      energyLow = minions["energyLow"];
+      energyCost = minions["energyCost"];
+      energyEnnemyCost = minions["energyEnnemyCost"];
+      range = {minions["range"]["min"], minions["range"]["max"]};
+      attackNature = strToAttackNature.at(minions["attackNature"]);
+      damages = minions["damages"];
+      selfDamages = minions["selfDamages"];
+      diceMaxValue = minions["diceMaxValue"];
+      diceCriticFailureValue = minions["diceCriticFailureValue"];
+      diceFailureValue = minions["diceFailureValue"];
+      diceSuccessValue = minions["diceSuccessValue"];
     }
     
   protected:

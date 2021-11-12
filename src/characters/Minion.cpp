@@ -270,6 +270,8 @@ bool Minion::interactsWithSurroundings() {
 }
 
 void Minion::move() {
+    // std::cout << "je move!" << std::endl;
+    return;
     int range = std::max(0, unirand::getValueAround(unirand::getValue(this->getRange().first, this->getRange().second), 2));
 
     bool enoughEnergy = this->_energy - range * this->getEnergyCost() > this->getEnergyLow();

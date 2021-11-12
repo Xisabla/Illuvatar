@@ -33,4 +33,11 @@ const std::map<Faction, std::string> strFromFaction = {
     { Faction::Werewolves, "Werewolf" }
 };
 
+const std::map<std::string, Faction> strToFaction = {
+    { "Eldar", Faction::Eldars },
+    { "Vala", Faction::Valars },
+    { "Dragon", Faction::Dragons },
+    { "Werewolf", Faction::Werewolves }
+};
+
 #endif // ILLUVATAR_FACTION_H
