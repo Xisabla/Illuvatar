@@ -181,7 +181,6 @@ superTypes::DirectionalPath Minion::findMaster(unsigned int range) {
 ThingAtPoint Minion::checkPosition(const superTypes::Point& point) {
     ThingAtPoint thing = Map::instance().getThingAtPoint(point);
     if (thing != ThingAtPoint::Character) return thing;
-
     Faction other = Map::instance().getCharacter(point.first, point.second)->faction();
     return (other == this->faction() || other == Character::alliance.at(this->faction())) ? ThingAtPoint::Ally : ThingAtPoint::Ennemy;
 }
@@ -270,10 +269,15 @@ bool Minion::interactsWithSurroundings() {
 }
 
 void Minion::move() {
+    // std::cout << "je move!" << std::endl;
+    return;
     int range = std::max(0, unirand::getValueAround(unirand::getValue(this->getRange().first, this->getRange().second), 2));
 
     bool enoughEnergy = this->_energy - range * this->getEnergyCost() > this->getEnergyLow();
     superTypes::DirectionalPath path = enoughEnergy && this->gotOneMsg() ? this->explore(range) : this->findMaster(range);
+
+    std::cout << path.size() << std::endl;
+    return;
 
     if (path.empty()) {
         this->interactsWithSurroundings();

@@ -160,9 +160,8 @@ ThingAtPoint Map::getThingAtPoint(const superTypes::Point& p) {
     if (!this->exists(p)) return ThingAtPoint::Void;
 
     Tile* t = Tile::get(p.first, p.second);
-
     // if (t->isObstacle()) return ThingAtPoint::Obstacle; //todo
-    if (this->getCharacter(p.first, p.second) != nullptr) return ThingAtPoint::Character;
+    if (this->containsCharacter(p.first, p.second)) return ThingAtPoint::Character;
     return ThingAtPoint::Nothing;
 }
 

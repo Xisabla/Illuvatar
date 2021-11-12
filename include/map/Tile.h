@@ -31,7 +31,6 @@ class Tile {
     [[nodiscard]] unsigned int x() const;
     [[nodiscard]] unsigned int y() const;
     [[nodiscard]] Faction getOwner() const;
-    // TODO: Character* getCharacter()
 
     // NOTE: Should have another name than "rectangle", like
     //  - Area, Box, Domain, Zone
