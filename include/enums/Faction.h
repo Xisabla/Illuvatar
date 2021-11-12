@@ -26,11 +26,11 @@ std::ostream& operator<<(std::ostream& out, Faction value);
 /**
  * @brief Transform a Faction into a string
  */
-const std::map<Faction, std::string> strFaction = {
-    { Faction::Eldars, "Eldars" },
-    { Faction::Valars, "Valars" },
-    { Faction::Dragons, "Dragons" },
-    { Faction::Werewolves, "Werewolves" }
+const std::map<Faction, std::string> strFromFaction = {
+    { Faction::Eldars, "Eldar" },
+    { Faction::Valars, "Vala" },
+    { Faction::Dragons, "Dragon" },
+    { Faction::Werewolves, "Werewolf" }
 };
 
 #endif // ILLUVATAR_FACTION_H

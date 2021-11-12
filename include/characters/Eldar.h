@@ -12,6 +12,9 @@
 #define ILLUVATAR_ELDAR_H
 
 #include "characters/GoodMinion.h"
+#include "enums/AttackNature.h"
+#include "core/Environment.h"
+#include "libs/json.h"
 
 /**
  * @class Eldar

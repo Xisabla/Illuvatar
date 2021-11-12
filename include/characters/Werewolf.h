@@ -12,6 +12,9 @@
 #define ILLUVATAR_WEREWOLF_H
 
 #include "characters/BadMinion.h"
+#include "enums/AttackNature.h"
+#include "core/Environment.h"
+#include "libs/json.h"
 
 /**
  * @class Werewolf

@@ -14,7 +14,9 @@
 #include "characters/Character.h"
 #include "characters/Minion.h"
 #include "enums/Faction.h"
+#include "core/Environment.h"
 
+#include <set>
 #include <vector>
 #include <string>
 
@@ -26,7 +28,7 @@ class Minion;
  */
 class Master : public Character {
   public:
-    Master(unsigned int x, unsigned int y, Faction faction, std::vector<std::string> listOfBaseMessage);
+    Master(unsigned int x, unsigned int y, Faction faction);
 
     // - Methods -----------------------------------------------------------------------------
     std::string generateMessage();
