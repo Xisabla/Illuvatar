@@ -38,9 +38,7 @@ void Game::step() {
     std::cout << "[game] Step" << std::endl;
     for (auto characterEntry : Map::instance().characters()) {
         Character* character = characterEntry.second;
-        // std::cout << "before : (" << character->x() << ", " << character->y() << ")" << std::endl;
         dynamic_cast<Minion*>(character)->move();
-        // std::cout << "after : (" << character->x() << ", " << character->y() << ")" << std::endl << std::endl;
     }
 }
 

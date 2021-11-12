@@ -270,8 +270,6 @@ bool Minion::interactsWithSurroundings() {
 }
 
 void Minion::move() {
-    // std::cout << "je move!" << std::endl;
-    return;
     int range = std::max(0, unirand::getValueAround(unirand::getValue(this->getRange().first, this->getRange().second), 2));
 
     bool enoughEnergy = this->_energy - range * this->getEnergyCost() > this->getEnergyLow();
@@ -294,7 +292,7 @@ void Minion::move() {
         }
 
         //tile change
-        Map::instance().jump({ this->x(), this->y() }, step.first, this);
+        Map::instance().jump(step.first, this);
         this->_x = step.first.first;
         this->_y = step.first.second;
         this->direction = step.second;
