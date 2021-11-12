@@ -124,7 +124,8 @@ CMakeLists.txt.user*
 *creator.user*
 
 # Build dir
-build/
+build/*
+!build/environment.json
 
 # Log files
 logs/

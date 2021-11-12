@@ -8,18 +8,18 @@
             }
         },
         "minion": {
-            "LifeMax": 150,
+            "lifeMax": 150,
 
-            "EnergyMax": 104,
-            "EnergyLow":  32,
-            "EnergyCost":  8,
-            "EnergyEnnemyCost":  12,
-            "Range":  {
-                "Min": 6,
-                "Max":10
+            "energyMax": 104,
+            "energyLow":  32,
+            "energyCost":  8,
+            "energyEnnemyCost":  12,
+            "range":  {
+                "min": 6,
+                "max":10
             },
 
-            "attackNature":  "Physical/Energetic",
+            "attackNature":  "Physical",
             "damages":  10,
             "selfDamages":  3,
 
@@ -47,7 +47,7 @@
 
     "Werewolf" : {
         "master": {
-            "messages": ["Da", "Db", "Dc", "Dd", "De"],
+            "messages": ["Wa", "Wb", "Wc", "Wd", "We"],
             "position": {
                 "x": 0,
                 "y": 0
@@ -65,7 +65,7 @@
                 "max":10
             },
 
-            "attackNature":  "Physical/Energetic",
+            "attackNature":  "Physical",
             "damages":  3,
             "selfDamages":  2,
 
@@ -93,7 +93,7 @@
 
     "Eldar" : {
         "master": {
-            "messages": ["Da", "Db", "Dc", "Dd", "De"],
+            "messages": ["Ea", "Eb", "Ec", "Ed", "Ee"],
             "position": {
                 "x": 0,
                 "y": 0
@@ -111,7 +111,7 @@
                 "max":10
             },
 
-            "attackNature":  "Physical/Energetic",
+            "attackNature":  "Physical",
             "damages":  3,
             "selfDamages":  2,
 
@@ -139,25 +139,25 @@
 
     "Vala" : {
         "master": {
-            "messages": ["Da", "Db", "Dc", "Dd", "De"],
+            "messages": ["Va", "Vb", "Vc", "Vd", "Ve"],
             "position": {
                 "x": 0,
                 "y": 0
             }
         },
         "minion": {
-            "LifeMax": 125,
+            "lifeMax": 125,
 
-            "EnergyMax": 90,
-            "EnergyLow":  24,
-            "EnergyCost":  6,
-            "EnergyEnnemyCost":  12,
-            "Range":  {
-                "Min": 6,
-                "Max":10
+            "energyMax": 90,
+            "energyLow":  24,
+            "energyCost":  6,
+            "energyEnnemyCost":  12,
+            "range":  {
+                "min": 6,
+                "max":10
             },
 
-            "attackNature":  "Physical/Energetic",
+            "attackNature":  "Energetic",
             "damages":  10,
             "selfDamages":  3,
 
