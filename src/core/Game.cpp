@@ -11,6 +11,9 @@
 
 #include "gui/MainWindow.h"
 #include "map/Map.h"
+#include "characters/Minion.h"
+#include "characters/GoodMinion.h"
+#include "characters/BadMinion.h"
 
 #include <stdexcept>
 
@@ -30,12 +33,38 @@ Game::Game(_token t, QApplication* app): Singleton(t), _app(app) {
 //  Game > PUBLIC METHODS
 //  --------------------------------------------------------------------------------------
 
-void Game::step() { std::cout << "[game] Step" << std::endl; }
+void Game::step() {
+    //prend tous les minions et les fait move
+    std::cout << "[game] Step" << std::endl;
+    for (auto characterEntry : Map::instance().characters()) {
+        Character* character = characterEntry.second;
+        // std::cout << "before : (" << character->x() << ", " << character->y() << ")" << std::endl;
+        dynamic_cast<Minion*>(character)->move();
+        // std::cout << "after : (" << character->x() << ", " << character->y() << ")" << std::endl << std::endl;
+    }
+}
 
-void Game::run(int steps) {
+void Game::run(int maxSteps) {
     std::cout << "[game] Run" << std::endl;
 
-    for (int i = 0; i < steps; i++) step();
+    for (int i = 0; i < maxSteps; i++) {
+        step();
+        if (end()) break;
+    }
+}
+
+bool Game::end() {
+    bool stillGoodMinion = false;
+    bool stillBadMinion = false;
+    for (auto characterEntry : Map::instance().characters()) {
+        Character* character = characterEntry.second;
+
+        if (dynamic_cast<GoodMinion*>(character) != nullptr) stillGoodMinion = true;
+        else if (dynamic_cast<BadMinion*>(character) != nullptr) stillBadMinion = true;
+
+        if (stillGoodMinion && stillBadMinion) return false;
+    }
+    return true;
 }
 
 int Game::exec() { return QApplication::exec(); }

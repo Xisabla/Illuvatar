@@ -21,7 +21,7 @@ Environment::Environment(std::string filePath) {
 
 Environment* Environment::instance() {
     if(Environment::_instance==nullptr){
-        Environment::_instance = new Environment("environment.json");
+        Environment::_instance = new Environment("environment.json");//"../build/environment.json"
     }
     return _instance;
 }

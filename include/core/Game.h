@@ -36,7 +36,8 @@ SINGLETON(Game) {
 
     // - Methods -----------------------------------------------------------------------------
     void step();
-    void run(int steps = 50);
+    void run(int maxSteps = 50);
+    bool end();
 
     static int exec();
 

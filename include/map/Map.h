@@ -44,6 +44,7 @@ SINGLETON(Map) {
 
     Character* getCharacter(unsigned int x, unsigned int y);
     Character* getMaster(Faction faction);
+    std::map<std::pair<unsigned int, unsigned int>, Character*>& characters();
 
     // - Setters -----------------------------------------------------------------------------
     void setPreset(Preset preset);

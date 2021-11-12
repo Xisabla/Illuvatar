@@ -58,6 +58,10 @@ Character* Map::getMaster(Faction faction) {
     return found->second;
 }
 
+std::map<std::pair<unsigned int, unsigned int>, Character*>& Map::characters() {
+    return _characters;
+}
+
 //  --------------------------------------------------------------------------------------
 //  Map > SETTERS
 //  --------------------------------------------------------------------------------------
