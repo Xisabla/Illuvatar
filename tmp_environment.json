@@ -20,13 +20,151 @@
             },
 
             "AttackNature":  "Physical/Energetic",
-            "Damages":  5,
+            "Damages":  10,
             "SelfDamages":  2,
 
             "DiceMaxValue":  100,
-            "DiceCriticFailureValue":  5,
-            "DiceFailureValue":  50,
-            "DiceSuccessValue":  96,
+            "DiceCriticFailureValue":  10,
+            "DiceFailureValue":  75,
+            "DiceSuccessValue":  98,
+
+            "positions": [
+                {
+                    "x": 1,
+                    "y": 1
+                },
+                {
+                    "x": 2,
+                    "y": 2
+                },
+                {
+                    "x": 3,
+                    "y": 3
+                }
+            ]
+        }
+    },
+
+    "Werewolf" : {
+        "master": {
+            "messages": ["Da", "Db", "Dc", "Dd", "De"],
+            "position": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        "minion": {
+            "LifeMax": 100,
+
+            "EnergyMax": 100,
+            "EnergyLow":  20,
+            "EnergyCost":  5,
+            "EnergyEnnemyCost":  10,
+            "Range":  {
+                "Min": 6,
+                "Max":10
+            },
+
+            "AttackNature":  "Physical/Energetic",
+            "Damages":  3,
+            "SelfDamages":  2,
+
+            "DiceMaxValue":  100,
+            "DiceCriticFailureValue":  3,
+            "DiceFailureValue":  25,
+            "DiceSuccessValue":  91,
+
+            "positions": [
+                {
+                    "x": 1,
+                    "y": 1
+                },
+                {
+                    "x": 2,
+                    "y": 2
+                },
+                {
+                    "x": 3,
+                    "y": 3
+                }
+            ]
+        }
+    },
+
+    "Eldar" : {
+        "master": {
+            "messages": ["Da", "Db", "Dc", "Dd", "De"],
+            "position": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        "minion": {
+            "LifeMax": 100,
+
+            "EnergyMax": 100,
+            "EnergyLow":  20,
+            "EnergyCost":  5,
+            "EnergyEnnemyCost":  10,
+            "Range":  {
+                "Min": 6,
+                "Max":10
+            },
+
+            "AttackNature":  "Physical/Energetic",
+            "Damages":  3,
+            "SelfDamages":  2,
+
+            "DiceMaxValue":  100,
+            "DiceCriticFailureValue":  3,
+            "DiceFailureValue":  25,
+            "DiceSuccessValue":  91,
+
+            "positions": [
+                {
+                    "x": 1,
+                    "y": 1
+                },
+                {
+                    "x": 2,
+                    "y": 2
+                },
+                {
+                    "x": 3,
+                    "y": 3
+                }
+            ]
+        }
+    },
+
+    "Vala" : {
+        "master": {
+            "messages": ["Da", "Db", "Dc", "Dd", "De"],
+            "position": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        "minion": {
+            "LifeMax": 100,
+
+            "EnergyMax": 100,
+            "EnergyLow":  20,
+            "EnergyCost":  5,
+            "EnergyEnnemyCost":  10,
+            "Range":  {
+                "Min": 6,
+                "Max":10
+            },
+
+            "AttackNature":  "Physical/Energetic",
+            "Damages":  10,
+            "SelfDamages":  2,
+
+            "DiceMaxValue":  100,
+            "DiceCriticFailureValue":  10,
+            "DiceFailureValue":  75,
+            "DiceSuccessValue":  98,
 
             "positions": [
                 {
