@@ -25,7 +25,7 @@ class Dragon: public Horde {
            Master& master);
 
     protected:
-    unsigned int damages = 5;
+    unsigned int damages = 10;
     unsigned int selfDamages = 2;
 
     virtual int getDamages() { return this->damages; };
@@ -34,11 +34,11 @@ class Dragon: public Horde {
 
     virtual int getDiceMaxValue() { return 100; };
 
-    virtual int getDiceCriticFailureValue() { return 5; };
+    virtual int getDiceCriticFailureValue() { return 10; };
 
-    virtual int getDiceFailureValue() { return 50; };
+    virtual int getDiceFailureValue() { return 75; };
 
-    virtual int getDiceSuccessValue() { return 96; };
+    virtual int getDiceSuccessValue() { return 98; };
 };
 
 #endif // ILLUVATAR_DRAGON_H

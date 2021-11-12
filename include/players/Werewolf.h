@@ -25,20 +25,20 @@ class Werewolf: public Horde {
            Master& master);
 
     protected:
-    unsigned int damages = 5;
-    unsigned int selfDamages = 2;
+      unsigned int damages = 3;
+      unsigned int selfDamages = 2;
 
-    virtual int getDamages() { return this->damages; };
+      virtual int getDamages() { return this->damages; };
 
-    virtual int getSelfDamages() { return this->selfDamages; };
+      virtual int getSelfDamages() { return this->selfDamages; };
 
-    virtual int getDiceMaxValue() { return 100; };
+      virtual int getDiceMaxValue() { return 100; };
 
-    virtual int getDiceCriticFailureValue() { return 5; };
+      virtual int getDiceCriticFailureValue() { return 3; };
 
-    virtual int getDiceFailureValue() { return 50; };
+      virtual int getDiceFailureValue() { return 25; };
 
-    virtual int getDiceSuccessValue() { return 96; };
+      virtual int getDiceSuccessValue() { return 91; };
 };
 
 #endif // ILLUVATAR_WEREWOLF_H
