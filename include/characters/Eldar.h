@@ -23,21 +23,21 @@
 class Eldar : public GoodMinion {
   public:
     Eldar(unsigned int x, unsigned int y): GoodMinion(x, y, Faction::Eldars) {
-      nlohmann::json& env = Environment::instance()->env();
+      auto minions = Environment::instance()->env()["characters"]["Eldar"]["minion"];
 
-      lifeMax = env["Eldar"]["minion"]["lifeMax"];
-      energyMax = env["Eldar"]["minion"]["energyMax"];
-      energyLow = env["Eldar"]["minion"]["energyLow"];
-      energyCost = env["Eldar"]["minion"]["energyCost"];
-      energyEnnemyCost = env["Eldar"]["minion"]["energyEnnemyCost"];
-      range = {env["Eldar"]["minion"]["range"]["min"], env["Eldar"]["minion"]["range"]["max"]};
-      attackNature = strToAttackNature.at(env["Eldar"]["minion"]["attackNature"]);
-      damages = env["Eldar"]["minion"]["damages"];
-      selfDamages = env["Eldar"]["minion"]["selfDamages"];
-      diceMaxValue = env["Eldar"]["minion"]["diceMaxValue"];
-      diceCriticFailureValue = env["Eldar"]["minion"]["diceCriticFailureValue"];
-      diceFailureValue = env["Eldar"]["minion"]["diceFailureValue"];
-      diceSuccessValue = env["Eldar"]["minion"]["diceSuccessValue"];
+      lifeMax = minions["lifeMax"];
+      energyMax = minions["energyMax"];
+      energyLow = minions["energyLow"];
+      energyCost = minions["energyCost"];
+      energyEnnemyCost = minions["energyEnnemyCost"];
+      range = {minions["range"]["min"], minions["range"]["max"]};
+      attackNature = strToAttackNature.at(minions["attackNature"]);
+      damages = minions["damages"];
+      selfDamages = minions["selfDamages"];
+      diceMaxValue = minions["diceMaxValue"];
+      diceCriticFailureValue = minions["diceCriticFailureValue"];
+      diceFailureValue = minions["diceFailureValue"];
+      diceSuccessValue = minions["diceSuccessValue"];
     }
     
   protected:

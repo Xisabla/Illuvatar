@@ -16,7 +16,7 @@
 
 Master::Master(unsigned int x, unsigned int y, Faction faction): Character(x, y, faction) {
     // TODO: Unsure that not other master exists
-    messagesFaction = Environment::instance()->env()[strFromFaction.at(faction)]["master"]["messages"].get<std::vector<std::string>>();
+    messagesFaction = Environment::instance()->env()["characters"][strFromFaction.at(faction)]["master"]["messages"].get<std::vector<std::string>>();
     this->addMessages(messagesFaction);
 }
 

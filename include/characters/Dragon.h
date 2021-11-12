@@ -23,21 +23,21 @@
 class Dragon : public BadMinion {
   public:
     Dragon(unsigned int x, unsigned int y): BadMinion(x, y, Faction::Dragons) {
-      nlohmann::json& env = Environment::instance()->env();
+      auto minions = Environment::instance()->env()["characters"]["Dragon"]["minion"];
 
-      lifeMax = env["Dragon"]["minion"]["lifeMax"];
-      energyMax = env["Dragon"]["minion"]["energyMax"];
-      energyLow = env["Dragon"]["minion"]["energyLow"];
-      energyCost = env["Dragon"]["minion"]["energyCost"];
-      energyEnnemyCost = env["Dragon"]["minion"]["energyEnnemyCost"];
-      range = {env["Dragon"]["minion"]["range"]["min"], env["Dragon"]["minion"]["range"]["max"]};
-      attackNature = strToAttackNature.at(env["Dragon"]["minion"]["attackNature"]);
-      damages = env["Dragon"]["minion"]["damages"];
-      selfDamages = env["Dragon"]["minion"]["selfDamages"];
-      diceMaxValue = env["Dragon"]["minion"]["diceMaxValue"];
-      diceCriticFailureValue = env["Dragon"]["minion"]["diceCriticFailureValue"];
-      diceFailureValue = env["Dragon"]["minion"]["diceFailureValue"];
-      diceSuccessValue = env["Dragon"]["minion"]["diceSuccessValue"];
+      lifeMax = minions["lifeMax"];
+      energyMax = minions["energyMax"];
+      energyLow = minions["energyLow"];
+      energyCost = minions["energyCost"];
+      energyEnnemyCost = minions["energyEnnemyCost"];
+      range = {minions["range"]["min"], minions["range"]["max"]};
+      attackNature = strToAttackNature.at(minions["attackNature"]);
+      damages = minions["damages"];
+      selfDamages = minions["selfDamages"];
+      diceMaxValue = minions["diceMaxValue"];
+      diceCriticFailureValue = minions["diceCriticFailureValue"];
+      diceFailureValue = minions["diceFailureValue"];
+      diceSuccessValue = minions["diceSuccessValue"];
     }
 
   protected:

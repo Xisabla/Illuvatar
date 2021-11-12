@@ -14,6 +14,8 @@
 #include "characters/Master.h"
 #include "characters/Vala.h"
 #include "characters/Werewolf.h"
+#include "core/Environment.h"
+#include "libs/json.h"
 
 //  --------------------------------------------------------------------------------------
 //  Map
@@ -72,12 +74,12 @@ void Map::generate() {
     if (_preset == Turtle) {
         _domain = Domain(21, 21);
 
-        generateDisk(7.5, 10, 10);
+        nlohmann::json env = Environment::instance()->env();
+        generateDisk(env["map"]["mainBoard"]["radius"], env["map"]["mainBoard"]["center"]["x"], env["map"]["mainBoard"]["center"]["y"]);
 
-        generateDisk(2.8, 16, 16, Faction::Dragons);
-        generateDisk(2.8, 16, 4, Faction::Eldars);
-        generateDisk(2.8, 4, 16, Faction::Valars);
-        generateDisk(2.8, 4, 4, Faction::Werewolves);
+        for (auto safeZone : env["map"]["safeZones"]) {
+            generateDisk(safeZone["radius"], safeZone["center"]["x"], safeZone["center"]["y"], strToFaction.at(safeZone["faction"]));
+        }
 
         new Master(16, 16, Faction::Dragons);
         (new Dragon(15, 14))->virtualInits();
