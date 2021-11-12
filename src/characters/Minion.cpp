@@ -183,3 +183,43 @@ std::vector<std::pair<ThingAtPoint, superTypes::Point>> Minion::checkAround() {
 
     return things;
 }
+
+superTypes::DirectionalPath Minion::explore(unsigned int range) {
+    std::vector<Direction> possibleDirs = {};
+    superTypes::Point p = { this->x(), this->y() };
+
+    for (Direction dir: directionutils::fanDirections.at(this->direction)) {
+        if (this->checkDirection(p, dir).first == ThingAtPoint::Nothing) {
+            possibleDirs.push_back(dir);
+        }
+    }
+    if (possibleDirs.empty()) {
+        for (Direction dir: directionutils::sideDirections.at(this->direction)) {
+            if (this->checkDirection(p, dir).first == ThingAtPoint::Nothing) {
+                possibleDirs.push_back(dir);
+            }
+        }
+    }
+
+    Direction direction;
+    Direction opposite = directionutils::oppositeDirection.at(this->direction);
+    if (!possibleDirs.empty()) {
+        direction = possibleDirs[unirand::getValue(0, possibleDirs.size() - 1)];
+    } else if (this->checkDirection(p, opposite).first == ThingAtPoint::Nothing) {
+        direction = opposite;
+    } else {
+        return {}; // aucune direction : reste sur place et interagit avec trucs autours
+    }
+
+    superTypes::DirectionalPath path = {};
+    superTypes::Point jump = directionutils::nextDirection.at(direction);
+    superTypes::Point futurePoint = Map::instance().project(p, jump);
+    int i = 0;
+    do { //on sait que la première prochaine tuile est libre
+        path.push_back({ futurePoint, direction });
+
+        futurePoint = Map::instance().project(futurePoint, jump);
+    } while (++i < range && Map::instance().exists(futurePoint) && this->checkDirection(futurePoint, direction).first != ThingAtPoint::Obstacle);
+
+    return path;
+}
