@@ -206,7 +206,6 @@ std::vector<std::pair<ThingAtPoint, superTypes::Point>> Minion::checkAround() {
 superTypes::DirectionalPath Minion::explore(unsigned int range) {
     std::vector<Direction> possibleDirs = {};
     superTypes::Point p = { this->x(), this->y() };
-
     for (Direction dir: directionutils::fanDirections.at(this->direction)) {
         if (this->checkDirection(p, dir).first == ThingAtPoint::Nothing) {
             possibleDirs.push_back(dir);
@@ -219,7 +218,6 @@ superTypes::DirectionalPath Minion::explore(unsigned int range) {
             }
         }
     }
-
     Direction direction;
     Direction opposite = directionutils::oppositeDirection.at(this->direction);
     if (!possibleDirs.empty()) {
@@ -229,7 +227,6 @@ superTypes::DirectionalPath Minion::explore(unsigned int range) {
     } else {
         return {}; // aucune direction : reste sur place et interagit avec trucs autours
     }
-
     superTypes::DirectionalPath path = {};
     superTypes::Point jump = directionutils::nextDirection.at(direction);
     superTypes::Point futurePoint = Map::instance().project(p, jump);
@@ -269,14 +266,11 @@ bool Minion::interactsWithSurroundings() {
 }
 
 void Minion::move() {
-    // std::cout << "je move!" << std::endl;
-    return;
     int range = std::max(0, unirand::getValueAround(unirand::getValue(this->getRange().first, this->getRange().second), 2));
-
     bool enoughEnergy = this->_energy - range * this->getEnergyCost() > this->getEnergyLow();
+
     superTypes::DirectionalPath path = enoughEnergy && this->gotOneMsg() ? this->explore(range) : this->findMaster(range);
 
-    std::cout << path.size() << std::endl;
     return;
 
     if (path.empty()) {

@@ -19,12 +19,11 @@ pathfinder::shortest(Point current, Point& target, unsigned int maxDistance) {
     Path explored = {};
     Path unexplored = {};
     Path res = AStar(generated, current, target, explored, unexplored);
-
     Path unlooped = {};
     res = unlooper(res, unlooped);
-
     DirectionalPath straightened = {};
-    return straightenerAndCutter(res, straightened, computeDirection(current, unlooped[0]), maxDistance);
+    auto i = straightenerAndCutter(res, straightened, computeDirection(current, unlooped[0]), maxDistance);
+    return i;
 }
 
 double pathfinder::distanceTo(Point& p1, Point& p2) {
@@ -96,7 +95,6 @@ Path pathfinder::unlooper(Path& refPath, Path& path, unsigned int pos) {
         refPath.clear();
         return path;
     }
-
     // List neighbours occurrences in Path
     vector<pair<Point, int>> neighbours = {};
     std::map<Point, int> occurrences = {};
@@ -112,10 +110,9 @@ Path pathfinder::unlooper(Path& refPath, Path& path, unsigned int pos) {
             }
         }
     }
-
     if (!neighbours.empty()) {
         // Figure out pos
-        for (unsigned int i = neighbours.size() - 1; i >= 0; --i) {
+        for (int i = neighbours.size() - 1; i >= 0; --i) {
             pair<Point, int> neighbor = neighbours[i];
             if (occurrences.at(neighbor.first) == 1) {
                 pos = neighbor.second;
@@ -123,8 +120,8 @@ Path pathfinder::unlooper(Path& refPath, Path& path, unsigned int pos) {
             }
         }
     }
-
-    return pathfinder::unlooper(refPath, path, pos + 1);
+    auto i =  pathfinder::unlooper(refPath, path, pos + 1);
+    return i;
 }
 
 DirectionalPath pathfinder::straightenerAndCutter(Path& ref,
