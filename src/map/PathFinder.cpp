@@ -10,7 +10,7 @@ DirectionalPath
 pathfinder::shortest(Point current, Point& target, unsigned int maxDistance) {
     // TODO: Throw exception
     if (!Map::instance().exists(current) || !Map::instance().exists(target)) {
-        cout << "error at pathfinder::shortest(...," << current << ", " << target << ", ...);"
+        cout << "error at pathfinder::shortest((" << current.first << ", " << current.second << "), (" << target.first << ", " << target.second << "), ...);"
              << endl;
         exit(1);
     }
@@ -25,6 +25,10 @@ pathfinder::shortest(Point current, Point& target, unsigned int maxDistance) {
 
     DirectionalPath straightened = {};
     return straightenerAndCutter(res, straightened, computeDirection(current, unlooped[0]), maxDistance);
+}
+
+double pathfinder::distanceTo(Point& p1, Point& p2) {
+    return sqrt(pow(p1.first - p2.first, 2) + pow(p1.second - p2.second, 2));
 }
 
 Path pathfinder::AStar(Path& path,
@@ -59,7 +63,7 @@ Path pathfinder::AStar(Path& path,
 
     if (!neighbours.empty()) {
         sort(neighbours.begin(), neighbours.end(), [&target](Point& a, Point& b) {
-            return target.distanceTo(a) > target.distanceTo(b);
+            return distanceTo(target, a) > distanceTo(target, b);
         });
 
         next = neighbours.back();
@@ -158,8 +162,8 @@ DirectionalPath pathfinder::straightenerAndCutter(Path& ref,
 }
 
 bool pathfinder::checkAllBridges(DirectionalPath& path, Point current, Point next) {
-    bool xAxis = checkBothBridges(path, current.X() == next.X(), current, next, false, current.Y() - next.Y());
-    bool yAxis = checkBothBridges(path, current.Y() == next.Y(), current, next, true, current.X() - next.X());
+    bool xAxis = checkBothBridges(path, current.first == next.first, current, next, false, current.second - next.second);
+    bool yAxis = checkBothBridges(path, current.second == next.second, current, next, true, current.first - next.first);
     return xAxis || yAxis;
 }
 
@@ -171,8 +175,8 @@ bool pathfinder::checkBothBridges(DirectionalPath& path,
                                   int deltaBridge) {
     if (!alignTest) return false;
 
-    bool firstCheck = checkBridge(path, {next.X() - first, next.Y() - !first}, deltaBridge == -2, current, next);
-    bool secondCheck = checkBridge(path, {next.X() + first, next.Y() + !first}, deltaBridge == 2, current, next);
+    bool firstCheck = checkBridge(path, {next.first - first, next.second - !first}, deltaBridge == -2, current, next);
+    bool secondCheck = checkBridge(path, {next.first + first, next.second + !first}, deltaBridge == 2, current, next);
     return firstCheck || secondCheck;
 }
 

@@ -187,6 +187,10 @@ superTypes::Point Map::project(const superTypes::Point& from, const superTypes::
     return { from.first + jump.first, from.second + jump.second };
 }
 
+bool Map::areNeighbours(const superTypes::Point& first, const superTypes::Point& second) {
+    return abs((int) first.first - (int) second.first) == 1 && abs((int) first.second - (int) second.second) == 1;
+}
+
 //  --------------------------------------------------------------------------------------
 //  Map > PRIVATE METHODS
 //  --------------------------------------------------------------------------------------

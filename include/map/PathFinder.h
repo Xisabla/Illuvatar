@@ -22,7 +22,6 @@
 
 
 namespace pathfinder {
-
 /**
  * @brief Compute the shortest Path between two points
  * @param map Map on which the Path will be computed
@@ -31,27 +30,34 @@ namespace pathfinder {
  * @param maxDistance Maximum number of Tiles to use (may stop the Path before the target)
  * @return The computed Path
  */
-superTypes::DirectionalPath shortest(Map& map, superTypes::Point current, superTypes::Point& target, unsigned int maxDistance);
+superTypes::DirectionalPath shortest(superTypes::Point current, superTypes::Point& target, unsigned int maxDistance);
+
+/**
+ * Compute the distance between the current Point and another one
+ * @param p1 First point to compute the distance
+ * @param p2 Second point to compute the distance
+ * @return The distance computed
+ */
+double distanceTo(superTypes::Point& p1, superTypes::Point& p2);
 
 /**
  * @brief Implementation of the A* algorithm to compute the shortest path between 2 Points on the
  * map
  * @return The computed path
  */
-superTypes::Path AStar(Map& map, superTypes::Path& path, superTypes::Point& current, superTypes::Point& target, superTypes::Path& explored, superTypes::Path& unexplored);
+superTypes::Path AStar(superTypes::Path& path, superTypes::Point& current, superTypes::Point& target, superTypes::Path& explored, superTypes::Path& unexplored);
 
 /**
  * @brief Remove all loops on a Path by taking the last neighbour of each point
  * @return The unlooped path
  */
-superTypes::Path unlooper(Map& map, superTypes::Path& refPath, superTypes::Path& path, unsigned int pos = 1);
+superTypes::Path unlooper(superTypes::Path& refPath, superTypes::Path& path, unsigned int pos = 1);
 
 /**
  * @brief Remove all bridges on a Path by detecting pattern and add direction at each step
  * @return The unbridged, directed path
  */
-superTypes::DirectionalPath straightenerAndCutter(Map& map,
-                                      superTypes::Path& ref,
+superTypes::DirectionalPath straightenerAndCutter(superTypes::Path& ref,
                                       superTypes::DirectionalPath& path,
                                       Direction direction,
                                       unsigned int maxDistance,
@@ -63,7 +69,7 @@ superTypes::DirectionalPath straightenerAndCutter(Map& map,
  * @param next The arrival of a potential bridge
  * @return True if a bridge is detected
  */
-bool checkAllBridges(Map& map, superTypes::DirectionalPath& path, superTypes::Point current, superTypes::Point next);
+bool checkAllBridges(superTypes::DirectionalPath& path, superTypes::Point current, superTypes::Point next);
 
 /**
  * @brief Verify pattern on both side of a secondary axis for a given primary axis
@@ -74,8 +80,7 @@ bool checkAllBridges(Map& map, superTypes::DirectionalPath& path, superTypes::Po
  * @param deltaBridge The gap between current and next on the secondary axis
  * @return True if a bridge is detected
  */
-bool checkBothBridges(Map& map,
-                      superTypes::DirectionalPath& path,
+bool checkBothBridges(superTypes::DirectionalPath& path,
                       bool alignTest,
                       superTypes::Point current,
                       superTypes::Point next,
@@ -90,8 +95,7 @@ bool checkBothBridges(Map& map,
  * @param next The arrival of a potential bridge
  * @return True if a bridge is detected and added to the path
  */
-bool checkBridge(Map& map,
-                 superTypes::DirectionalPath& path,
+bool checkBridge(superTypes::DirectionalPath& path,
                  superTypes::Point bridge,
                  bool alignTest,
                  superTypes::Point current,

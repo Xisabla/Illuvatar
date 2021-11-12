@@ -152,3 +152,8 @@ void Minion::hurtItself() {
 std::string Minion::getAssetPath() {
     return Character::getAssetPath() + strDirection.at(this->direction) + ".png";
 }
+
+superTypes::DirectionalPath Minion::findMaster(unsigned int range) {
+    superTypes::Point target = {this->master()->x(), this->master()->y()};
+    return pathfinder::shortest({this->x(), this->y()}, target, range);
+}

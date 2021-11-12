@@ -62,6 +62,7 @@ SINGLETON(Map) {
     ThingAtPoint getThingAtPoint(const superTypes::Point& p);
     superTypes::Point computeLastPosition(const superTypes::Point& point, const Direction& direction);
     static superTypes::Point project(const superTypes::Point& from, const superTypes::Point& jump);
+    static bool areNeighbours(const superTypes::Point& first, const superTypes::Point& second);
 
     // - Friends -----------------------------------------------------------------------------
 

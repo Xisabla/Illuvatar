@@ -55,6 +55,7 @@ set(SOURCES
         include/map/Domain.h src/map/Domain.cpp
         include/map/Map.h src/map/Map.cpp
         include/map/Tile.h src/map/Tile.cpp
+        include/map/pathFinder.h src/map/pathFinder.cpp
         include/templates/Singleton.h
         include/unirand.h src/unirand.cpp
         include/superTypes

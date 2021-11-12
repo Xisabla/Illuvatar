@@ -81,8 +81,8 @@ class Minion : public Character {
 
     void searchCorpse(Minion* minion);
 
-    superTypes::DirectionalPath explore(int range);
-    superTypes::DirectionalPath findMaster(int range);
+    superTypes::DirectionalPath explore(unsigned int range);
+    superTypes::DirectionalPath findMaster(unsigned int range);
     bool interactsWithSurroundings();
     std::pair<ThingAtPoint, superTypes::Point> checkDirection(const superTypes::Point& point, Direction& direction);
     ThingAtPoint checkPosition(const superTypes::Point& point);
