@@ -13,9 +13,11 @@
 
 #include "characters/Character.h"
 #include "characters/Master.h"
+#include "enums/ThingAtPoint.h"
 #include "enums/RollResult.h"
 #include "enums/Direction.h"
 #include "enums/Faction.h"
+#include "superTypes.h"
 
 /**
  * @class Minion
@@ -33,42 +35,41 @@ class Minion : public Character {
     void move();
     void reduceEnergy(unsigned int _energy);
     void reduceLife(unsigned int life);
-    void restoreLife(unsigned int heal);
     void restoreEnergy(unsigned int heal);
-    Direction getDirection() { return this->currentDirection; }
+    void restoreLife(unsigned int heal);
+    Direction getDirection() { return this->direction; }
 
   protected:
     // - Methods -----------------------------------------------------------------------------
     void exchange(Minion* minion);
     bool fight(Minion* minion);
-    int attack();
+    void normalAttack(Minion* minion);
+    void attack(Minion* minion);
+    void hurtItself();
 
     // - Attributes --------------------------------------------------------------------------
     Master* _master;
 
+    //passer tous les trucs fixes en getters virtuels
     unsigned int _lifeMax = 100;
     unsigned int _life = this->_lifeMax;
 
     unsigned int _energyMax = 100;
     unsigned int _energy = this->_energyMax;
     unsigned int energyCost = 5;
-    // unsigned int energyEnnemyCost = 2 * this->energyCost;
-    // unsigned int energyLow = 20;
+    unsigned int energyEnnemyCost = 2 * this->energyCost;
+    unsigned int energyLow = 20;
     static const int lowEnergy = 20;
 
     constexpr static const std::pair<int, int> range { 6, 10 };
 
     virtual int getDamages() = 0;
     virtual int getSelfDamages() = 0;
-    virtual void specialAttack(Minion& other) = 0;
-    void normalAttack(Minion& other);
+    virtual void specialAttack(Minion* minion) = 0;
 
     virtual int getDiceMaxValue() = 0;
-
     virtual int getDiceCriticFailureValue() = 0;
-
     virtual int getDiceFailureValue() = 0;
-
     virtual int getDiceSuccessValue() = 0;
 
     virtual std::string getAssetPath();
@@ -76,20 +77,19 @@ class Minion : public Character {
   private:
     // - Methods -----------------------------------------------------------------------------
 
-    RollResult roll();
+    RollResult rollDice();
 
     void searchCorpse(Minion* minion);
 
-    // TODO: DirectionalPath explore(int range);
-    // TODO: DirectionalPath findMaster(int range);
-    // TODO: bool interactsWithSurroundings();
-    // TODO ? ThingAtPoint checkPosition(const Point& point);
-    // TODO ? std::pair<ThingAtPoint, Point> checkDirection(const Point& point, Direction&
-    // direction);
-    // TODO ? std::vector<std::pair<ThingAtPoint, Point>> checkAround();
+    superTypes::DirectionalPath explore(int range);
+    superTypes::DirectionalPath findMaster(int range);
+    bool interactsWithSurroundings();
+    std::pair<ThingAtPoint, superTypes::Point> checkDirection(const superTypes::Point& point, Direction& direction);
+    ThingAtPoint checkPosition(const superTypes::Point& point);
+    std::vector<std::pair<ThingAtPoint, superTypes::Point>> checkAround();
 
     // - Attributes --------------------------------------------------------------------------
-    Direction currentDirection;
+    Direction direction;
 };
 
 

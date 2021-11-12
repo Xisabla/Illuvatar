@@ -10,6 +10,7 @@
 #include "characters/Minion.h"
 
 #include "map/Map.h"
+#include "map/PathFinder.h"
 #include "enums/DirectionUtils.h"
 #include "unirand.h"
 
@@ -19,7 +20,7 @@
 
 Minion::Minion(unsigned int x, unsigned int y, Faction faction)
 : Character(x, y, faction), _master(dynamic_cast<Master*>(Map::instance().getMaster(faction))) {
-    this->currentDirection = directionutils::randDirection();
+    this->direction = directionutils::randDirection();
 }
 
 //  --------------------------------------------------------------------------------------
@@ -39,15 +40,21 @@ bool Minion::isAlive() const { return _life > 0 && _energy > 0; }
 //  --------------------------------------------------------------------------------------
 
 void Minion::exchange(Minion* minion) {
-    RollResult result = roll();
+    RollResult result = rollDice();
 
-    if (result == RollResult::CriticalSuccess && !minion->messages().empty())
+    if (result == RollResult::CriticalSuccess && !minion->messages().empty()) {
         addMessage(minion->getRandomMessage());
+        return;
+    }
     if (result == RollResult::Success) {
         if (!minion->messages().empty()) addMessage(minion->dropRandomMessage());
         if (!messages().empty()) minion->addMessage(dropRandomMessage());
+        return;
     }
-    if (result == RollResult::Failure && !minion->messages().empty()) dropRandomMessage();
+    if (result == RollResult::Failure && !minion->messages().empty()) {
+        dropRandomMessage();
+        return;
+    }
     if (result == RollResult::CriticalFailure) {
         if (!minion->messages().empty()) minion->dropRandomMessage();
         if (!messages().empty()) dropRandomMessage();
@@ -56,12 +63,14 @@ void Minion::exchange(Minion* minion) {
 
 bool Minion::fight(Minion* minion) {
     do {
-        minion->reduceLife(attack());
+        minion->attack(minion);
 
         if (!minion->isAlive()) {
             searchCorpse(minion);
             return true;
         }
+
+        minion->attack(this);
     } while (isAlive());
 
     minion->searchCorpse(this);
@@ -69,7 +78,23 @@ bool Minion::fight(Minion* minion) {
     return false;
 }
 
-int Minion::attack() { return 100; }
+void Minion::attack(Minion* minion) {
+    switch(this->rollDice()) {
+        case RollResult::CriticalSuccess:
+            this->specialAttack(minion);
+            break;
+
+        case RollResult::Success:
+            this->normalAttack(minion);
+            break;
+
+        // case failure : "miss"
+
+        case RollResult::CriticalFailure:
+            this->hurtItself();
+            break;
+    }
+}
 
 //  --------------------------------------------------------------------------------------
 //  Minion > PRIVATE METHODS
@@ -93,13 +118,20 @@ void Minion::restoreLife(unsigned int heal) {
     else this->_life = this->_lifeMax;
 }
 
-RollResult Minion::roll() {
-    // TODO: Dice objects
-    return RollResult::Success;
+RollResult Minion::rollDice() {
+    int diceResult = unirand::getValue(1, this->getDiceMaxValue());
+
+    if (diceResult < this->getDiceCriticFailureValue()) return RollResult::CriticalFailure;
+
+    if (diceResult <= this->getDiceFailureValue()) return RollResult::Failure;
+
+    if (diceResult <= this->getDiceSuccessValue()) return RollResult::Success;
+
+    return RollResult::CriticalSuccess;
 }
 
 void Minion::searchCorpse(Minion* minion) {
-    RollResult result = roll();
+    RollResult result = rollDice();
 
     if(result == RollResult::CriticalSuccess) addMessages(minion->messages());
     if(result == RollResult::Success && !minion->messages().empty()) addMessage(minion->dropRandomMessage());
@@ -107,12 +139,16 @@ void Minion::searchCorpse(Minion* minion) {
     if(result == RollResult::CriticalFailure) dropMessages();
 }
 
-void Minion::normalAttack(Minion& other) {
+void Minion::normalAttack(Minion* minion) {
     // TODO : bool to know if life or _energy ?
-    other.reduceLife(unirand::getValueAround(this->getDamages(), 2));
+    minion->reduceLife(unirand::getValueAround(this->getDamages(), 2));
 }
 
+void Minion::hurtItself() {
+    // TODO : bool to know if life or energy ?
+    this->reduceLife(unirand::getValueAround(this->getSelfDamages()));
+}
 
 std::string Minion::getAssetPath() {
-    return Character::getAssetPath() + strDirection.at(this->currentDirection) + ".png";
+    return Character::getAssetPath() + strDirection.at(this->direction) + ".png";
 }

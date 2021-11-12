@@ -57,6 +57,7 @@ set(SOURCES
         include/map/Tile.h src/map/Tile.cpp
         include/templates/Singleton.h
         include/unirand.h src/unirand.cpp
+        include/superTypes
         src/core/main.cpp)
 
 # -----------------------------------------------------------------------------

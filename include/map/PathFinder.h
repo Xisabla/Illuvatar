@@ -31,14 +31,14 @@ namespace pathfinder {
  * @param maxDistance Maximum number of Tiles to use (may stop the Path before the target)
  * @return The computed Path
  */
-superTypes::DirectionalPath shortest(Map& map, Point current, Point& target, unsigned int maxDistance);
+superTypes::DirectionalPath shortest(Map& map, superTypes::Point current, superTypes::Point& target, unsigned int maxDistance);
 
 /**
  * @brief Implementation of the A* algorithm to compute the shortest path between 2 Points on the
  * map
  * @return The computed path
  */
-superTypes::Path AStar(Map& map, superTypes::Path& path, Point& current, Point& target, superTypes::Path& explored, superTypes::Path& unexplored);
+superTypes::Path AStar(Map& map, superTypes::Path& path, superTypes::Point& current, superTypes::Point& target, superTypes::Path& explored, superTypes::Path& unexplored);
 
 /**
  * @brief Remove all loops on a Path by taking the last neighbour of each point
@@ -63,7 +63,7 @@ superTypes::DirectionalPath straightenerAndCutter(Map& map,
  * @param next The arrival of a potential bridge
  * @return True if a bridge is detected
  */
-bool checkAllBridges(Map& map, superTypes::DirectionalPath& path, Point current, Point next);
+bool checkAllBridges(Map& map, superTypes::DirectionalPath& path, superTypes::Point current, superTypes::Point next);
 
 /**
  * @brief Verify pattern on both side of a secondary axis for a given primary axis
@@ -77,8 +77,8 @@ bool checkAllBridges(Map& map, superTypes::DirectionalPath& path, Point current,
 bool checkBothBridges(Map& map,
                       superTypes::DirectionalPath& path,
                       bool alignTest,
-                      Point current,
-                      Point next,
+                      superTypes::Point current,
+                      superTypes::Point next,
                       bool first,
                       int deltaBridge);
 
@@ -92,10 +92,10 @@ bool checkBothBridges(Map& map,
  */
 bool checkBridge(Map& map,
                  superTypes::DirectionalPath& path,
-                 Point bridge,
+                 superTypes::Point bridge,
                  bool alignTest,
-                 Point current,
-                 Point next);
+                 superTypes::Point current,
+                 superTypes::Point next);
 } // namespace pathfinder
 
 #endif // ILLUVATAR_PATHFINDER_H

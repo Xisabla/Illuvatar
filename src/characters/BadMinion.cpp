@@ -20,7 +20,7 @@ BadMinion::BadMinion(unsigned int x, unsigned int y, Faction faction): Minion(x,
 //  BadMinion > PUBLIC METHODS
 //  --------------------------------------------------------------------------------------
 
-void BadMinion::specialAttack(Minion& other) {
-    this->normalAttack(other);
+void BadMinion::specialAttack(Minion* minion) {
+    this->normalAttack(minion);
     this->restoreLife(unirand::getValueAround(this->lifeHeal, 2));
 }

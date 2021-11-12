@@ -29,7 +29,7 @@ class BadMinion : public Minion {
     /**
      * @brief Horde skill : drain life to ennemy after attacking him
      */
-    virtual void specialAttack(Minion& other);
+    virtual void specialAttack(Minion* minion);
 };
 
 

@@ -29,7 +29,7 @@ class GoodMinion : public Minion {
     /**
      * @brief Alliance skill : remove _energy to ennemy and attack him
      */
-    virtual void specialAttack(Minion& other);
+    virtual void specialAttack(Minion* minion);
 };
 
 
