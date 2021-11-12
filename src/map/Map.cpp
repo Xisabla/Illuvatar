@@ -79,31 +79,40 @@ void Map::generate() {
         _domain = Domain(21, 21);
 
         nlohmann::json env = Environment::instance()->env();
-        generateDisk(env["map"]["mainBoard"]["radius"], env["map"]["mainBoard"]["center"]["x"], env["map"]["mainBoard"]["center"]["y"]);
+        generateDisk(env["map"]["mainBoard"]["radius"],
+                     env["map"]["mainBoard"]["center"]["x"],
+                     env["map"]["mainBoard"]["center"]["y"]);
 
-        for (auto safeZone : env["map"]["safeZones"]) {
-            generateDisk(safeZone["radius"], safeZone["center"]["x"], safeZone["center"]["y"], strToFaction.at(safeZone["faction"]));
+        for (auto safeZone: env["map"]["safeZones"]) {
+            generateDisk(safeZone["radius"],
+                         safeZone["center"]["x"],
+                         safeZone["center"]["y"],
+                         strToFaction.at(safeZone["faction"]));
         }
 
-        for (auto race : env["characters"]) {
+        for (auto race: env["characters"]) {
             Faction faction = strToFaction.at(race["faction"]);
             new Master(race["master"]["position"]["x"], race["master"]["position"]["y"], faction);
 
-            switch (faction){
+            switch (faction) {
                 case Faction::Dragons:
-                    for (auto pos : race["minion"]["positions"]) (new Dragon(pos["x"], pos["y"]))->virtualInits();
+                    for (auto pos: race["minion"]["positions"])
+                        (new Dragon(pos["x"], pos["y"]))->virtualInits();
                     break;
 
                 case Faction::Eldars:
-                    for (auto pos : race["minion"]["positions"]) (new Eldar(pos["x"], pos["y"]))->virtualInits();
+                    for (auto pos: race["minion"]["positions"])
+                        (new Eldar(pos["x"], pos["y"]))->virtualInits();
                     break;
 
                 case Faction::Valars:
-                    for (auto pos : race["minion"]["positions"]) (new Vala(pos["x"], pos["y"]))->virtualInits();
+                    for (auto pos: race["minion"]["positions"])
+                        (new Vala(pos["x"], pos["y"]))->virtualInits();
                     break;
 
                 case Faction::Werewolves:
-                    for (auto pos : race["minion"]["positions"]) (new Werewolf(pos["x"], pos["y"]))->virtualInits();
+                    for (auto pos: race["minion"]["positions"])
+                        (new Werewolf(pos["x"], pos["y"]))->virtualInits();
                     break;
             }
         }
@@ -152,9 +161,13 @@ bool Map::containsCharacter(unsigned int x, unsigned int y) {
     return _characters.contains({ x, y });
 }
 
-bool Map::exists(const superTypes::Point& p) const {
-    return Tile::exists(p.first, p.second);
+void Map::removeAllCharacters() {
+    for (auto& e: _characters) delete e.second;
+
+    _characters = {};
 }
+
+bool Map::exists(const superTypes::Point& p) const { return Tile::exists(p.first, p.second); }
 
 ThingAtPoint Map::getThingAtPoint(const superTypes::Point& p) {
     if (!this->exists(p)) return ThingAtPoint::Void;
@@ -165,12 +178,14 @@ ThingAtPoint Map::getThingAtPoint(const superTypes::Point& p) {
     return ThingAtPoint::Nothing;
 }
 
-superTypes::Point Map::computeLastPosition(const superTypes::Point& point, const Direction& direction) {
+superTypes::Point Map::computeLastPosition(const superTypes::Point& point,
+                                           const Direction& direction) {
     superTypes::Point lastCoords = Map::project(point, directionutils::computeLastJump(direction));
 
     // TODO: Throw exception
     if (!this->exists(lastCoords)) {
-        std::cout << "error at Map::computeLastPosition(" << point.first << " " << point.second << ", ...)" << std::endl;
+        std::cout << "error at Map::computeLastPosition(" << point.first << " " << point.second
+                  << ", ...)" << std::endl;
         exit(1);
     }
     Tile* t = Tile::get(lastCoords.first, lastCoords.second);
@@ -182,7 +197,8 @@ superTypes::Point Map::project(const superTypes::Point& from, const superTypes::
 }
 
 bool Map::areNeighbours(const superTypes::Point& first, const superTypes::Point& second) {
-    return abs((int) first.first - (int) second.first) == 1 && abs((int) first.second - (int) second.second) == 1;
+    return abs((int) first.first - (int) second.first) == 1 &&
+           abs((int) first.second - (int) second.second) == 1;
 }
 
 void Map::jump(superTypes::Point newPos, Character* character) {

@@ -33,6 +33,7 @@ class QGameSidebar : public QWidget {
   public slots:
     void handleStepButton();
     void handleRunButton();
+    void handleResetButton();
     void handleExitButton();
 
   private:

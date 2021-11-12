@@ -25,12 +25,14 @@ QGameSidebar::QGameSidebar(QWidget* parent): QWidget(parent) {
 
     _stepButton = new QPushButton("Step");
     _runButton = new QPushButton("Run");
+    auto resetButton = new QPushButton("Reset");
     auto separator = new QFrame;
     auto exitButton = new QPushButton("Exit");
 
     // Link buttons to actions
     QObject::connect(_stepButton, SIGNAL(clicked()), this, SLOT(handleStepButton()));
     QObject::connect(_runButton, SIGNAL(clicked()), this, SLOT(handleRunButton()));
+    QObject::connect(resetButton, SIGNAL(clicked()), this, SLOT(handleResetButton()));
     QObject::connect(exitButton, SIGNAL(clicked()), this, SLOT(handleExitButton()));
 
     separator->setFrameShape(QFrame::HLine);
@@ -38,6 +40,7 @@ QGameSidebar::QGameSidebar(QWidget* parent): QWidget(parent) {
     layout->setAlignment(Qt::AlignVCenter);
     layout->addWidget(_stepButton);
     layout->addWidget(_runButton);
+    layout->addWidget(resetButton);
     layout->addWidget(separator);
     layout->addWidget(exitButton);
 
@@ -66,5 +69,7 @@ void QGameSidebar::enableButtons() {
 void QGameSidebar::handleStepButton() { Game::instance().step(this); }
 
 void QGameSidebar::handleRunButton() { Game::instance().run(this); }
+
+void QGameSidebar::handleResetButton() { Game::instance().reset(); }
 
 void QGameSidebar::handleExitButton() { QApplication::exit(0); }

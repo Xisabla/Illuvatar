@@ -58,6 +58,7 @@ SINGLETON(Map) {
     void linkCharacter(unsigned int x, unsigned int y, Character* character);
     void unlinkCharacter(Character* character);
     bool containsCharacter(unsigned int x, unsigned int y);
+    void removeAllCharacters();
     
     bool exists(const superTypes::Point& p) const;
     ThingAtPoint getThingAtPoint(const superTypes::Point& p);

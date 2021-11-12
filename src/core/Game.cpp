@@ -74,3 +74,8 @@ bool Game::end() {
 }
 
 int Game::exec() { return QApplication::exec(); }
+
+void Game::reset() {
+    Map::instance().removeAllCharacters();
+    Map::instance().generate();
+};

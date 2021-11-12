@@ -39,6 +39,7 @@ SINGLETON(Game) {
     void step(QGameSidebar* qgsidebar, bool doesEnable = true);
     void run(QGameSidebar* qgsidebar, int maxSteps = 50);
     bool end();
+    void reset();
 
     static int exec();
 
