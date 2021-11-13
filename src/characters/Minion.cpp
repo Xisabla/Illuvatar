@@ -315,7 +315,7 @@ bool Minion::interactsWithSurroundings() {
                 printAction("\tUn Ennemi "+strFromFaction.at(m->faction()));
                 this->fight(m);
                 if (!this->isAlive()) {
-                    printAction("\nEst tombé au combat");
+                    printAction("\tEst tombé au combat");
                     return true;
                 }
                 interactFlag = true;
@@ -350,10 +350,6 @@ void Minion::move() {
         if (this->checkPosition(step.first) != ThingAtPoint::Nothing) {
             printAction("Rencontre quelque chose sur la route...");
             interactsWithSurroundings();
-            if (!this->isAlive()) {
-                printAction("Est mort après une rencontre.");
-                //delete this; //?
-            }
             return;
         }
         //tile change
@@ -383,12 +379,6 @@ void Minion::move() {
         }
 
         printAction("Scannne les alentours...");
-        if (interactsWithSurroundings()) {
-            if (!this->isAlive()) {
-                printAction("Est mort après une rencontre.");
-                //delete this; //?
-            }
-            return;
-        }
+        if (interactsWithSurroundings()) return;
     }
 }

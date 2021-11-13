@@ -44,6 +44,7 @@ void Game::step(QGameSidebar* qgsidebar, bool doesEnable) {
             std::cout << std::endl;
             minion->printAction();
             minion->move();
+            if (!minion->isAlive()) delete minion;
         }
     }
 
