@@ -1,12 +1,35 @@
 {
     "map": {
-        "mainBoard": {
-            "center": {
-                "x": 10,
-                "y": 10
+        "mainBoard": [
+            {
+                "center": {
+                    "x": 10,
+                    "y": 10
+                },
+                "radius" : 7.5
             },
-            "radius" : 7.5
-        },
+            {
+                "center": {
+                    "x": 18,
+                    "y": 8
+                },
+                "radius" : 1
+            },
+            {
+                "center": {
+                    "x": 18,
+                    "y": 12
+                },
+                "radius" : 1
+            },
+            {
+                "center": {
+                    "x": 20,
+                    "y": 10
+                },
+                "radius" : 1
+            }
+        ],
         "safeZones": [
             {
                 "faction": "Dragon",

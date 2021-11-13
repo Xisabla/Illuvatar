@@ -267,6 +267,7 @@ std::string Minion::getAssetPath() {
 
 superTypes::DirectionalPath Minion::findMaster(int range) {
     superTypes::Point target = {this->master()->x(), this->master()->y()};
+    if (target.first < 0 || target.first > 30 || target.second < 0 || target.second > 30) return {};
     return pathfinder::shortest({this->x(), this->y()}, target, range);
 }
 

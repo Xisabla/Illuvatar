@@ -51,7 +51,8 @@ Character* Map::getMaster(Faction faction) {
                  });
 
     if (found == std::end(_characters))
-        throw std::runtime_error("No master found for faction " + strFromFaction.at(faction));
+        return nullptr;
+        //throw std::runtime_error("No master found for faction " + strFromFaction.at(faction));
 
     return found->second;
 }
@@ -69,9 +70,11 @@ void Map::generate() {
     _domain = Domain(21, 21);
 
     nlohmann::json env = Environment::instance()->env();
-    generateDisk(env["map"]["mainBoard"]["radius"],
-                    env["map"]["mainBoard"]["center"]["x"],
-                    env["map"]["mainBoard"]["center"]["y"]);
+    for (auto mainBoard: env["map"]["mainBoard"]) {
+        generateDisk(mainBoard["radius"],
+                        mainBoard["center"]["x"],
+                        mainBoard["center"]["y"]);
+    }
 
     for (auto safeZone: env["map"]["safeZones"]) {
         generateDisk(safeZone["radius"],

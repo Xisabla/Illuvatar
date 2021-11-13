@@ -9,6 +9,7 @@ DirectionalPath
 pathfinder::shortest(Point current, Point& target, int maxDistance) {
     // TODO: Throw exception
     if (!Map::instance().exists(current) || !Map::instance().exists(target)) {
+        return {};
         cout << "error at pathfinder::shortest((" << current.first << ", " << current.second << "), (" << target.first << ", " << target.second << "), ...);"
              << endl;
         exit(1);
