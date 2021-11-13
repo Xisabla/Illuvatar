@@ -37,15 +37,15 @@ void Game::step(QGameSidebar* qgsidebar, bool doesEnable) {
     // prend tous les minions et les fait move
     qgsidebar->disableButtons();
 
-    for (auto characterEntry: Map::instance().characters()) {
-        Character* character = characterEntry.second;
-        auto minion = dynamic_cast<Minion*>(character);
-        if (minion != nullptr) {
-            std::cout << std::endl;
-            minion->printAction();
-            minion->move();
-            if (!minion->isAlive()) delete minion;
-        }
+    auto charList = Map::instance().characters();
+    for (auto characterEntry: charList) {
+        Minion* minion = dynamic_cast<Minion*>(characterEntry.second);
+        if (minion == nullptr) continue;
+
+        std::cout << std::endl;
+        minion->printAction();
+        minion->move();
+        if (!minion->isAlive()) delete minion;
     }
 
     if (doesEnable) qgsidebar->enableButtons();
