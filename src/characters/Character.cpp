@@ -47,12 +47,6 @@ Faction Character::faction() const { return _faction; }
 std::vector<std::string> Character::messages() const { return _messages; }
 
 //  --------------------------------------------------------------------------------------
-//  Character > SETTERS
-//  --------------------------------------------------------------------------------------
-
-void Character::setMessages(std::vector<std::string> messages) { _messages = messages; }
-
-//  --------------------------------------------------------------------------------------
 //  Character > PUBLIC METHODS
 //  --------------------------------------------------------------------------------------
 
@@ -93,6 +87,4 @@ std::string Character::dropRandomMessage() {
 }
 
 bool Character::gotOneMsg() { return this->_messages.size() == 1; }
-
-bool Character::gotLotOfMsgs() { return this->_messages.size() > 1; }
 

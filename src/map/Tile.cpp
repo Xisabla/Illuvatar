@@ -46,10 +46,6 @@ unsigned int Tile::y() const { return _y; }
 
 Faction Tile::getOwner() const { return _owner; }
 
-std::vector<Tile*> Tile::getAll() { return _instances; }
-
-unsigned int Tile::count() { return _instances.size(); }
-
 Tile* Tile::get(const unsigned int x, const unsigned int y) {
     auto it = std::find_if(_instances.begin(), _instances.end(), [x, y](const Tile* t) {
         return t->x() == x && t->y() == y;
@@ -62,27 +58,11 @@ Tile* Tile::get(const unsigned int x, const unsigned int y) {
     return _instances[it - _instances.begin()];
 }
 
-std::vector<Tile*> Tile::getNeighbours(const unsigned int x, const unsigned int y) {
-    std::vector<Tile*> neighbours;
-
-    for (auto& t: _instances) {
-        int dx = abs(static_cast<int>(x) - static_cast<int>(t->x()));
-        int dy = abs(static_cast<int>(y) - static_cast<int>(t->y()));
-
-        if ((dx == 1 && dy == 1) || (dx == 1 && dy == 0) || (dx == 0 && dy == 1))
-            neighbours.push_back(t);
-    }
-
-    return neighbours;
-}
-
 //  --------------------------------------------------------------------------------------
 //  Tile > SETTERS
 //  --------------------------------------------------------------------------------------
 
 void Tile::setOwnership(Faction owner) { _owner = owner; }
-
-void Tile::removeOwnership() { _owner = Faction::NoFaction; }
 
 //  --------------------------------------------------------------------------------------
 //  Tile > PUBLIC METHODS

@@ -35,8 +35,6 @@ class Master : public Character {
     virtual std::string getAssetPath();
 
     void collectAndSendBack(Minion* minion);
-    // void getMessage(Minion* minion);
-    // void giveMessage(Minion* minion);
 
   private:
     virtual void addMessages(std::vector<std::string> messages);

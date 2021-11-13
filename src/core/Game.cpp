@@ -9,11 +9,9 @@
 =========================================================================*/
 #include "core/Game.h"
 
-#include "gui/MainWindow.h"
-#include "map/Map.h"
-#include "characters/Minion.h"
-#include "characters/GoodMinion.h"
 #include "characters/BadMinion.h"
+#include "characters/GoodMinion.h"
+#include "map/Map.h"
 
 #include <stdexcept>
 
@@ -33,36 +31,43 @@ Game::Game(_token t, QApplication* app): Singleton(t), _app(app) {
 //  Game > PUBLIC METHODS
 //  --------------------------------------------------------------------------------------
 
-void Game::step() {
-    //prend tous les minions et les fait move
+void Game::step(QGameSidebar* qgsidebar, bool doesEnable) {
+    // prend tous les minions et les fait move
+    qgsidebar->disableButtons();
+
     std::cout << "[game] Step" << std::endl;
-    for (auto characterEntry : Map::instance().characters()) {
+    for (auto characterEntry: Map::instance().characters()) {
         Character* character = characterEntry.second;
         auto minion = dynamic_cast<Minion*>(character);
-        if(minion != nullptr){
-              minion->move();
+        if (minion != nullptr) {
+            minion->move();
         }
         //Map::instance().sync();
     }
+
+    if (doesEnable) qgsidebar->enableButtons();
 }
 
-void Game::run(int maxSteps) {
+void Game::run(QGameSidebar* qgsidebar, int maxSteps) {
     std::cout << "[game] Run" << std::endl;
 
     for (int i = 0; i < maxSteps; i++) {
-        step();
+        step(qgsidebar, false);
         if (end()) break;
     }
+
+    qgsidebar->enableButtons();
 }
 
 bool Game::end() {
     bool stillGoodMinion = false;
     bool stillBadMinion = false;
-    for (auto characterEntry : Map::instance().characters()) {
+    for (auto characterEntry: Map::instance().characters()) {
         Character* character = characterEntry.second;
 
         if (dynamic_cast<GoodMinion*>(character) != nullptr) stillGoodMinion = true;
-        else if (dynamic_cast<BadMinion*>(character) != nullptr) stillBadMinion = true;
+        else if (dynamic_cast<BadMinion*>(character) != nullptr)
+            stillBadMinion = true;
 
         if (stillGoodMinion && stillBadMinion) return false;
     }
@@ -70,3 +75,8 @@ bool Game::end() {
 }
 
 int Game::exec() { return QApplication::exec(); }
+
+void Game::reset() {
+    Map::instance().removeAllCharacters();
+    Map::instance().generate();
+};

@@ -45,16 +45,30 @@ bool Minion::isAlive() const { return _life > 0 && _energy > 0; }
 //  Minion > PROTECTED METHODS
 //  --------------------------------------------------------------------------------------
 
+void Minion::setNewMsg() {
+    this->newMsg = true;
+}
+void Minion::unsetNewMsg() {
+    this->newMsg = false;
+}
+
 void Minion::exchange(Minion* minion) {
     RollResult result = rollDice();
 
     if (result == RollResult::CriticalSuccess && !minion->messages().empty()) {
         addMessage(minion->getRandomMessage());
+        this->newMsg = true;
         return;
     }
     if (result == RollResult::Success) {
-        if (!minion->messages().empty()) addMessage(minion->dropRandomMessage());
-        if (!messages().empty()) minion->addMessage(dropRandomMessage());
+        if (!minion->messages().empty()) {
+            addMessage(minion->dropRandomMessage());
+            this->newMsg = true;
+        }
+        if (!messages().empty()) {
+            minion->addMessage(dropRandomMessage());
+            minion->newMsg = true;
+        }
         return;
     }
     if (result == RollResult::Failure && !messages().empty()) {
@@ -139,8 +153,14 @@ RollResult Minion::rollDice() {
 void Minion::searchCorpse(Minion* minion) {
     RollResult result = rollDice();
 
-    if(result == RollResult::CriticalSuccess) addMessages(minion->messages());
-    if(result == RollResult::Success && !minion->messages().empty()) addMessage(minion->dropRandomMessage());
+    if(result == RollResult::CriticalSuccess) {
+        addMessages(minion->messages());
+        this->newMsg = true;
+    }
+    if(result == RollResult::Success && !minion->messages().empty()) {
+        addMessage(minion->dropRandomMessage());
+        this->newMsg = true;
+    }
     if(result == RollResult::Failure && !messages().empty()) dropRandomMessage();
     if(result == RollResult::CriticalFailure) dropMessages();
 }
@@ -274,7 +294,7 @@ void Minion::move() {
     int range = std::max(0, unirand::getValueAround(unirand::getValue(this->getRange().first, this->getRange().second), 2));
     bool enoughEnergy = this->_energy - range * this->getEnergyCost() > this->getEnergyLow();
 
-    superTypes::DirectionalPath path = enoughEnergy && this->gotOneMsg() ? this->explore(range) : this->findMaster(range);
+    superTypes::DirectionalPath path = enoughEnergy && this->gotOneMsg() && this->newMsg ? this->explore(range) : this->findMaster(range);
 
     if (path.empty()) {
         this->interactsWithSurroundings();
