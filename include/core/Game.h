@@ -46,6 +46,7 @@ SINGLETON(Game) {
   private:
     // - Attributes --------------------------------------------------------------------------
     QApplication* _app;
+    unsigned int counter;
 };
 
 #endif // ILLUVATAR_GAME_H

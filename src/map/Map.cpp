@@ -65,6 +65,7 @@ std::map<std::pair<unsigned int, unsigned int>, Character*>& Map::characters() {
 //  --------------------------------------------------------------------------------------
 
 void Map::generate() {
+    std::cout << "[map] Generate new game" << std::endl;
     _domain = Domain(21, 21);
 
     nlohmann::json env = Environment::instance()->env();

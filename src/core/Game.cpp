@@ -25,6 +25,7 @@ Game::Game(_token t, QApplication* app): Singleton(t), _app(app) {
         "Game::Game: Please provide a valid QApplication at first instantiation");
 
     Map::instance().generate();
+    counter = 0;
 }
 
 //  --------------------------------------------------------------------------------------
@@ -32,10 +33,10 @@ Game::Game(_token t, QApplication* app): Singleton(t), _app(app) {
 //  --------------------------------------------------------------------------------------
 
 void Game::step(QGameSidebar* qgsidebar, bool doesEnable) {
+    std::cout << std::endl << std::endl << std::endl << std::endl << "[game] Time step " << counter++ << std::endl;
     // prend tous les minions et les fait move
     qgsidebar->disableButtons();
 
-    std::cout << "[game] Step" << std::endl;
     for (auto characterEntry: Map::instance().characters()) {
         Character* character = characterEntry.second;
         auto minion = dynamic_cast<Minion*>(character);
@@ -77,5 +78,9 @@ int Game::exec() { return QApplication::exec(); }
 
 void Game::reset() {
     Map::instance().removeAllCharacters();
+    counter = 0;
+    std::cout.width(25);
+    std::cout.fill('\n');
+    std::cout.flush();
     Map::instance().generate();
 };

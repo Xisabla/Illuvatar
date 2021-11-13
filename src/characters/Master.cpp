@@ -15,9 +15,8 @@
 //  --------------------------------------------------------------------------------------
 
 Master::Master(unsigned int x, unsigned int y, Faction faction): Character(x, y, faction) {
-    // TODO: Unsure that not other master exists
     messagesFaction = Environment::instance()->env()["characters"][strFromFaction.at(faction)]["master"]["messages"].get<std::vector<std::string>>();
-    this->addMessages(messagesFaction);
+    Character::addMessages(messagesFaction);
 }
 
 //  --------------------------------------------------------------------------------------
@@ -28,22 +27,32 @@ Master::Master(unsigned int x, unsigned int y, Faction faction): Character(x, y,
 std::string Master::getAssetPath() { return Character::getAssetPath() + "Master.png"; }
 
 void Master::collectAndSendBack(Minion* minion) {
+    printAction("Reçoit minion");
+
     //collect all
     if (minion->gotMsg()) {
+        printAction("Récupère ses messages");
         this->addMessages(minion->messages());
         minion->dropMessages();
     }
     minion->unsetNewMsg();
 
     //give one
-    minion->addMessage(this->getRandomMessage());
+    std::string msg = this->getRandomMessage();
+    printAction("Lui confie le message "+msg);
+    minion->addMessage(msg);
 }
 
 void Master::addMessages(std::vector<std::string> messages) {
     auto itBegin = this->messages().begin();
     auto itEnd = this->messages().end();
     for (std::string message : messages) {
-        if (std::find(itBegin, itEnd, message) == itEnd) continue;
+        std::cout << "\t" << message << ": ";
+        if (std::find(itBegin, itEnd, message) != itEnd) {
+            std::cout << "Déjà connu..." << std::endl;
+            continue;
+        }
+        std::cout << "Inconnu !" << std::endl;
         this->addMessage(message);
     }
 }
