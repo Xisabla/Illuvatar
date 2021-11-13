@@ -53,3 +53,7 @@ std::string Master::getRandomMessage() {
 
     return this->messagesFaction[unirand::getValue(0, static_cast<int>(this->messagesFaction.size()) - 1)];
 }
+
+void Master::printAction(std::string str) {
+    std::cout << "Master " << this->faction() << ": " << str << std::endl;
+}

@@ -81,29 +81,30 @@ void Map::generate() {
 
     for (auto race: env["characters"]) {
         Faction faction = strToFaction.at(race["faction"]);
-        new Master(race["master"]["position"]["x"], race["master"]["position"]["y"], faction);
+        (new Master(race["master"]["position"]["x"], race["master"]["position"]["y"], faction))->printAction("naissance");
 
         switch (faction) {
             case Faction::Dragons:
                 for (auto pos: race["minion"]["positions"])
-                    (new Dragon(pos["x"], pos["y"]))->virtualInits();
+                    (new Dragon(pos["x"], pos["y"]))->virtualInits()->printAction("naissance");
                 break;
 
             case Faction::Eldars:
                 for (auto pos: race["minion"]["positions"])
-                    (new Eldar(pos["x"], pos["y"]))->virtualInits();
+                    (new Eldar(pos["x"], pos["y"]))->virtualInits()->printAction("naissance");
                 break;
 
             case Faction::Valars:
                 for (auto pos: race["minion"]["positions"])
-                    (new Vala(pos["x"], pos["y"]))->virtualInits();
+                    (new Vala(pos["x"], pos["y"]))->virtualInits()->printAction("naissance");
                 break;
 
             case Faction::Werewolves:
                 for (auto pos: race["minion"]["positions"])
-                    (new Werewolf(pos["x"], pos["y"]))->virtualInits();
+                    (new Werewolf(pos["x"], pos["y"]))->virtualInits()->printAction("naissance");
                 break;
         }
+        std::cout << std::endl;
     }
 
     sync();

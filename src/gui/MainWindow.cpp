@@ -18,6 +18,8 @@
 //  --------------------------------------------------------------------------------------
 
 MainWindow::MainWindow() {
-    this->setWindowState(Qt::WindowFullScreen);
+    // this->setWindowState(Qt::WindowFullScreen);
+    this->setMinimumSize(1280, 720);
+    this->setMaximumSize(1920, 1080);
     this->setCentralWidget(new QGameWrapper);
 }

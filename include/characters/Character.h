@@ -39,6 +39,8 @@ class Character {
     bool gotMsg();
     virtual std::string getAssetPath();
     void addMessage(const std::string& message);
+    
+    virtual void printAction(std::string str) = 0;
 
   protected:
     // - Methods -----------------------------------------------------------------------------

@@ -44,6 +44,8 @@ class Minion : public Character {
     void setNewMsg();
     void unsetNewMsg();
 
+    virtual void printAction(std::string str);
+
   protected:
     // - Methods -----------------------------------------------------------------------------
     void exchange(Minion* minion);
@@ -57,6 +59,8 @@ class Minion : public Character {
     unsigned int _life;
     unsigned int _energy;
     bool newMsg = false;
+
+    virtual unsigned int getId() = 0;
 
     virtual int getLifeMax() = 0;
 
