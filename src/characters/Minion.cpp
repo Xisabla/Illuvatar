@@ -21,8 +21,7 @@ using namespace std; //tmp
 //  --------------------------------------------------------------------------------------
 
 Minion::Minion(unsigned int x, unsigned int y, Faction faction)
-: Character(x, y, faction), _master(dynamic_cast<Master*>(Map::instance().getMaster(faction))) {
-    this->direction = directionutils::randDirection();
+: Character(x, y, faction), direction(directionutils::randDirection()), _master(dynamic_cast<Master*>(Map::instance().getMaster(faction))) {
 }
 
 Minion* Minion::virtualInits() {

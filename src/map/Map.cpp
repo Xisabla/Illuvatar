@@ -47,7 +47,7 @@ Character* Map::getMaster(Faction faction) {
     std::find_if(_characters.begin(),
                  _characters.end(),
                  [faction](std::pair<std::pair<unsigned int, unsigned int>, Character*> e) {
-                     return e.second->isMaster() && e.second->faction() == faction;
+                     return e.second->faction() == faction && e.second->isMaster();
                  });
 
     if (found == std::end(_characters))

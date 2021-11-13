@@ -33,9 +33,8 @@ Game::Game(_token t, QApplication* app): Singleton(t), _app(app) {
 //  --------------------------------------------------------------------------------------
 
 void Game::step(QGameSidebar* qgsidebar, bool doesEnable) {
-    std::cout << std::endl << std::endl << std::endl << std::endl << "[game] Time step " << counter++ << std::endl;
-    // prend tous les minions et les fait move
     qgsidebar->disableButtons();
+    std::cout << std::endl << std::endl << std::endl << std::endl << "[game] Time step " << counter++ << std::endl;
 
     auto charList = Map::instance().characters();
     for (auto characterEntry: charList) {
@@ -52,6 +51,7 @@ void Game::step(QGameSidebar* qgsidebar, bool doesEnable) {
 }
 
 void Game::run(QGameSidebar* qgsidebar, int maxSteps) {
+    qgsidebar->disableButtons();
     std::cout << "[game] Run" << std::endl;
 
     for (int i = 0; i < maxSteps; i++) {
