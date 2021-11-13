@@ -44,7 +44,7 @@ class Minion : public Character {
     void setNewMsg();
     void unsetNewMsg();
 
-    virtual void printAction(std::string str);
+    virtual void printAction(std::string str = "");
 
   protected:
     // - Methods -----------------------------------------------------------------------------

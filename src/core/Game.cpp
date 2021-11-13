@@ -41,6 +41,8 @@ void Game::step(QGameSidebar* qgsidebar, bool doesEnable) {
         Character* character = characterEntry.second;
         auto minion = dynamic_cast<Minion*>(character);
         if (minion != nullptr) {
+            std::cout << std::endl;
+            minion->printAction();
             minion->move();
         }
     }

@@ -14,6 +14,8 @@
 #include "enums/DirectionUtils.h"
 #include "unirand.h"
 
+using namespace std; //tmp
+
 //  --------------------------------------------------------------------------------------
 //  Minion
 //  --------------------------------------------------------------------------------------
@@ -39,7 +41,9 @@ Master* Minion::master() const { return _master; }
 //  Minion > PUBLIC METHODS
 //  --------------------------------------------------------------------------------------
 
-bool Minion::isAlive() const { return _life > 0 && _energy > 0; }
+bool Minion::isAlive() const {
+    return _life > 0 && _energy > 0;
+}
 
 //  --------------------------------------------------------------------------------------
 //  Minion > PROTECTED METHODS
@@ -265,6 +269,9 @@ superTypes::DirectionalPath Minion::explore(unsigned int range) {
 }
 
 bool Minion::interactsWithSurroundings() {
+    std::cout << "TODO : interactsWithSurroundings" << std::endl;
+    return false;
+
     bool interactFlag = false;
     Character* c = nullptr;
     for (std::pair<ThingAtPoint, superTypes::Point> thing: this->checkAround()) {
@@ -290,12 +297,17 @@ bool Minion::interactsWithSurroundings() {
 }
 
 void Minion::move() {
-    int range = std::max(0, unirand::getValueAround(unirand::getValue(this->getRange().first, this->getRange().second), 2));
+    printAction("Prépare un déplacement");
+
+    int range = std::max(1, unirand::getValueAround(unirand::getValue(this->getRange().first, this->getRange().second), 2));
+    printAction("Portée de "+std::to_string(range));
+
     bool enoughEnergy = this->_energy - range * this->getEnergyCost() > this->getEnergyLow();
+    bool targetCondition = enoughEnergy && this->gotOneMsg() && this->newMsg;
+    printAction(targetCondition ? "Explore la map" : "Cherche son maitre");
 
-    superTypes::DirectionalPath path = enoughEnergy && this->gotOneMsg() && this->newMsg ? this->explore(range) : this->findMaster(range);
-
-    return;
+    superTypes::DirectionalPath path = targetCondition ? this->explore(range) : this->findMaster(range);
+    printAction("Visualise un chemin de "+std::to_string(path.size())+" cases");
 
     if (path.empty()) {
         this->interactsWithSurroundings();
@@ -306,14 +318,17 @@ void Minion::move() {
     Faction const allyFaction = Minion::alliance.at(currentFaction);
     for (std::pair<superTypes::Point, Direction> step: path) {
         if (this->checkPosition(step.first) != ThingAtPoint::Nothing) {
+            printAction("Rencontre quelque chose sur la route...");
             interactsWithSurroundings();
             if (!this->isAlive()) {
+                printAction("Est mort après une rencontre.");
                 //delete this; //?
             }
             return;
         }
 
         //tile change
+        printAction("Se déplace...");
         Map::instance().jump(step.first, this);
         this->_x = step.first.first;
         this->_y = step.first.second;
@@ -335,12 +350,15 @@ void Minion::move() {
         }
 
         if (!this->_energy) {
+            printAction("Est mort de fatigue.");
             //delete this; //?
             return;
         }
 
+        printAction("Scannne les alentours...");
         if (interactsWithSurroundings()) {
             if (!this->isAlive()) {
+                printAction("Est mort après une rencontre.");
                 //delete this; //?
             }
             return;
