@@ -41,7 +41,8 @@ class Minion : public Character {
     void reduceLife(unsigned int life);
     void restoreEnergy(unsigned int heal);
     void restoreLife(unsigned int heal);
-    Direction getDirection() { return this->direction; }
+    void setNewMsg();
+    void unsetNewMsg();
 
   protected:
     // - Methods -----------------------------------------------------------------------------
@@ -55,6 +56,7 @@ class Minion : public Character {
     Master* _master;
     unsigned int _life;
     unsigned int _energy;
+    bool newMsg = false;
 
     virtual int getLifeMax() = 0;
 

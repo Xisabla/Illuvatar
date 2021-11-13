@@ -33,6 +33,7 @@ void Master::collectAndSendBack(Minion* minion) {
         this->addMessages(minion->messages());
         minion->dropMessages();
     }
+    minion->unsetNewMsg();
 
     //give one
     minion->addMessage(this->getRandomMessage());

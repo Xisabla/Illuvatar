@@ -32,9 +32,6 @@ class Character {
     [[nodiscard]] Faction faction() const;
     [[nodiscard]] std::vector<std::string> messages() const;//std::vector<std::string>& getMsgList();
 
-    // - Setters -----------------------------------------------------------------------------
-    void setMessages(std::vector<std::string> messages);//void setMsgList(std::vector<std::string>& msgList);
-
     // - Methods -----------------------------------------------------------------------------
     // bool isAllied(Character* character);
     bool isMaster();
@@ -49,7 +46,6 @@ class Character {
     virtual std::string getRandomMessage();
     std::string dropRandomMessage();
     bool gotOneMsg();
-    [[maybe_unused]] bool gotLotOfMsgs();
 
     // - Attributes -------------------------------------------------------------------------
     unsigned int _x;

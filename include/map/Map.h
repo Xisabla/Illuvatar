@@ -24,12 +24,6 @@
 #include "superTypes.h"
 
 /**
- * @enum Preset
- * @brief Map preset generators, used a templates to generate the map
- */
-enum Preset { Turtle, Square, Random, Default = Turtle };
-
-/**
  * @class Map
  * @brief Short description of the class
  */
@@ -45,11 +39,6 @@ SINGLETON(Map) {
     Character* getCharacter(unsigned int x, unsigned int y);
     Character* getMaster(Faction faction);
     std::map<std::pair<unsigned int, unsigned int>, Character*>& characters();
-
-    // - Setters -----------------------------------------------------------------------------
-    void setPreset(Preset preset);
-
-    static void setDefaultPreset(Preset preset);
 
     // - Methods -----------------------------------------------------------------------------
     void generate();
@@ -71,22 +60,13 @@ SINGLETON(Map) {
 
   private:
     // - Methods -----------------------------------------------------------------------------
-    static void generateDisk(
-    double radius, unsigned int centerX, unsigned int centerY, Faction owner = Faction::NoFaction);
-    static void generateSquare(unsigned int topX,
-                               unsigned int topY,
-                               unsigned int bottomX,
-                               unsigned int bottomY,
-                               Faction owner = Faction::NoFaction);
+    static void generateDisk(double radius, unsigned int centerX, unsigned int centerY, Faction owner = Faction::NoFaction);
 
     // - Attributes --------------------------------------------------------------------------
     Domain _domain;
-    Preset _preset;
     QGameMap* _qgmap;
 
     std::map<std::pair<unsigned int, unsigned int>, Character*> _characters;
-
-    static Preset defaultPreset;
 };
 
 
