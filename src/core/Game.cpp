@@ -52,10 +52,25 @@ void Game::step(QGameSidebar* qgsidebar, bool doesEnable) {
         }
     }
 
+    std::map<Faction, int> counters = {
+        {Faction::Dragons, -1},
+        {Faction::Eldars, -1},
+        {Faction::Valars, -1},
+        {Faction::Werewolves, -1}
+    };
     for (auto characterEntry: charList) {
         Minion* minion = dynamic_cast<Minion*>(characterEntry.second);
-        if (minion == nullptr) continue;
+        if (minion == nullptr) {
+            Master* master = dynamic_cast<Master*>(characterEntry.second);
+            if (master != nullptr && counters.at(master->faction()) == -1) counters.at(master->faction()) = 0;
+            continue;
+        }
         if (!minion->isAlive()) delete minion;
+        else counters.at(minion->faction())++;
+    }
+    for (Faction f = Faction::FACTION_FIRST; f <= Faction::FACTION_LAST;
+         f = Faction(static_cast<int>(f) + 1)) { // get all enum values
+        if (counters.at(f) == 0) delete Map::instance().getMaster(f);
     }
 
     if (doesEnable) qgsidebar->enableButtons();
@@ -76,22 +91,22 @@ void Game::run(QGameSidebar* qgsidebar, int maxSteps) {
 bool Game::end(QGameSidebar* qgsidebar) {
     bool stillGoodMinion = false;
     bool stillBadMinion = false;
-    // for (auto characterEntry: Map::instance().characters()) {
-    //     Character* character = characterEntry.second;
+    for (auto characterEntry: Map::instance().characters()) {
+        Character* character = characterEntry.second;
 
-    //     Minion* minion = dynamic_cast<Minion*>(characterEntry.second);
-    //     if (minion == nullptr || !minion->isAlive()) continue;
+        Minion* minion = dynamic_cast<Minion*>(characterEntry.second);
+        if (minion == nullptr || !minion->isAlive()) continue;
 
-    //     if (dynamic_cast<GoodMinion*>(character) != nullptr) stillGoodMinion = true;
-    //     else if (dynamic_cast<BadMinion*>(character) != nullptr) stillBadMinion = true;
+        if (dynamic_cast<GoodMinion*>(character) != nullptr) stillGoodMinion = true;
+        else if (dynamic_cast<BadMinion*>(character) != nullptr) stillBadMinion = true;
 
-    //     if (stillGoodMinion && stillBadMinion) {
-    //         std::cout << "[game] Game not finished yet !" << std::endl;
-    //         return false;
-    //     }
-    // }
+        if (stillGoodMinion && stillBadMinion) {
+            std::cout << "[game] Game not finished yet !" << std::endl;
+            return false;
+        }
+    }
 
-    std::cout << "[game] End of the game ! Victory for " << (stillGoodMinion ? "GoodMinions!" : "BadMinions!") << std::endl;
+    std::cout << "[game] End of the game ! Victory for " << (stillGoodMinion ? "GoodMinions (Eldars and Valars) !" : "BadMinions (Dragons and Werewolves) !") << std::endl;
     qgsidebar->disableButtons();
     return true;
 }

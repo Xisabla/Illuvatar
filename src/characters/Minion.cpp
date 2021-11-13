@@ -48,13 +48,6 @@ bool Minion::isAlive() const {
 //  Minion > PROTECTED METHODS
 //  --------------------------------------------------------------------------------------
 
-void Minion::setNewMsg() {
-    this->newMsg = true;
-}
-void Minion::unsetNewMsg() {
-    this->newMsg = false;
-}
-
 void Minion::printAction(std::string str) {
     std::cout << "[Minion] " << this->faction() << this->getId() << ": " << str << std::endl;
 }
@@ -69,7 +62,6 @@ void Minion::exchange(Minion* minion) {
                 msg = minion->dropRandomMessage();
                 std::cout << "\t" << msg << std::endl;
                 addMessage(msg);
-                this->newMsg = true;
             }
             else printAction("Aucun message à gagner...");
             break;
@@ -80,7 +72,6 @@ void Minion::exchange(Minion* minion) {
                 msg = minion->dropRandomMessage();
                 std::cout << "\t" << msg << std::endl;
                 addMessage(msg);
-                this->newMsg = true;
             }
             else printAction("Aucun message à gagner...");
             if (!messages().empty()) {
@@ -88,7 +79,6 @@ void Minion::exchange(Minion* minion) {
                 msg = dropRandomMessage();
                 std::cout << "\t" << msg << std::endl;
                 minion->addMessage(msg);
-                minion->setNewMsg();
             }
             else printAction("Aucun message à donner...");
             break;
@@ -98,7 +88,6 @@ void Minion::exchange(Minion* minion) {
                 printAction("Perd un message aléatoire...");
                 dropRandomMessage();
                 if (messages().empty()) {
-                    this->newMsg = false;
                     printAction("Pars en direction du maitre");
                 }
             }
@@ -109,13 +98,11 @@ void Minion::exchange(Minion* minion) {
             if (!messages().empty()) {
                 printAction("Perd ses "+std::to_string(messages().size())+" message(s) et pars en direction du maitre...");
                 dropMessages();
-                this->newMsg = false;
             }
             else printAction("Aucun message à perdre...");
             if (!minion->messages().empty()) {
                 minion->dropRandomMessage();
                 if (minion->messages().empty()) {
-                    minion->unsetNewMsg();
                     printAction("Allié part en direction de son maitre");
                 }
             }
@@ -172,20 +159,20 @@ void Minion::attack(Minion* minion) {
 //  Minion > PRIVATE METHODS
 //  --------------------------------------------------------------------------------------
 
-void Minion::reduceEnergy(unsigned int energy) {
-    _energy = std::max(static_cast<unsigned int> (0), _energy - energy);
+void Minion::reduceEnergy(int energy) {
+    _energy = std::max(0, _energy - energy);
 }
 
-void Minion::reduceLife(unsigned int life) {
-    _life = std::max(static_cast<unsigned int> (0), _life - life);
+void Minion::reduceLife(int life) {
+    _life = std::max(0, _life - life);
 }
 
-void Minion::restoreEnergy(unsigned int heal) {
+void Minion::restoreEnergy(int heal) {
     if (this->_energy + heal < this->getEnergyMax()) this->_energy += heal;
     else this->_energy = this->getEnergyMax();
 }
 
-void Minion::restoreLife(unsigned int heal) {
+void Minion::restoreLife(int heal) {
     if (this->_life + heal < this->getLifeMax()) this->_life += heal;
     else this->_life = this->getLifeMax();
 }
@@ -211,7 +198,6 @@ void Minion::searchCorpse(Minion* minion) {
                 printAction("Récupère les "+std::to_string(minion->messages().size())+" message(s) de l'ennemi et pars en direction du maitre");
                 for (std::string message : minion->messages()) std::cout << "\t" << message << std::endl;
                 addMessages(minion->messages());
-                this->newMsg = true;
             }
             else printAction("Aucun message à gagner...");
             break;
@@ -222,7 +208,6 @@ void Minion::searchCorpse(Minion* minion) {
                 msg = minion->dropRandomMessage();
                 std::cout << "\t" << msg << std::endl;
                 addMessage(msg);
-                this->newMsg = true;
             }
             else printAction("Aucun message à gagner...");
             break;
@@ -232,7 +217,6 @@ void Minion::searchCorpse(Minion* minion) {
                 printAction("Perd un message aléatoire...");
                 dropRandomMessage();
                 if (messages().empty()) {
-                    this->newMsg = false;
                     printAction("Pars en direction du maitre");
                 }
             }
@@ -243,7 +227,6 @@ void Minion::searchCorpse(Minion* minion) {
             if (!messages().empty()) {
                 printAction("Perd ses "+std::to_string(messages().size())+" message(s) et pars en direction du maitre...");
                 dropMessages();
-                this->newMsg = false;
             }
             else printAction("Aucun message à perdre...");
             break;
@@ -282,7 +265,7 @@ std::string Minion::getAssetPath() {
     return Character::getAssetPath() + strFromDirection.at(this->direction) + ".png";
 }
 
-superTypes::DirectionalPath Minion::findMaster(unsigned int range) {
+superTypes::DirectionalPath Minion::findMaster(int range) {
     superTypes::Point target = {this->master()->x(), this->master()->y()};
     return pathfinder::shortest({this->x(), this->y()}, target, range);
 }
@@ -312,7 +295,7 @@ std::vector<std::pair<ThingAtPoint, superTypes::Point>> Minion::checkAround() {
     return things;
 }
 
-superTypes::DirectionalPath Minion::explore(unsigned int range) {
+superTypes::DirectionalPath Minion::explore(int range) {
     std::vector<Direction> possibleDirs = {};
     superTypes::Point p = { this->x(), this->y() };
     for (Direction dir: directionutils::fanDirections.at(this->direction)) {
@@ -410,8 +393,7 @@ void Minion::move() {
     int range = std::max(1, unirand::getValueAround(unirand::getValue(this->getRange().first, this->getRange().second), 2));
     printAction("Portée de "+std::to_string(range));
 
-    bool enoughEnergy = this->_energy - range * this->getEnergyCost() > this->getEnergyLow();
-    bool targetCondition = enoughEnergy && this->gotOneMsg() && this->newMsg;
+    bool targetCondition = this->_energy > this->getEnergyLow() && this->gotOneMsg();
     printAction(targetCondition ? "Explore la map" : "Cherche son maitre");
 
     superTypes::DirectionalPath path = targetCondition ? this->explore(range) : this->findMaster(range);
@@ -420,7 +402,6 @@ void Minion::move() {
     if (path.empty()) {
         printAction("Scannne les alentours...");
         this->interactsWithSurroundings();
-        cout << "cas 1" << endl;
         return;
     }
     Faction const currentFaction = this->faction();
@@ -457,8 +438,6 @@ void Minion::move() {
         }
 
         printAction("Scannne les alentours...");
-        bool a = interactsWithSurroundings();
-        cout << "cas 2" << endl;
-        if (a) return;
+        if (interactsWithSurroundings()) return;
     }
 }

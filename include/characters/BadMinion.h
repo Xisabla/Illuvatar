@@ -24,7 +24,7 @@ class BadMinion : public Minion {
     // - Methods -----------------------------------------------------------------------------
 
   protected:
-    unsigned int getLifeHeal() { return this->getLifeMax() / 15; };
+    int getLifeHeal() { return this->getLifeMax() / 15; };
 
     /**
      * @brief Horde skill : drain life to ennemy after attacking him

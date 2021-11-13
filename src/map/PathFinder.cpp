@@ -5,9 +5,8 @@ using namespace directionutils;
 using namespace superTypes;
 using namespace pathfinder;
 
-
 DirectionalPath
-pathfinder::shortest(Point current, Point& target, unsigned int maxDistance) {
+pathfinder::shortest(Point current, Point& target, int maxDistance) {
     // TODO: Throw exception
     if (!Map::instance().exists(current) || !Map::instance().exists(target)) {
         cout << "error at pathfinder::shortest((" << current.first << ", " << current.second << "), (" << target.first << ", " << target.second << "), ...);"
@@ -23,7 +22,7 @@ pathfinder::shortest(Point current, Point& target, unsigned int maxDistance) {
     res = unlooper(res, unlooped);
     DirectionalPath straightened = {};
     auto path = straightenerAndCutter(res, straightened, computeDirection(current, unlooped[0]), maxDistance);
-    if (path.back().first == target) path.pop_back(); // master tile
+    //if (path.back().first == target) path.pop_back(); // master tile
     return path;
 }
 
@@ -87,7 +86,7 @@ Path pathfinder::AStar(Path& path,
     return pathfinder::AStar(path, next, target, explored, unexplored);
 }
 
-Path pathfinder::unlooper(Path& refPath, Path& path, unsigned int pos) {
+Path pathfinder::unlooper(Path& refPath, Path& path, int pos) {
     Point current = refPath[pos - 1];
     path.push_back(current);
 
@@ -99,7 +98,7 @@ Path pathfinder::unlooper(Path& refPath, Path& path, unsigned int pos) {
     // List neighbours occurrences in Path
     vector<pair<Point, int>> neighbours = {};
     std::map<Point, int> occurrences = {};
-    for (unsigned int i = pos; i < refPath.size(); ++i) {
+    for (int i = pos; i < refPath.size(); ++i) {
         Point point = refPath[i];
         if (Map::areNeighbours(current, point)) {
             neighbours.emplace_back(point, i);
@@ -127,8 +126,8 @@ Path pathfinder::unlooper(Path& refPath, Path& path, unsigned int pos) {
 DirectionalPath pathfinder::straightenerAndCutter(Path& ref,
                                                   DirectionalPath& path,
                                                   Direction direction,
-                                                  unsigned int maxDistance,
-                                                  unsigned int pos) {
+                                                  int maxDistance,
+                                                  int pos) {
     // Recursion endpoint
     if (path.size() == maxDistance) {
         ref.clear();
@@ -137,7 +136,7 @@ DirectionalPath pathfinder::straightenerAndCutter(Path& ref,
 
     // Can't have bridges if there are less than 5 points
     if (pos + 5 > ref.size()) {
-        for (auto iter = ref.begin() + pos; iter < ref.begin() + min(static_cast<unsigned int>(ref.size()), maxDistance); ++iter) {
+        for (auto iter = ref.begin() + pos; iter < ref.begin() + min(static_cast<int>(ref.size()), maxDistance); ++iter) {
             path.push_back({ *iter, path.empty() ? direction : computeDirection(path.back().first, *iter) });
         }
 

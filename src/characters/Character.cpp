@@ -33,6 +33,8 @@ Character::Character(unsigned int x, unsigned int y, Faction faction)
 }
 
 Character::~Character() {
+    Map::instance().unlinkCharacter(this);
+    Map::instance().sync();
 }
 
 //  --------------------------------------------------------------------------------------

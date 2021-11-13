@@ -15,11 +15,14 @@ Distributed under the MIT License (https://opensource.org/licenses/MIT)
 #include <string>
 #include <map>
 
+#define FACTION_FIRST Eldars
+#define FACTION_LAST Werewolves
+
 /**
  * @enum Faction
  * @brief Available Factions in the simulation
  */
-enum class Faction { NoFaction, Eldars, Valars, Dragons, Werewolves };
+enum class Faction { NoFaction, FACTION_FIRST, Valars, Dragons, FACTION_LAST };
 
 std::ostream& operator<<(std::ostream& out, Faction value);
 
