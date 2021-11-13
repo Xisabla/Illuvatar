@@ -64,5 +64,5 @@ std::string Master::getRandomMessage() {
 }
 
 void Master::printAction(std::string str) {
-    std::cout << "Master " << this->faction() << ": " << str << std::endl;
+    std::cout << "[Master] " << this->faction() << ": " << str << std::endl;
 }

@@ -53,7 +53,7 @@ void Minion::unsetNewMsg() {
 }
 
 void Minion::printAction(std::string str) {
-    std::cout << "Minion " << this->faction() << this->getId() << ": " << str << std::endl;
+    std::cout << "[Minion] " << this->faction() << this->getId() << ": " << str << std::endl;
 }
 
 void Minion::exchange(Minion* minion) {
