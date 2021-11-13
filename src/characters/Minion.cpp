@@ -89,21 +89,24 @@ void Minion::exchange(Minion* minion) {
     }
 }
 
-bool Minion::fight(Minion* minion) {
+void Minion::fight(Minion* minion) {
     do {
-        minion->attack(minion);
+        printAction("Attaque l'ennemi !");
+        attack(minion);
 
         if (!minion->isAlive()) {
+            printAction("Fouille le corps ennemi");
             searchCorpse(minion);
-            return true;
+            delete minion;
+            return;
         }
 
+        printAction("L'ennemi réplique !");
         minion->attack(this);
     } while (isAlive());
 
+    printAction("Se fait fouiller par l'ennemi");
     minion->searchCorpse(this);
-
-    return false;
 }
 
 void Minion::attack(Minion* minion) {
@@ -269,35 +272,57 @@ superTypes::DirectionalPath Minion::explore(unsigned int range) {
 }
 
 bool Minion::interactsWithSurroundings() {
-    std::cout << "TODO : interactsWithSurroundings" << std::endl;
-    return false;
+    std::vector<std::pair<ThingAtPoint, superTypes::Point>> around = this->checkAround();
+    if (!around.size()) {
+        printAction("Rien autours");
+        return false;
+    }
 
+    printAction(std::to_string(around.size())+" présence(s) autours");
     bool interactFlag = false;
     Character* c = nullptr;
     Minion* m = nullptr;
-    for (std::pair<ThingAtPoint, superTypes::Point> thing: this->checkAround()) {
+    for (std::pair<ThingAtPoint, superTypes::Point> thing: around) {
+        std::cout << std::endl;
+        c = Map::instance().getCharacter(thing.second.first, thing.second.second);
+        if (c == nullptr) {
+            printAction("\tUn obstacle");
+            continue;
+        }
+
+        m = dynamic_cast<Minion*>(c);
+        if (m == nullptr) {
+            if (c->faction() == this->faction()) {
+                printAction("\tLe maitre !");
+                dynamic_cast<Master*>(c)->collectAndSendBack(this);
+                interactFlag = true;
+            }
+            else printAction("\tUn maitre");
+            continue;
+        }
+
         switch(thing.first) {
             case ThingAtPoint::Ally:
-                c = Map::instance().getCharacter(thing.second.first, thing.second.second);
-                m = dynamic_cast<Minion*>(c);
-                if (m != nullptr) {
+                if (m->faction() != this->faction()) {
+                    printAction("\tUn Allié "+strFromFaction.at(m->faction()));
                     this->exchange(m);
+                    interactFlag = true;
                 }
-                else if (c->faction() == this->faction()) {
-                    dynamic_cast<Master*>(c)->collectAndSendBack(this);
-                }
-                interactFlag = true;
+                else printAction("\tUn Frère "+strFromFaction.at(this->faction()));
                 break;
 
             case ThingAtPoint::Ennemy:
-                if (!this->fight(dynamic_cast<Minion*>(Map::instance().getCharacter(thing.second.first, thing.second.second))))
-                {
+                printAction("\tUn Ennemi "+strFromFaction.at(m->faction()));
+                this->fight(m);
+                if (!this->isAlive()) {
+                    printAction("\nEst tombé au combat");
                     return true;
-                }; // dead
+                }
                 interactFlag = true;
                 break;
         }
     }
+    printAction("Fin des recontres");
     return interactFlag;
 }
 
@@ -315,6 +340,7 @@ void Minion::move() {
     printAction("Visualise un chemin de "+std::to_string(path.size())+" cases");
 
     if (path.empty()) {
+        printAction("Scannne les alentours...");
         this->interactsWithSurroundings();
         return;
     }

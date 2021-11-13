@@ -49,7 +49,7 @@ class Minion : public Character {
   protected:
     // - Methods -----------------------------------------------------------------------------
     void exchange(Minion* minion);
-    bool fight(Minion* minion);
+    void fight(Minion* minion);
     void normalAttack(Minion* minion);
     void attack(Minion* minion);
     void hurtItself();
