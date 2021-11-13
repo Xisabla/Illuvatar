@@ -178,6 +178,7 @@ void Map::jump(superTypes::Point newPos, Character* character) {
     // todo : verify if from & to are really neighbors ?
     Map::instance().unlinkCharacter(character);
     Map::instance().linkCharacter(newPos.first, newPos.second, character);
+    Map::instance().sync();
 }
 
 //  --------------------------------------------------------------------------------------

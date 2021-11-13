@@ -42,7 +42,6 @@ void Game::step(QGameSidebar* qgsidebar, bool doesEnable) {
         auto minion = dynamic_cast<Minion*>(character);
         if (minion != nullptr) {
             minion->move();
-            Map::instance().sync();
         }
     }
 
