@@ -29,6 +29,7 @@ std::map<Faction, Faction> Character::alliance = {
 Character::Character(unsigned int x, unsigned int y, Faction faction)
 : _x(x), _y(y), _faction(faction) {
     Map::instance().linkCharacter(x, y, this);
+    _messages = {};
 }
 
 Character::~Character() { Map::instance().unlinkCharacter(this); }
@@ -79,12 +80,9 @@ std::string Character::getRandomMessage() {
 
 std::string Character::dropRandomMessage() {
     if (_messages.empty()) throw std::runtime_error("Character message list is empty");
-
     int i = unirand::getValue(0, static_cast<int>(_messages.size()) - 1);
     std::string msg = _messages[i];
-
     std::remove(_messages.begin(), _messages.end(), msg);
-
     return msg;
 }
 

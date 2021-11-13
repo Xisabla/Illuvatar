@@ -79,7 +79,7 @@ void Minion::exchange(Minion* minion) {
         }
         return;
     }
-    if (result == RollResult::Failure && !minion->messages().empty()) {
+    if (result == RollResult::Failure && !messages().empty()) {
         dropRandomMessage();
         return;
     }
@@ -274,12 +274,14 @@ bool Minion::interactsWithSurroundings() {
 
     bool interactFlag = false;
     Character* c = nullptr;
+    Minion* m = nullptr;
     for (std::pair<ThingAtPoint, superTypes::Point> thing: this->checkAround()) {
         switch(thing.first) {
             case ThingAtPoint::Ally:
                 c = Map::instance().getCharacter(thing.second.first, thing.second.second);
-                if (!c->isMaster()) {
-                    this->exchange(dynamic_cast<Minion*>(c));
+                m = dynamic_cast<Minion*>(c);
+                if (m != nullptr) {
+                    this->exchange(m);
                 }
                 else if (c->faction() == this->faction()) {
                     dynamic_cast<Master*>(c)->collectAndSendBack(this);
@@ -288,7 +290,10 @@ bool Minion::interactsWithSurroundings() {
                 break;
 
             case ThingAtPoint::Ennemy:
-                if (!this->fight(dynamic_cast<Minion*>(Map::instance().getCharacter(thing.second.first, thing.second.second)))) return true; // dead
+                if (!this->fight(dynamic_cast<Minion*>(Map::instance().getCharacter(thing.second.first, thing.second.second))))
+                {
+                    return true;
+                }; // dead
                 interactFlag = true;
                 break;
         }
@@ -313,7 +318,6 @@ void Minion::move() {
         this->interactsWithSurroundings();
         return;
     }
-
     Faction const currentFaction = this->faction();
     Faction const allyFaction = Minion::alliance.at(currentFaction);
     for (std::pair<superTypes::Point, Direction> step: path) {
@@ -326,18 +330,16 @@ void Minion::move() {
             }
             return;
         }
-
         //tile change
         printAction("Se déplace...");
         Map::instance().jump(step.first, this);
         this->_x = step.first.first;
         this->_y = step.first.second;
         this->direction = step.second;
-
         //energy fluctuation
         Faction owner = Tile::get(this->x(), this->y())->getOwner();
         if (owner == Faction::NoFaction) {
-            this->reduceEnergy(this->getEnergyCost()); //most common - loss a bit of energy
+            this->reduceEnergy(this->getEnergyCost()); // most common - loss a bit of energy
         }
         else if (owner == currentFaction) {
             this->_energy = this->getEnergyMax(); //recover all energy
@@ -348,7 +350,6 @@ void Minion::move() {
         else {//ennemy zone
             this->reduceEnergy(this->getEnergyEnnemyCost()); //loss more energy
         }
-
         if (!this->_energy) {
             printAction("Est mort de fatigue.");
             //delete this; //?
