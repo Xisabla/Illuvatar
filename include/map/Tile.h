@@ -38,14 +38,10 @@ class Tile {
     //  - Rectangle getRect(padding_right, padding_bottom) const;
     //  - Rectangle getRectAuto() const;
 
-    static unsigned int count();
     static Tile* get(unsigned int x, unsigned int y);
-    static std::vector<Tile*> getAll();
-    static std::vector<Tile*> getNeighbours(unsigned int x, unsigned int y);
 
     // - Setters -----------------------------------------------------------------------------
     void setOwnership(Faction owner);
-    void removeOwnership();
 
     // - Methods -----------------------------------------------------------------------------
     [[nodiscard]] bool isOwnedBy(Faction f) const;

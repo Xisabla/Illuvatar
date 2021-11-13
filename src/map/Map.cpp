@@ -21,10 +21,8 @@
 //  Map
 //  --------------------------------------------------------------------------------------
 
-Preset Map::defaultPreset = Default;
-
 Map::Map(_token t)
-: Singleton(t), _domain(1, 1), _qgmap(new QGameMap), _preset(Map::defaultPreset) { }
+: Singleton(t), _domain(1, 1), _qgmap(new QGameMap) { }
 
 //  --------------------------------------------------------------------------------------
 //  Map > GETTERS
@@ -63,67 +61,49 @@ std::map<std::pair<unsigned int, unsigned int>, Character*>& Map::characters() {
 }
 
 //  --------------------------------------------------------------------------------------
-//  Map > SETTERS
-//  --------------------------------------------------------------------------------------
-
-void Map::setPreset(Preset preset) { _preset = preset; }
-
-void Map::setDefaultPreset(Preset preset) { Map::defaultPreset = preset; }
-
-//  --------------------------------------------------------------------------------------
 //  Map > PUBLIC METHODS
 //  --------------------------------------------------------------------------------------
 
 void Map::generate() {
-    if (_preset == Turtle) {
-        _domain = Domain(21, 21);
+    _domain = Domain(21, 21);
 
-        nlohmann::json env = Environment::instance()->env();
-        generateDisk(env["map"]["mainBoard"]["radius"], env["map"]["mainBoard"]["center"]["x"], env["map"]["mainBoard"]["center"]["y"]);
+    nlohmann::json env = Environment::instance()->env();
+    generateDisk(env["map"]["mainBoard"]["radius"],
+                    env["map"]["mainBoard"]["center"]["x"],
+                    env["map"]["mainBoard"]["center"]["y"]);
 
-        for (auto safeZone : env["map"]["safeZones"]) {
-            generateDisk(safeZone["radius"], safeZone["center"]["x"], safeZone["center"]["y"], strToFaction.at(safeZone["faction"]));
-        }
-
-        for (auto race : env["characters"]) {
-            Faction faction = strToFaction.at(race["faction"]);
-            new Master(race["master"]["position"]["x"], race["master"]["position"]["y"], faction);
-
-            switch (faction){
-                case Faction::Dragons:
-                    for (auto pos : race["minion"]["positions"]) (new Dragon(pos["x"], pos["y"]))->virtualInits();
-                    break;
-
-                case Faction::Eldars:
-                    for (auto pos : race["minion"]["positions"]) (new Eldar(pos["x"], pos["y"]))->virtualInits();
-                    break;
-
-                case Faction::Valars:
-                    for (auto pos : race["minion"]["positions"]) (new Vala(pos["x"], pos["y"]))->virtualInits();
-                    break;
-
-                case Faction::Werewolves:
-                    for (auto pos : race["minion"]["positions"]) (new Werewolf(pos["x"], pos["y"]))->virtualInits();
-                    break;
-            }
-        }
+    for (auto safeZone: env["map"]["safeZones"]) {
+        generateDisk(safeZone["radius"],
+                        safeZone["center"]["x"],
+                        safeZone["center"]["y"],
+                        strToFaction.at(safeZone["faction"]));
     }
 
-    if (_preset == Square) {
-        _domain = Domain(21, 21);
+    for (auto race: env["characters"]) {
+        Faction faction = strToFaction.at(race["faction"]);
+        new Master(race["master"]["position"]["x"], race["master"]["position"]["y"], faction);
 
-        generateSquare(0, 0, 21, 21);
+        switch (faction) {
+            case Faction::Dragons:
+                for (auto pos: race["minion"]["positions"])
+                    (new Dragon(pos["x"], pos["y"]))->virtualInits();
+                break;
 
-        generateSquare(0, 0, 5, 5, Faction::Dragons);
-        generateSquare(0, 15, 5, 20, Faction::Eldars);
-        generateSquare(15, 0, 20, 5, Faction::Valars);
-        generateSquare(15, 15, 20, 20, Faction::Werewolves);
+            case Faction::Eldars:
+                for (auto pos: race["minion"]["positions"])
+                    (new Eldar(pos["x"], pos["y"]))->virtualInits();
+                break;
 
-        new Master(3, 3, Faction::Dragons);
-        new Master(3, 18, Faction::Eldars);
-        new Master(18, 3, Faction::Valars);
-        new Master(18, 18, Faction::Werewolves);
-        // TODO: Generate minions
+            case Faction::Valars:
+                for (auto pos: race["minion"]["positions"])
+                    (new Vala(pos["x"], pos["y"]))->virtualInits();
+                break;
+
+            case Faction::Werewolves:
+                for (auto pos: race["minion"]["positions"])
+                    (new Werewolf(pos["x"], pos["y"]))->virtualInits();
+                break;
+        }
     }
 
     sync();
@@ -152,9 +132,13 @@ bool Map::containsCharacter(unsigned int x, unsigned int y) {
     return _characters.contains({ x, y });
 }
 
-bool Map::exists(const superTypes::Point& p) const {
-    return Tile::exists(p.first, p.second);
+void Map::removeAllCharacters() {
+    for (auto& e: _characters) delete e.second;
+
+    _characters = {};
 }
+
+bool Map::exists(const superTypes::Point& p) const { return Tile::exists(p.first, p.second); }
 
 ThingAtPoint Map::getThingAtPoint(const superTypes::Point& p) {
     if (!this->exists(p)) return ThingAtPoint::Void;
@@ -165,12 +149,14 @@ ThingAtPoint Map::getThingAtPoint(const superTypes::Point& p) {
     return ThingAtPoint::Nothing;
 }
 
-superTypes::Point Map::computeLastPosition(const superTypes::Point& point, const Direction& direction) {
+superTypes::Point Map::computeLastPosition(const superTypes::Point& point,
+                                           const Direction& direction) {
     superTypes::Point lastCoords = Map::project(point, directionutils::computeLastJump(direction));
 
     // TODO: Throw exception
     if (!this->exists(lastCoords)) {
-        std::cout << "error at Map::computeLastPosition(" << point.first << " " << point.second << ", ...)" << std::endl;
+        std::cout << "error at Map::computeLastPosition(" << point.first << " " << point.second
+                  << ", ...)" << std::endl;
         exit(1);
     }
     Tile* t = Tile::get(lastCoords.first, lastCoords.second);
@@ -182,7 +168,8 @@ superTypes::Point Map::project(const superTypes::Point& from, const superTypes::
 }
 
 bool Map::areNeighbours(const superTypes::Point& first, const superTypes::Point& second) {
-    return abs((int) first.first - (int) second.first) == 1 && abs((int) first.second - (int) second.second) == 1;
+    return abs((int) first.first - (int) second.first) == 1 &&
+           abs((int) first.second - (int) second.second) == 1;
 }
 
 void Map::jump(superTypes::Point newPos, Character* character) {
@@ -204,18 +191,6 @@ void Map::generateDisk(const double radius,
             if (x * x + y * y <= static_cast<double>(radius * radius)) {
                 Tile::safeCreate(x + centerX, y + centerY, owner);
             }
-        }
-    }
-}
-
-void Map::generateSquare(const unsigned int topX,
-                         const unsigned int topY,
-                         const unsigned int bottomX,
-                         const unsigned int bottomY,
-                         const Faction owner) {
-    for (unsigned x = topX; x <= bottomX; x++) {
-        for (unsigned y = topY; y <= bottomY; y++) {
-            Tile::safeCreate(x, y, owner);
         }
     }
 }
