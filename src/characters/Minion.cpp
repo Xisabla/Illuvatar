@@ -60,31 +60,67 @@ void Minion::printAction(std::string str) {
 }
 
 void Minion::exchange(Minion* minion) {
-    RollResult result = rollDice();
-
-    if (result == RollResult::CriticalSuccess && !minion->messages().empty()) {
-        addMessage(minion->getRandomMessage());
-        this->newMsg = true;
-        return;
-    }
-    if (result == RollResult::Success) {
-        if (!minion->messages().empty()) {
-            addMessage(minion->dropRandomMessage());
-            this->newMsg = true;
-        }
-        if (!messages().empty()) {
-            minion->addMessage(dropRandomMessage());
-            minion->newMsg = true;
-        }
-        return;
-    }
-    if (result == RollResult::Failure && !messages().empty()) {
-        dropRandomMessage();
-        return;
-    }
-    if (result == RollResult::CriticalFailure) {
-        if (!minion->messages().empty()) minion->dropRandomMessage();
-        if (!messages().empty()) dropRandomMessage();
+    std::string msg;
+    switch(rollDice()) {
+        case RollResult::CriticalSuccess:
+            printAction("Succès critique !");
+            if (!minion->messages().empty()) {
+                printAction("Copie un message de l'allié et pars en direction du maitre");
+                msg = minion->dropRandomMessage();
+                std::cout << "\t" << msg << std::endl;
+                addMessage(msg);
+                this->newMsg = true;
+            }
+            else printAction("Aucun message à gagner...");
+            break;
+        case RollResult::Success:
+            printAction("Succès !");
+            if (!minion->messages().empty()) {
+                printAction("Récupère un message de l'allié et pars en direction du maitre");
+                msg = minion->dropRandomMessage();
+                std::cout << "\t" << msg << std::endl;
+                addMessage(msg);
+                this->newMsg = true;
+            }
+            else printAction("Aucun message à gagner...");
+            if (!messages().empty()) {
+                printAction("Donne un message de à l'allié qui part en direction de son maitre");
+                msg = dropRandomMessage();
+                std::cout << "\t" << msg << std::endl;
+                minion->addMessage(msg);
+                minion->setNewMsg();
+            }
+            else printAction("Aucun message à donner...");
+            break;
+        case RollResult::Failure:
+            printAction("Echec !");
+            if (!messages().empty()) {
+                printAction("Perd un message aléatoire...");
+                dropRandomMessage();
+                if (messages().empty()) {
+                    this->newMsg = false;
+                    printAction("Pars en direction du maitre");
+                }
+            }
+            else printAction("Aucun message à perdre...");
+            break;
+        case RollResult::CriticalFailure:
+            printAction("Echec critique !");
+            if (!messages().empty()) {
+                printAction("Perd ses "+std::to_string(messages().size())+" message(s) et pars en direction du maitre...");
+                dropMessages();
+                this->newMsg = false;
+            }
+            else printAction("Aucun message à perdre...");
+            if (!minion->messages().empty()) {
+                minion->dropRandomMessage();
+                if (minion->messages().empty()) {
+                    minion->unsetNewMsg();
+                    printAction("Allié part en direction de son maitre");
+                }
+            }
+            else printAction("Allié n'a aucun message à perdre...");
+            break;
     }
 }
 
@@ -111,16 +147,21 @@ void Minion::fight(Minion* minion) {
 void Minion::attack(Minion* minion) {
     switch(this->rollDice()) {
         case RollResult::CriticalSuccess:
+            printAction("Succès critique ! Attaque spéciale !");
             this->specialAttack(minion);
             break;
 
         case RollResult::Success:
+            printAction("Succès ! Attaque normale !");
             this->normalAttack(minion);
             break;
 
-        // case failure : "miss"
+        case RollResult::Failure:
+            printAction("Echec, rate l'ennemi...");
+            break;
 
         case RollResult::CriticalFailure:
+            printAction("Echec critique, se blesse lui même...");
             this->hurtItself();
             break;
     }
@@ -161,22 +202,57 @@ RollResult Minion::rollDice() {
 }
 
 void Minion::searchCorpse(Minion* minion) {
-    RollResult result = rollDice();
-
-    if(result == RollResult::CriticalSuccess) {
-        addMessages(minion->messages());
-        this->newMsg = true;
+    std::string msg;
+    switch(rollDice()) {
+        case RollResult::CriticalSuccess:
+            printAction("Succès critique !");
+            if (!minion->messages().empty()) {
+                printAction("Récupère les "+std::to_string(minion->messages().size())+" message(s) de l'ennemi et pars en direction du maitre");
+                for (std::string message : minion->messages()) std::cout << "\t" << message << std::endl;
+                addMessages(minion->messages());
+                this->newMsg = true;
+            }
+            else printAction("Aucun message à gagner...");
+            break;
+        case RollResult::Success:
+            printAction("Succès !");
+            if (!minion->messages().empty()) {
+                printAction("Récupère un message de l'ennemi et pars en direction du maitre");
+                msg = minion->dropRandomMessage();
+                std::cout << "\t" << msg << std::endl;
+                addMessage(msg);
+                this->newMsg = true;
+            }
+            else printAction("Aucun message à gagner...");
+            break;
+        case RollResult::Failure:
+            printAction("Echec !");
+            if (!messages().empty()) {
+                printAction("Perd un message aléatoire...");
+                dropRandomMessage();
+                if (messages().empty()) {
+                    this->newMsg = false;
+                    printAction("Pars en direction du maitre");
+                }
+            }
+            else printAction("Aucun message à perdre...");
+            break;
+        case RollResult::CriticalFailure:
+            printAction("Echec critique !");
+            if (!messages().empty()) {
+                printAction("Perd ses "+std::to_string(messages().size())+" message(s) et pars en direction du maitre...");
+                dropMessages();
+                this->newMsg = false;
+            }
+            else printAction("Aucun message à perdre...");
+            break;
     }
-    if(result == RollResult::Success && !minion->messages().empty()) {
-        addMessage(minion->dropRandomMessage());
-        this->newMsg = true;
-    }
-    if(result == RollResult::Failure && !messages().empty()) dropRandomMessage();
-    if(result == RollResult::CriticalFailure) dropMessages();
 }
 
 void Minion::normalAttack(Minion* minion) {
-    int damages = unirand::getValueAround(this->getDamages(), 2);
+    int damages = std::max(1, unirand::getValueAround(this->getDamages(), 2));
+    std::string nature = this->getAttackNature() == AttackNature::Physical ? "physique(s)" : "énergétique(s)";
+    printAction("Inflige "+std::to_string(damages)+" points de dégâts "+nature+" à l'ennemi "+strFromFaction.at(minion->faction())+std::to_string(minion->getId()));
     switch(this->getAttackNature()) {
         case AttackNature::Physical:
             minion->reduceLife(damages);
@@ -188,7 +264,9 @@ void Minion::normalAttack(Minion* minion) {
 }
 
 void Minion::hurtItself() {
-    int damages = unirand::getValueAround(this->getSelfDamages(), 2);
+    int damages = std::max(1, unirand::getValueAround(this->getSelfDamages(), 2));
+    std::string nature = this->getAttackNature() == AttackNature::Physical ? "physique(s)" : "énergétique(s)";
+    printAction("S'inflige "+std::to_string(damages)+" points de dégâts "+nature+" à lui même");
     switch(this->getAttackNature()) {
         case AttackNature::Physical:
             this->reduceLife(damages);
@@ -303,15 +381,15 @@ bool Minion::interactsWithSurroundings() {
         switch(thing.first) {
             case ThingAtPoint::Ally:
                 if (m->faction() != this->faction()) {
-                    printAction("\tUn Allié "+strFromFaction.at(m->faction()));
+                    printAction("\tL'Allié "+strFromFaction.at(m->faction())+std::to_string(m->getId()));
                     this->exchange(m);
                     interactFlag = true;
                 }
-                else printAction("\tUn Frère "+strFromFaction.at(this->faction()));
+                else printAction("\tLe Frère "+strFromFaction.at(this->faction())+std::to_string(m->getId()));
                 break;
 
             case ThingAtPoint::Ennemy:
-                printAction("\tUn Ennemi "+strFromFaction.at(m->faction()));
+                printAction("\tL'Ennemi "+strFromFaction.at(m->faction())+std::to_string(m->getId()));
                 this->fight(m);
                 if (!this->isAlive()) {
                     printAction("\tEst tombé au combat");
@@ -336,7 +414,7 @@ void Minion::move() {
     printAction(targetCondition ? "Explore la map" : "Cherche son maitre");
 
     superTypes::DirectionalPath path = targetCondition ? this->explore(range) : this->findMaster(range);
-    printAction("Visualise un chemin de "+std::to_string(path.size())+" cases");
+    printAction("Visualise un chemin de "+std::to_string(path.size())+" case(s)");
 
     if (path.empty()) {
         printAction("Scannne les alentours...");

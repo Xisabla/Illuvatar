@@ -21,6 +21,8 @@ GoodMinion::GoodMinion(unsigned int x, unsigned int y, Faction faction): Minion(
 //  --------------------------------------------------------------------------------------
 
 void GoodMinion::specialAttack(Minion* minion) {
-    minion->reduceEnergy(unirand::getValueAround(this->getEnergyReduction(), 2));
+    int damages = std::max(1, unirand::getValueAround(this->getEnergyReduction(), 2));
+    printAction("Inflige "+std::to_string(damages)+" points de dégâts énergétique(s) à l'ennemi !");
+    minion->reduceEnergy(damages);
     this->normalAttack(minion);
 }

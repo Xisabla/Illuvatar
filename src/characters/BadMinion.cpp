@@ -22,5 +22,8 @@ BadMinion::BadMinion(unsigned int x, unsigned int y, Faction faction): Minion(x,
 
 void BadMinion::specialAttack(Minion* minion) {
     this->normalAttack(minion);
-    this->restoreLife(unirand::getValueAround(this->getLifeHeal(), 2));
+    
+    int heal = std::max(1, unirand::getValueAround(this->getLifeHeal(), 2));
+    printAction("Récupère "+std::to_string(heal)+" points de vie(s) !");
+    this->restoreLife(heal);
 }

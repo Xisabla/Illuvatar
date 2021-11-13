@@ -22,8 +22,9 @@ pathfinder::shortest(Point current, Point& target, unsigned int maxDistance) {
     Path unlooped = {};
     res = unlooper(res, unlooped);
     DirectionalPath straightened = {};
-    auto i = straightenerAndCutter(res, straightened, computeDirection(current, unlooped[0]), maxDistance);
-    return i;
+    auto path = straightenerAndCutter(res, straightened, computeDirection(current, unlooped[0]), maxDistance);
+    if (path.back().first == target) path.pop_back(); // master tile
+    return path;
 }
 
 double pathfinder::distanceTo(Point& p1, Point& p2) {
@@ -120,8 +121,7 @@ Path pathfinder::unlooper(Path& refPath, Path& path, unsigned int pos) {
             }
         }
     }
-    auto i =  pathfinder::unlooper(refPath, path, pos + 1);
-    return i;
+    return pathfinder::unlooper(refPath, path, pos + 1);
 }
 
 DirectionalPath pathfinder::straightenerAndCutter(Path& ref,
