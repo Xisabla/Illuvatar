@@ -56,8 +56,8 @@ class Minion : public Character {
 
     // - Attributes --------------------------------------------------------------------------
     Master* _master;
-    unsigned int _life;
-    unsigned int _energy;
+    int _life;
+    int _energy;
     bool newMsg = false;
 
     virtual unsigned int getId() = 0;

@@ -53,7 +53,7 @@
                 }
             },
             "minion": {
-                "lifeMax": 150,
+                "lifeMax": 20,
 
                 "energyMax": 104,
                 "energyLow":  32,
@@ -65,12 +65,12 @@
                 },
 
                 "attackNature":  "Physical",
-                "damages":  10,
+                "damages":  20,
                 "selfDamages":  3,
 
                 "diceMaxValue":  100,
                 "diceCriticFailureValue":  10,
-                "diceFailureValue":  75,
+                "diceFailureValue":  25,
                 "diceSuccessValue":  98,
 
                 "positions": [
@@ -112,7 +112,7 @@
                 }
             },
             "minion": {
-                "lifeMax": 80,
+                "lifeMax": 20,
 
                 "energyMax": 120,
                 "energyLow":  20,
@@ -124,7 +124,7 @@
                 },
 
                 "attackNature":  "Physical",
-                "damages":  3,
+                "damages":  15,
                 "selfDamages":  2,
 
                 "diceMaxValue":  100,
@@ -171,7 +171,7 @@
                 }
             },
             "minion": {
-                "lifeMax": 90,
+                "lifeMax": 20,
 
                 "energyMax": 110,
                 "energyLow":  20,
@@ -183,7 +183,7 @@
                 },
 
                 "attackNature":  "Physical",
-                "damages":  3,
+                "damages":  16,
                 "selfDamages":  2,
 
                 "diceMaxValue":  100,
@@ -230,7 +230,7 @@
                 }
             },
             "minion": {
-                "lifeMax": 125,
+                "lifeMax": 25,
 
                 "energyMax": 90,
                 "energyLow":  24,
@@ -241,8 +241,8 @@
                     "max":10
                 },
 
-                "attackNature":  "Energetic",
-                "damages":  10,
+                "attackNature":  "Physical",
+                "damages":  18,
                 "selfDamages":  3,
 
                 "diceMaxValue":  100,

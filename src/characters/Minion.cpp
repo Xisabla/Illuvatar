@@ -132,7 +132,8 @@ void Minion::fight(Minion* minion) {
         if (!minion->isAlive()) {
             printAction("Fouille le corps ennemi");
             searchCorpse(minion);
-            delete minion;
+            Map::instance().unlinkCharacter(minion);
+            Map::instance().sync();
             return;
         }
 
@@ -419,6 +420,7 @@ void Minion::move() {
     if (path.empty()) {
         printAction("Scannne les alentours...");
         this->interactsWithSurroundings();
+        cout << "cas 1" << endl;
         return;
     }
     Faction const currentFaction = this->faction();
@@ -451,11 +453,12 @@ void Minion::move() {
         }
         if (!this->_energy) {
             printAction("Est mort de fatigue.");
-            //delete this; //?
             return;
         }
 
         printAction("Scannne les alentours...");
-        if (interactsWithSurroundings()) return;
+        bool a = interactsWithSurroundings();
+        cout << "cas 2" << endl;
+        if (a) return;
     }
 }
