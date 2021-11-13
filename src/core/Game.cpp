@@ -42,6 +42,7 @@ void Game::step() {
         if(minion != nullptr){
               minion->move();
         }
+        //Map::instance().sync();
     }
 }
 
