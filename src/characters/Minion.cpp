@@ -14,13 +14,14 @@
 #include "enums/DirectionUtils.h"
 #include "unirand.h"
 
+using namespace std; //tmp
+
 //  --------------------------------------------------------------------------------------
 //  Minion
 //  --------------------------------------------------------------------------------------
 
 Minion::Minion(unsigned int x, unsigned int y, Faction faction)
-: Character(x, y, faction), _master(dynamic_cast<Master*>(Map::instance().getMaster(faction))) {
-    this->direction = directionutils::randDirection();
+: Character(x, y, faction), direction(directionutils::randDirection()), _master(dynamic_cast<Master*>(Map::instance().getMaster(faction))) {
 }
 
 Minion* Minion::virtualInits() {
@@ -39,78 +40,116 @@ Master* Minion::master() const { return _master; }
 //  Minion > PUBLIC METHODS
 //  --------------------------------------------------------------------------------------
 
-bool Minion::isAlive() const { return _life > 0 && _energy > 0; }
+bool Minion::isAlive() const {
+    return _life > 0 && _energy > 0;
+}
 
 //  --------------------------------------------------------------------------------------
 //  Minion > PROTECTED METHODS
 //  --------------------------------------------------------------------------------------
 
-void Minion::setNewMsg() {
-    this->newMsg = true;
-}
-void Minion::unsetNewMsg() {
-    this->newMsg = false;
+void Minion::printAction(std::string str) {
+    std::cout << "[Minion] " << this->faction() << this->getId() << ": " << str << std::endl;
 }
 
 void Minion::exchange(Minion* minion) {
-    RollResult result = rollDice();
-
-    if (result == RollResult::CriticalSuccess && !minion->messages().empty()) {
-        addMessage(minion->getRandomMessage());
-        this->newMsg = true;
-        return;
-    }
-    if (result == RollResult::Success) {
-        if (!minion->messages().empty()) {
-            addMessage(minion->dropRandomMessage());
-            this->newMsg = true;
-        }
-        if (!messages().empty()) {
-            minion->addMessage(dropRandomMessage());
-            minion->newMsg = true;
-        }
-        return;
-    }
-    if (result == RollResult::Failure && !messages().empty()) {
-        dropRandomMessage();
-        return;
-    }
-    if (result == RollResult::CriticalFailure) {
-        if (!minion->messages().empty()) minion->dropRandomMessage();
-        if (!messages().empty()) dropRandomMessage();
+    std::string msg;
+    switch(rollDice()) {
+        case RollResult::CriticalSuccess:
+            printAction("Succès critique !");
+            if (!minion->messages().empty()) {
+                printAction("Copie un message de l'allié et pars en direction du maitre");
+                msg = minion->dropRandomMessage();
+                std::cout << "\t" << msg << std::endl;
+                addMessage(msg);
+            }
+            else printAction("Aucun message à gagner...");
+            break;
+        case RollResult::Success:
+            printAction("Succès !");
+            if (!minion->messages().empty()) {
+                printAction("Récupère un message de l'allié et pars en direction du maitre");
+                msg = minion->dropRandomMessage();
+                std::cout << "\t" << msg << std::endl;
+                addMessage(msg);
+            }
+            else printAction("Aucun message à gagner...");
+            if (!messages().empty()) {
+                printAction("Donne un message de à l'allié qui part en direction de son maitre");
+                msg = dropRandomMessage();
+                std::cout << "\t" << msg << std::endl;
+                minion->addMessage(msg);
+            }
+            else printAction("Aucun message à donner...");
+            break;
+        case RollResult::Failure:
+            printAction("Echec !");
+            if (!messages().empty()) {
+                printAction("Perd un message aléatoire...");
+                dropRandomMessage();
+                if (messages().empty()) {
+                    printAction("Pars en direction du maitre");
+                }
+            }
+            else printAction("Aucun message à perdre...");
+            break;
+        case RollResult::CriticalFailure:
+            printAction("Echec critique !");
+            if (!messages().empty()) {
+                printAction("Perd ses "+std::to_string(messages().size())+" message(s) et pars en direction du maitre...");
+                dropMessages();
+            }
+            else printAction("Aucun message à perdre...");
+            if (!minion->messages().empty()) {
+                minion->dropRandomMessage();
+                if (minion->messages().empty()) {
+                    printAction("Allié part en direction de son maitre");
+                }
+            }
+            else printAction("Allié n'a aucun message à perdre...");
+            break;
     }
 }
 
-bool Minion::fight(Minion* minion) {
+void Minion::fight(Minion* minion) {
     do {
-        minion->attack(minion);
+        printAction("Attaque l'ennemi !");
+        attack(minion);
 
         if (!minion->isAlive()) {
+            printAction("Fouille le corps ennemi");
             searchCorpse(minion);
-            return true;
+            Map::instance().unlinkCharacter(minion);
+            Map::instance().sync();
+            return;
         }
 
+        printAction("L'ennemi réplique !");
         minion->attack(this);
     } while (isAlive());
 
+    printAction("Se fait fouiller par l'ennemi");
     minion->searchCorpse(this);
-
-    return false;
 }
 
 void Minion::attack(Minion* minion) {
     switch(this->rollDice()) {
         case RollResult::CriticalSuccess:
+            printAction("Succès critique ! Attaque spéciale !");
             this->specialAttack(minion);
             break;
 
         case RollResult::Success:
+            printAction("Succès ! Attaque normale !");
             this->normalAttack(minion);
             break;
 
-        // case failure : "miss"
+        case RollResult::Failure:
+            printAction("Echec, rate l'ennemi...");
+            break;
 
         case RollResult::CriticalFailure:
+            printAction("Echec critique, se blesse lui même...");
             this->hurtItself();
             break;
     }
@@ -120,20 +159,20 @@ void Minion::attack(Minion* minion) {
 //  Minion > PRIVATE METHODS
 //  --------------------------------------------------------------------------------------
 
-void Minion::reduceEnergy(unsigned int energy) {
-    _energy = std::max(static_cast<unsigned int> (0), _energy - energy);
+void Minion::reduceEnergy(int energy) {
+    _energy = std::max(0, _energy - energy);
 }
 
-void Minion::reduceLife(unsigned int life) {
-    _life = std::max(static_cast<unsigned int> (0), _life - life);
+void Minion::reduceLife(int life) {
+    _life = std::max(0, _life - life);
 }
 
-void Minion::restoreEnergy(unsigned int heal) {
+void Minion::restoreEnergy(int heal) {
     if (this->_energy + heal < this->getEnergyMax()) this->_energy += heal;
     else this->_energy = this->getEnergyMax();
 }
 
-void Minion::restoreLife(unsigned int heal) {
+void Minion::restoreLife(int heal) {
     if (this->_life + heal < this->getLifeMax()) this->_life += heal;
     else this->_life = this->getLifeMax();
 }
@@ -151,22 +190,53 @@ RollResult Minion::rollDice() {
 }
 
 void Minion::searchCorpse(Minion* minion) {
-    RollResult result = rollDice();
-
-    if(result == RollResult::CriticalSuccess) {
-        addMessages(minion->messages());
-        this->newMsg = true;
+    std::string msg;
+    switch(rollDice()) {
+        case RollResult::CriticalSuccess:
+            printAction("Succès critique !");
+            if (!minion->messages().empty()) {
+                printAction("Récupère les "+std::to_string(minion->messages().size())+" message(s) de l'ennemi et pars en direction du maitre");
+                for (std::string message : minion->messages()) std::cout << "\t" << message << std::endl;
+                addMessages(minion->messages());
+            }
+            else printAction("Aucun message à gagner...");
+            break;
+        case RollResult::Success:
+            printAction("Succès !");
+            if (!minion->messages().empty()) {
+                printAction("Récupère un message de l'ennemi et pars en direction du maitre");
+                msg = minion->dropRandomMessage();
+                std::cout << "\t" << msg << std::endl;
+                addMessage(msg);
+            }
+            else printAction("Aucun message à gagner...");
+            break;
+        case RollResult::Failure:
+            printAction("Echec !");
+            if (!messages().empty()) {
+                printAction("Perd un message aléatoire...");
+                dropRandomMessage();
+                if (messages().empty()) {
+                    printAction("Pars en direction du maitre");
+                }
+            }
+            else printAction("Aucun message à perdre...");
+            break;
+        case RollResult::CriticalFailure:
+            printAction("Echec critique !");
+            if (!messages().empty()) {
+                printAction("Perd ses "+std::to_string(messages().size())+" message(s) et pars en direction du maitre...");
+                dropMessages();
+            }
+            else printAction("Aucun message à perdre...");
+            break;
     }
-    if(result == RollResult::Success && !minion->messages().empty()) {
-        addMessage(minion->dropRandomMessage());
-        this->newMsg = true;
-    }
-    if(result == RollResult::Failure && !messages().empty()) dropRandomMessage();
-    if(result == RollResult::CriticalFailure) dropMessages();
 }
 
 void Minion::normalAttack(Minion* minion) {
-    int damages = unirand::getValueAround(this->getDamages(), 2);
+    int damages = std::max(1, unirand::getValueAround(this->getDamages(), 2));
+    std::string nature = this->getAttackNature() == AttackNature::Physical ? "physique(s)" : "énergétique(s)";
+    printAction("Inflige "+std::to_string(damages)+" points de dégâts "+nature+" à l'ennemi "+strFromFaction.at(minion->faction())+std::to_string(minion->getId()));
     switch(this->getAttackNature()) {
         case AttackNature::Physical:
             minion->reduceLife(damages);
@@ -178,7 +248,9 @@ void Minion::normalAttack(Minion* minion) {
 }
 
 void Minion::hurtItself() {
-    int damages = unirand::getValueAround(this->getSelfDamages(), 2);
+    int damages = std::max(1, unirand::getValueAround(this->getSelfDamages(), 2));
+    std::string nature = this->getAttackNature() == AttackNature::Physical ? "physique(s)" : "énergétique(s)";
+    printAction("S'inflige "+std::to_string(damages)+" points de dégâts "+nature+" à lui même");
     switch(this->getAttackNature()) {
         case AttackNature::Physical:
             this->reduceLife(damages);
@@ -193,8 +265,9 @@ std::string Minion::getAssetPath() {
     return Character::getAssetPath() + strFromDirection.at(this->direction) + ".png";
 }
 
-superTypes::DirectionalPath Minion::findMaster(unsigned int range) {
+superTypes::DirectionalPath Minion::findMaster(int range) {
     superTypes::Point target = {this->master()->x(), this->master()->y()};
+    if (target.first < 0 || target.first > 30 || target.second < 0 || target.second > 30) return {};
     return pathfinder::shortest({this->x(), this->y()}, target, range);
 }
 
@@ -223,7 +296,7 @@ std::vector<std::pair<ThingAtPoint, superTypes::Point>> Minion::checkAround() {
     return things;
 }
 
-superTypes::DirectionalPath Minion::explore(unsigned int range) {
+superTypes::DirectionalPath Minion::explore(int range) {
     std::vector<Direction> possibleDirs = {};
     superTypes::Point p = { this->x(), this->y() };
     for (Direction dir: directionutils::fanDirections.at(this->direction)) {
@@ -261,42 +334,74 @@ superTypes::DirectionalPath Minion::explore(unsigned int range) {
 }
 
 bool Minion::interactsWithSurroundings() {
+    std::vector<std::pair<ThingAtPoint, superTypes::Point>> around = this->checkAround();
+    if (!around.size()) {
+        printAction("Rien autours");
+        return false;
+    }
+
+    printAction(std::to_string(around.size())+" présence(s) autours");
     bool interactFlag = false;
     Character* c = nullptr;
     Minion* m = nullptr;
-    for (std::pair<ThingAtPoint, superTypes::Point> thing: this->checkAround()) {
+    for (std::pair<ThingAtPoint, superTypes::Point> thing: around) {
+        std::cout << std::endl;
+        c = Map::instance().getCharacter(thing.second.first, thing.second.second);
+        if (c == nullptr) {
+            printAction("\tUn obstacle");
+            continue;
+        }
+
+        m = dynamic_cast<Minion*>(c);
+        if (m == nullptr) {
+            if (c->faction() == this->faction()) {
+                printAction("\tLe maitre !");
+                dynamic_cast<Master*>(c)->collectAndSendBack(this);
+                interactFlag = true;
+            }
+            else printAction("\tUn maitre");
+            continue;
+        }
+
         switch(thing.first) {
             case ThingAtPoint::Ally:
-                c = Map::instance().getCharacter(thing.second.first, thing.second.second);
-                m = dynamic_cast<Minion*>(c);
-                if (m != nullptr) {
+                if (m->faction() != this->faction()) {
+                    printAction("\tL'Allié "+strFromFaction.at(m->faction())+std::to_string(m->getId()));
                     this->exchange(m);
+                    interactFlag = true;
                 }
-                else if (c->faction() == this->faction()) {
-                    dynamic_cast<Master*>(c)->collectAndSendBack(this);
-                }
-                interactFlag = true;
+                else printAction("\tLe Frère "+strFromFaction.at(this->faction())+std::to_string(m->getId()));
                 break;
 
             case ThingAtPoint::Ennemy:
-                if (!this->fight(dynamic_cast<Minion*>(Map::instance().getCharacter(thing.second.first, thing.second.second))))
-                {
+                printAction("\tL'Ennemi "+strFromFaction.at(m->faction())+std::to_string(m->getId()));
+                this->fight(m);
+                if (!this->isAlive()) {
+                    printAction("\tEst tombé au combat");
                     return true;
-                }; // dead
+                }
                 interactFlag = true;
                 break;
         }
     }
+    printAction("Fin des recontres");
     return interactFlag;
 }
 
 void Minion::move() {
-    int range = std::max(0, unirand::getValueAround(unirand::getValue(this->getRange().first, this->getRange().second), 2));
-    bool enoughEnergy = this->_energy - range * this->getEnergyCost() > this->getEnergyLow();
+    printAction("Prépare un déplacement");
 
-    superTypes::DirectionalPath path = enoughEnergy && this->gotOneMsg() && this->newMsg ? this->explore(range) : this->findMaster(range);
+    int range = std::max(1, unirand::getValueAround(unirand::getValue(this->getRange().first, this->getRange().second), 2));
+    printAction("Portée de "+std::to_string(range));
+
+    bool targetCondition = this->_energy > this->getEnergyLow() && this->gotOneMsg();
+    printAction(targetCondition ? "Explore la map" : "Cherche son maitre");
+
+    superTypes::DirectionalPath path = targetCondition ? this->explore(range) : this->findMaster(range);
+    printAction("Visualise un chemin de "+std::to_string(path.size())+" case(s)");
 
     if (path.empty()) {
+        printAction("Scannne les alentours...");
         this->interactsWithSurroundings();
         return;
     }
@@ -304,13 +409,12 @@ void Minion::move() {
     Faction const allyFaction = Minion::alliance.at(currentFaction);
     for (std::pair<superTypes::Point, Direction> step: path) {
         if (this->checkPosition(step.first) != ThingAtPoint::Nothing) {
+            printAction("Rencontre quelque chose sur la route...");
             interactsWithSurroundings();
-            if (!this->isAlive()) {
-                //delete this; //?
-            }
             return;
         }
         //tile change
+        printAction("Se déplace...");
         Map::instance().jump(step.first, this);
         this->_x = step.first.first;
         this->_y = step.first.second;
@@ -330,14 +434,11 @@ void Minion::move() {
             this->reduceEnergy(this->getEnergyEnnemyCost()); //loss more energy
         }
         if (!this->_energy) {
-            //delete this; //?
+            printAction("Est mort de fatigue.");
             return;
         }
-        if (interactsWithSurroundings()) {
-            if (!this->isAlive()) {
-                //delete this; //?
-            }
-            return;
-        }
+
+        printAction("Scannne les alentours...");
+        if (interactsWithSurroundings()) return;
     }
 }

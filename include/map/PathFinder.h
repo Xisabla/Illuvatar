@@ -30,7 +30,7 @@ namespace pathfinder {
  * @param maxDistance Maximum number of Tiles to use (may stop the Path before the target)
  * @return The computed Path
  */
-superTypes::DirectionalPath shortest(superTypes::Point current, superTypes::Point& target, unsigned int maxDistance);
+superTypes::DirectionalPath shortest(superTypes::Point current, superTypes::Point& target, int maxDistance);
 
 /**
  * Compute the distance between the current Point and another one
@@ -51,7 +51,7 @@ superTypes::Path AStar(superTypes::Path& path, superTypes::Point& current, super
  * @brief Remove all loops on a Path by taking the last neighbour of each point
  * @return The unlooped path
  */
-superTypes::Path unlooper(superTypes::Path& refPath, superTypes::Path& path, unsigned int pos = 1);
+superTypes::Path unlooper(superTypes::Path& refPath, superTypes::Path& path, int pos = 1);
 
 /**
  * @brief Remove all bridges on a Path by detecting pattern and add direction at each step
@@ -60,8 +60,8 @@ superTypes::Path unlooper(superTypes::Path& refPath, superTypes::Path& path, uns
 superTypes::DirectionalPath straightenerAndCutter(superTypes::Path& ref,
                                       superTypes::DirectionalPath& path,
                                       Direction direction,
-                                      unsigned int maxDistance,
-                                      unsigned int pos = 0);
+                                      int maxDistance,
+                                      int pos = 0);
 
 /**
  * @brief Verify pattern on both side of both axis

@@ -7,7 +7,7 @@ Direction directionutils::computeDirection(const superTypes::Point& last, const 
     int deltaX = current.first - last.first;
     int deltaY = current.second - last.second;
     if (abs(deltaX) > 1 || abs(deltaY) > 1) {
-        cout << "error at directionutils::computeDirection(" << deltaX << ", " << deltaY << ");"
+        cout << "error at directionutils::computeDirection(" << abs(deltaX) << ", " << abs(deltaY) << ");"
              << endl;
         exit(1);
     }

@@ -32,7 +32,10 @@ Character::Character(unsigned int x, unsigned int y, Faction faction)
     _messages = {};
 }
 
-Character::~Character() { Map::instance().unlinkCharacter(this); }
+Character::~Character() {
+    Map::instance().unlinkCharacter(this);
+    Map::instance().sync();
+}
 
 //  --------------------------------------------------------------------------------------
 //  Character > GETTERS

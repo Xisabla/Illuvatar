@@ -47,11 +47,12 @@ Character* Map::getMaster(Faction faction) {
     std::find_if(_characters.begin(),
                  _characters.end(),
                  [faction](std::pair<std::pair<unsigned int, unsigned int>, Character*> e) {
-                     return e.second->isMaster() && e.second->faction() == faction;
+                     return e.second->faction() == faction && e.second->isMaster();
                  });
 
     if (found == std::end(_characters))
-        throw std::runtime_error("No master found for faction " + strFromFaction.at(faction));
+        return nullptr;
+        //throw std::runtime_error("No master found for faction " + strFromFaction.at(faction));
 
     return found->second;
 }
@@ -65,12 +66,15 @@ std::map<std::pair<unsigned int, unsigned int>, Character*>& Map::characters() {
 //  --------------------------------------------------------------------------------------
 
 void Map::generate() {
+    std::cout << "[map] Generate new game" << std::endl;
     _domain = Domain(21, 21);
 
     nlohmann::json env = Environment::instance()->env();
-    generateDisk(env["map"]["mainBoard"]["radius"],
-                    env["map"]["mainBoard"]["center"]["x"],
-                    env["map"]["mainBoard"]["center"]["y"]);
+    for (auto mainBoard: env["map"]["mainBoard"]) {
+        generateDisk(mainBoard["radius"],
+                        mainBoard["center"]["x"],
+                        mainBoard["center"]["y"]);
+    }
 
     for (auto safeZone: env["map"]["safeZones"]) {
         generateDisk(safeZone["radius"],
@@ -81,29 +85,30 @@ void Map::generate() {
 
     for (auto race: env["characters"]) {
         Faction faction = strToFaction.at(race["faction"]);
-        new Master(race["master"]["position"]["x"], race["master"]["position"]["y"], faction);
+        (new Master(race["master"]["position"]["x"], race["master"]["position"]["y"], faction))->printAction("naissance");
 
         switch (faction) {
             case Faction::Dragons:
                 for (auto pos: race["minion"]["positions"])
-                    (new Dragon(pos["x"], pos["y"]))->virtualInits();
+                    (new Dragon(pos["x"], pos["y"]))->virtualInits()->printAction("naissance");
                 break;
 
             case Faction::Eldars:
                 for (auto pos: race["minion"]["positions"])
-                    (new Eldar(pos["x"], pos["y"]))->virtualInits();
+                    (new Eldar(pos["x"], pos["y"]))->virtualInits()->printAction("naissance");
                 break;
 
             case Faction::Valars:
                 for (auto pos: race["minion"]["positions"])
-                    (new Vala(pos["x"], pos["y"]))->virtualInits();
+                    (new Vala(pos["x"], pos["y"]))->virtualInits()->printAction("naissance");
                 break;
 
             case Faction::Werewolves:
                 for (auto pos: race["minion"]["positions"])
-                    (new Werewolf(pos["x"], pos["y"]))->virtualInits();
+                    (new Werewolf(pos["x"], pos["y"]))->virtualInits()->printAction("naissance");
                 break;
         }
+        std::cout << std::endl;
     }
 
     sync();
@@ -176,6 +181,7 @@ void Map::jump(superTypes::Point newPos, Character* character) {
     // todo : verify if from & to are really neighbors ?
     Map::instance().unlinkCharacter(character);
     Map::instance().linkCharacter(newPos.first, newPos.second, character);
+    Map::instance().sync();
 }
 
 //  --------------------------------------------------------------------------------------

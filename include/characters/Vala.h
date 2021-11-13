@@ -38,9 +38,13 @@ class Vala : public GoodMinion {
       diceCriticFailureValue = minions["diceCriticFailureValue"];
       diceFailureValue = minions["diceFailureValue"];
       diceSuccessValue = minions["diceSuccessValue"];
+      id = Vala::counter++;
     }
     
   protected:
+    static unsigned int counter;
+    unsigned int id;
+
     int lifeMax;
     int energyMax;
     int energyLow;
@@ -54,6 +58,8 @@ class Vala : public GoodMinion {
     int diceCriticFailureValue;
     int diceFailureValue;
     int diceSuccessValue;
+
+    virtual unsigned int getId() { return id; }
 
     virtual int getLifeMax() { return lifeMax; };
 
@@ -73,5 +79,11 @@ class Vala : public GoodMinion {
     virtual int getDiceSuccessValue() { return diceSuccessValue; };
 };
 
+#ifndef ILLUVATAR_VALA_COUNTER
+#define ILLUVATAR_VALA_COUNTER
+
+unsigned int Vala::counter = 0;
+
+#endif // ILLUVATAR_VALA_COUNTER
 
 #endif // ILLUVATAR_VALA_H

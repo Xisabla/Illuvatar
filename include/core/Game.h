@@ -38,14 +38,15 @@ SINGLETON(Game) {
     // - Methods -----------------------------------------------------------------------------
     void step(QGameSidebar* qgsidebar, bool doesEnable = true);
     void run(QGameSidebar* qgsidebar, int maxSteps = 50);
-    bool end();
-    void reset();
+    bool end(QGameSidebar* qgsidebar);
+    void reset(QGameSidebar* qgsidebar);
 
     static int exec();
 
   private:
     // - Attributes --------------------------------------------------------------------------
     QApplication* _app;
+    unsigned int counter;
 };
 
 #endif // ILLUVATAR_GAME_H

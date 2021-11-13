@@ -37,26 +37,27 @@ class Minion : public Character {
     // - Methods -----------------------------------------------------------------------------
     bool isAlive() const;
     void move();
-    void reduceEnergy(unsigned int _energy);
-    void reduceLife(unsigned int life);
-    void restoreEnergy(unsigned int heal);
-    void restoreLife(unsigned int heal);
-    void setNewMsg();
-    void unsetNewMsg();
+    void reduceEnergy(int _energy);
+    void reduceLife(int life);
+    void restoreEnergy(int heal);
+    void restoreLife(int heal);
+
+    virtual void printAction(std::string str = "");
 
   protected:
     // - Methods -----------------------------------------------------------------------------
     void exchange(Minion* minion);
-    bool fight(Minion* minion);
+    void fight(Minion* minion);
     void normalAttack(Minion* minion);
     void attack(Minion* minion);
     void hurtItself();
 
     // - Attributes --------------------------------------------------------------------------
     Master* _master;
-    unsigned int _life;
-    unsigned int _energy;
-    bool newMsg = false;
+    int _life;
+    int _energy;
+
+    virtual unsigned int getId() = 0;
 
     virtual int getLifeMax() = 0;
 
@@ -85,8 +86,8 @@ class Minion : public Character {
 
     void searchCorpse(Minion* minion);
 
-    superTypes::DirectionalPath explore(unsigned int range);
-    superTypes::DirectionalPath findMaster(unsigned int range);
+    superTypes::DirectionalPath explore(int range);
+    superTypes::DirectionalPath findMaster(int range);
     bool interactsWithSurroundings();
     std::pair<ThingAtPoint, superTypes::Point> checkDirection(const superTypes::Point& point, Direction& direction);
     ThingAtPoint checkPosition(const superTypes::Point& point);

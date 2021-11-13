@@ -33,6 +33,7 @@ class Master : public Character {
     // - Methods -----------------------------------------------------------------------------
 
     virtual std::string getAssetPath();
+    virtual void printAction(std::string str);
 
     void collectAndSendBack(Minion* minion);
 

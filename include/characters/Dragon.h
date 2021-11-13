@@ -38,9 +38,13 @@ class Dragon : public BadMinion {
       diceCriticFailureValue = minions["diceCriticFailureValue"];
       diceFailureValue = minions["diceFailureValue"];
       diceSuccessValue = minions["diceSuccessValue"];
+      id = Dragon::counter++;
     }
 
   protected:
+    static unsigned int counter;
+    unsigned int id;
+
     int lifeMax;
     int energyMax;
     int energyLow;
@@ -54,6 +58,8 @@ class Dragon : public BadMinion {
     int diceCriticFailureValue;
     int diceFailureValue;
     int diceSuccessValue;
+
+    virtual unsigned int getId() { return id; }
 
     virtual int getLifeMax() { return lifeMax; };
 
@@ -72,5 +78,12 @@ class Dragon : public BadMinion {
     virtual int getDiceFailureValue() { return diceFailureValue; };
     virtual int getDiceSuccessValue() { return diceSuccessValue; };
 };
+
+#ifndef ILLUVATAR_DRAGON_COUNTER
+#define ILLUVATAR_DRAGON_COUNTER
+
+unsigned int Dragon::counter = 0;
+
+#endif // ILLUVATAR_DRAGON_COUNTER
 
 #endif // ILLUVATAR_DRAGON_H

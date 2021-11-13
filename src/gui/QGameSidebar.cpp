@@ -70,6 +70,6 @@ void QGameSidebar::handleStepButton() { Game::instance().step(this); }
 
 void QGameSidebar::handleRunButton() { Game::instance().run(this); }
 
-void QGameSidebar::handleResetButton() { Game::instance().reset(); }
+void QGameSidebar::handleResetButton() { Game::instance().reset(this); }
 
 void QGameSidebar::handleExitButton() { QApplication::exit(0); }

@@ -17,12 +17,8 @@
 
 namespace superTypes {
 
-// typedef struct Point { //better for us but lot more changes, isn't it
-//   unsigned int x;
-//   unsigned int y;
-// } Point;
 
-typedef std::pair<unsigned int, unsigned int> Point;
+typedef std::pair<int, int> Point;
 
 /**
  * @brief A vector of Point

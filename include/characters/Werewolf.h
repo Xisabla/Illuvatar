@@ -38,9 +38,13 @@ class Werewolf : public BadMinion {
       diceCriticFailureValue = minions["diceCriticFailureValue"];
       diceFailureValue = minions["diceFailureValue"];
       diceSuccessValue = minions["diceSuccessValue"];
+      id = Werewolf::counter++;
     }
-    
+
   protected:
+    static unsigned int counter;
+    unsigned int id;
+
     int lifeMax;
     int energyMax;
     int energyLow;
@@ -54,6 +58,8 @@ class Werewolf : public BadMinion {
     int diceCriticFailureValue;
     int diceFailureValue;
     int diceSuccessValue;
+
+    virtual unsigned int getId() { return id; }
 
     virtual int getLifeMax() { return lifeMax; };
 
@@ -73,5 +79,11 @@ class Werewolf : public BadMinion {
     virtual int getDiceSuccessValue() { return diceSuccessValue; };
 };
 
+#ifndef ILLUVATAR_WEREWOLF_COUNTER
+#define ILLUVATAR_WEREWOLF_COUNTER
+
+unsigned int Werewolf::counter = 0;
+
+#endif // ILLUVATAR_WEREWOLF_COUNTER
 
 #endif // ILLUVATAR_WEREWOLF_H

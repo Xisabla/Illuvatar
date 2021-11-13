@@ -38,9 +38,13 @@ class Eldar : public GoodMinion {
       diceCriticFailureValue = minions["diceCriticFailureValue"];
       diceFailureValue = minions["diceFailureValue"];
       diceSuccessValue = minions["diceSuccessValue"];
+      id = Eldar::counter++;
     }
     
   protected:
+    static unsigned int counter;
+    unsigned int id;
+
     int lifeMax;
     int energyMax;
     int energyLow;
@@ -54,6 +58,8 @@ class Eldar : public GoodMinion {
     int diceCriticFailureValue;
     int diceFailureValue;
     int diceSuccessValue;
+
+    virtual unsigned int getId() { return id; }
 
     virtual int getLifeMax() { return lifeMax; };
 
@@ -73,5 +79,11 @@ class Eldar : public GoodMinion {
     virtual int getDiceSuccessValue() { return diceSuccessValue; };
 };
 
+#ifndef ILLUVATAR_ELDAR_COUNTER
+#define ILLUVATAR_ELDAR_COUNTER
+
+unsigned int Eldar::counter = 0;
+
+#endif // ILLUVATAR_ELDAR_COUNTER
 
 #endif // ILLUVATAR_ELDAR_H
